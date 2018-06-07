@@ -20,7 +20,7 @@
     
     // set navigation bar
     [self setNaviBarType:BAR_ADD];
-    self.navigationItem.title = @"오늘 날짜";
+    self.navigationItem.title = @"Today's date";
 }
 
 - (void)didReceiveMemoryWarning {
@@ -33,4 +33,6 @@
     NSLog(@"YJ << save book data");
 }
 
+- (IBAction)addPicBtnAction:(id)sender {
+}
 @end

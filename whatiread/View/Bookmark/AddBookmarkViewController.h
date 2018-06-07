@@ -10,4 +10,11 @@
 
 @interface AddBookmarkViewController : CommonViewController
 
+@property (weak, nonatomic) IBOutlet UITextField *titleLabel;
+@property (weak, nonatomic) IBOutlet UITextField *authorLabel;
+@property (weak, nonatomic) IBOutlet UITextField *quoteLabel;
+@property (weak, nonatomic) IBOutlet UIButton *addPicBtn;
+
+- (IBAction)addPicBtnAction:(id)sender;
+
 @end

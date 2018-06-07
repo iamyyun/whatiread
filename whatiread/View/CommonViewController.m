@@ -22,11 +22,15 @@
     // Do any additional setup after loading the view, typically from a nib.
 }
 
--(void)viewWillLayoutSubviews
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+}
+
+- (void)viewWillLayoutSubviews
 {
     [super viewWillLayoutSubviews];
 }
-
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -120,6 +124,16 @@
 - (void)rightBarBtnClick:(id)sender
 {
     NSLog(@"YJ << right Bar Button clicked");
+}
+
+- (void)setFrame
+{
+    CGRect rect = [UIScreen mainScreen].bounds;
+    
+    rect.origin.y = 20 + 44;
+    rect.size.height -= (20 + 44);
+    
+    self.view.frame = rect;
 }
 
 - (void)showMenu
