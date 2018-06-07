@@ -1,0 +1,29 @@
+/* 
+  Localizable.strings
+  whatiread
+
+  Created by 양윤주 on 2018. 6. 4..
+  Copyright © 2018년 Yunju Yang. All rights reserved.
+*/
+
+"Bookmark" = "Bookmark";
+"Bookshelf" = "Bookshelf";
+"Settings" = "Settings";
+"Add Bookmark" = "Add Bookmark";
+"Cancel" = "Cancel";
+"Save" = "Save";
+"Book Title" = "Book Title";
+"Author" = "Author";
+"Write quotes" = "Write quotes";
+"Close" = "Close";
+"Keep writing" = "Keep writing";
+"Delete & Leave" = "Delete & Leave";
+"Save & Leave" = "Save & Leave";
+"Take Photo" = "Take Photo";
+"Add from Libray" = "Add from Libray";
+"Text Recognition" = "Text Recognition";
+"Add Photo" = "Add Photo";
+"Delete" = "Delete";
+"Do you really want to delete?" = "Do you really want to delete?";
+"Deleting" = "Deleting";
+"Edit" = "Edit";

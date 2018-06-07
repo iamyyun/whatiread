@@ -1,0 +1,9 @@
+
+/* Class = "UILabel"; text = "There is no data."; ObjectID = "avz-y0-XIc"; */
+"avz-y0-XIc.text" = "등록된 내역이 없습니다.";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "hoC-he-5Ic"; */
+"hoC-he-5Ic.text" = "Label";
+
+/* Class = "UIButton"; normalTitle = "Add Bookmark"; ObjectID = "tAk-Le-THS"; */
+"tAk-Le-THS.normalTitle" = "책갈피 등록";
