@@ -16,11 +16,12 @@
 "Author" = "작가 명";
 "Write quotes" = "기록 하고자 하는 문구를 입력하세요.";
 "Close" = "닫기";
+"작성중인 글이 있습니다." = "작성중인 글이 있습니다.";
 "Keep writing" = "계속 쓰기";
 "Delete & Leave" = "삭제하고 나가기";
 "Save & Leave" = "저장하고 나가기";
 "Take Photo" = "사진 찍기";
-"Add from Libray" = "사진 보관함에서 추가";
+"Add from Library" = "사진 보관함에서 추가";
 "Text Recognition" = "텍스트 자동 입력";
 "Add Photo" = "사진 첨부";
 "Delete" = "삭제";
