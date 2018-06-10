@@ -94,10 +94,5 @@
 //     {
 //         dImg = result;
 //     }];
-//    
-//    DetailViewController *detailVC = [[DetailViewController alloc] initWithNibName:@"DetailViewController" bundle:nil];
-//    detailVC.navigationItem.title = @"Photo";
-//    detailVC.picIndex = indexPath.item;
-//    [self.navigationController pushViewController:detailVC animated:YES];
 }
 @end
