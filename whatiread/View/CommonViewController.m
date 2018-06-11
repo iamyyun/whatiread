@@ -104,8 +104,13 @@
         self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:leftBtn];
         
         // rightBarButton
-        NSString *rightBtnTitle = NSLocalizedString(@"Delete", @"");
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:rightBtnTitle style:UIBarButtonItemStylePlain target:self action:@selector(rightBarBtnClick:)];
+        NSString *rightBtnTitle1 = NSLocalizedString(@"Delete", @"");
+        NSString *rightBtnTitle2 = NSLocalizedString(@"Edit", @"");
+        UIBarButtonItem *delBtn = [[UIBarButtonItem alloc] initWithTitle:rightBtnTitle1 style:UIBarButtonItemStylePlain target:self action:@selector(rightBarBtnClick:)];
+        [delBtn setTag:BTN_TYPE_DELETE];
+        UIBarButtonItem *editBtn = [[UIBarButtonItem alloc] initWithTitle:rightBtnTitle2 style:UIBarButtonItemStylePlain target:self action:@selector(rightBarBtnClick:)];
+        [editBtn setTag:BTN_TYPE_EDIT];
+        self.navigationItem.rightBarButtonItems = [NSArray arrayWithObjects:delBtn, editBtn, nil];
     }
 }
 

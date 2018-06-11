@@ -1,12 +1,12 @@
 
-/* Class = "UITextField"; text = "Author"; ObjectID = "1JI-j5-Uc8"; */
-"1JI-j5-Uc8.text" = "작가 명";
+/* Class = "UITextField"; placeholder = "Author"; ObjectID = "1JI-j5-Uc8"; */
+"1JI-j5-Uc8.placeholder" = "작가 명";
+
+/* Class = "UILabel"; text = "Write Quotes."; ObjectID = "JB4-Fc-BkD"; */
+"JB4-Fc-BkD.text" = "기록 하고자 하는 문구를 입력하세요.";
 
 /* Class = "UIButton"; normalTitle = "Add Photo"; ObjectID = "Naa-91-7HS"; */
 "Naa-91-7HS.normalTitle" = "사진 첨부";
 
-/* Class = "UITextField"; text = "Book Title"; ObjectID = "npq-iq-BJk"; */
-"npq-iq-BJk.text" = "책 제목";
-
-/* Class = "UITextField"; text = "Write Quotes."; ObjectID = "zOx-jA-6cc"; */
-"zOx-jA-6cc.text" = "기록 하고자 하는 문구를 입력하세요.";
+/* Class = "UITextField"; placeholder = "Book Title"; ObjectID = "npq-iq-BJk"; */
+"npq-iq-BJk.placeholder" = "책 제목";

@@ -22,6 +22,12 @@ typedef enum : NSInteger
     BTN_TYPE_BACK   // btn
 } LEFT_BTN_TYPE;
 
+typedef enum : NSInteger
+{
+    BTN_TYPE_DELETE = 0,   // delete
+    BTN_TYPE_EDIT   // edit
+} RIGHT_BTN_TYPE;
+
 @interface CommonViewController : UIViewController
 
 // Navigation Bar

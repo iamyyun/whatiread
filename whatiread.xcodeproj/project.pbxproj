@@ -91,6 +91,7 @@
 		6B030EE620BE44B00060E8AD /* TestViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TestViewController.h; sourceTree = "<group>"; };
 		6B030EE720BE44B00060E8AD /* TestViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TestViewController.m; sourceTree = "<group>"; };
 		6B030EE820BE44B00060E8AD /* TestViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TestViewController.xib; sourceTree = "<group>"; };
+		6B34152D20CE5CB600251043 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/AddBookmarkViewController.strings; sourceTree = "<group>"; };
 		6B53387E20C8C46600D85CD0 /* UIColor+ColorString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+ColorString.h"; sourceTree = "<group>"; };
 		6B53387F20C8C46700D85CD0 /* UIColor+ColorString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+ColorString.m"; sourceTree = "<group>"; };
 		6B53388120C8CB7F00D85CD0 /* back@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "back@2x.png"; sourceTree = "<group>"; };
@@ -125,7 +126,6 @@
 		6B5502B420C91B3700C08D16 /* AddBookmarkViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AddBookmarkViewController.h; sourceTree = "<group>"; };
 		6B5502B520C91B3700C08D16 /* AddBookmarkViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AddBookmarkViewController.m; sourceTree = "<group>"; };
 		6B5502BA20C925C800C08D16 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/AddBookmarkViewController.xib; sourceTree = "<group>"; };
-		6B5502BD20C925D700C08D16 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/AddBookmarkViewController.strings; sourceTree = "<group>"; };
 		6BCBA19920C522C40056BAFB /* IntroViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IntroViewController.h; sourceTree = "<group>"; };
 		6BCBA19A20C522C40056BAFB /* IntroViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IntroViewController.m; sourceTree = "<group>"; };
 		6BCBA19B20C522C40056BAFB /* IntroViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = IntroViewController.xib; sourceTree = "<group>"; };
@@ -563,7 +563,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				6B5502BA20C925C800C08D16 /* Base */,
-				6B5502BD20C925D700C08D16 /* ko */,
+				6B34152D20CE5CB600251043 /* ko */,
 			);
 			name = AddBookmarkViewController.xib;
 			sourceTree = "<group>";
