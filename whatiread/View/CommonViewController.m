@@ -77,10 +77,11 @@
         [rightBtn addTarget:self action:@selector(rightBarBtnClick:) forControlEvents:UIControlEventTouchUpInside];
         [rightBtn setFrame:CGRectMake(0, 5, 34, 34)];
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:rightBtn];
-//        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"search"] style:UIBarButtonItemStylePlain target:self action:@selector(rightBarBtnClick:)];
     }
     else if (type == BAR_SEARCH) {
-        
+//        self.searchDisplayController.displaysSearchBarInNavigationBar = YES;
+//        UISearchBar *searchBar = [[UISearchBar alloc] init];
+//        self.navigationItem.titleView = searchBar;
     }
     else if (type == BAR_ADD) {
         // leftBarButton
@@ -123,12 +124,11 @@
     else if ([sender tag] == BTN_TYPE_BACK) {
         [self popController:YES];
     }
-    NSLog(@"YJ << left Bar Button clicked");
 }
 
 - (void)rightBarBtnClick:(id)sender
 {
-    NSLog(@"YJ << right Bar Button clicked");
+    
 }
 
 - (void)setFrame

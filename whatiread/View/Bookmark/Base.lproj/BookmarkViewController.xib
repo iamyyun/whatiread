@@ -66,11 +66,11 @@
                         <constraint firstAttribute="height" constant="30" id="sez-lf-C7n"/>
                     </constraints>
                 </view>
-                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="eT8-Bx-Axc">
-                    <rect key="frame" x="15" y="175" width="345" height="492"/>
+                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsVerticalScrollIndicator="NO" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="eT8-Bx-Axc">
+                    <rect key="frame" x="0.0" y="175" width="375" height="492"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="pIO-5V-knf">
-                        <size key="itemSize" width="345" height="100"/>
+                    <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="MUa-Xs-V9g">
+                        <size key="itemSize" width="375" height="100"/>
                         <size key="headerReferenceSize" width="0.0" height="0.0"/>
                         <size key="footerReferenceSize" width="0.0" height="0.0"/>
                         <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -109,9 +109,9 @@
                 <constraint firstItem="eT8-Bx-Axc" firstAttribute="bottom" secondItem="i5M-Pr-FkT" secondAttribute="bottom" id="SKc-n2-tK1"/>
                 <constraint firstItem="jr1-HV-15k" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="15" id="cfi-qM-bxq"/>
                 <constraint firstAttribute="trailing" secondItem="tAk-Le-THS" secondAttribute="trailing" constant="15" id="hNE-Ur-NqC"/>
-                <constraint firstAttribute="trailing" secondItem="eT8-Bx-Axc" secondAttribute="trailing" constant="15" id="hhj-Sa-jG3"/>
+                <constraint firstAttribute="trailing" secondItem="eT8-Bx-Axc" secondAttribute="trailing" id="hhj-Sa-jG3"/>
                 <constraint firstAttribute="trailing" secondItem="jr1-HV-15k" secondAttribute="trailing" constant="16" id="mJy-Uh-c6u"/>
-                <constraint firstItem="eT8-Bx-Axc" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="15" id="vag-cO-7qg"/>
+                <constraint firstItem="eT8-Bx-Axc" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="vag-cO-7qg"/>
                 <constraint firstItem="Jze-6w-EwW" firstAttribute="bottom" secondItem="i5M-Pr-FkT" secondAttribute="bottom" id="yyo-Jm-R1v"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="fNt-QC-HpO"/>

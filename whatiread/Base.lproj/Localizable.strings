@@ -16,6 +16,7 @@
 "Author" = "Author";
 "Write quotes" = "Write quotes";
 "Close" = "Close";
+"Finish writing your bookmark." = "Finish writing your bookmark.";
 "Keep writing" = "Keep writing";
 "Delete & Leave" = "Delete & Leave";
 "Save & Leave" = "Save & Leave";
@@ -25,6 +26,9 @@
 "Add Photo" = "Add Photo";
 "Delete" = "Delete";
 "Do you really want to delete?" = "Do you really want to delete?";
-"Deleting" = "Deleting";
+"Deleting" = "Delete";
 "Edit" = "Edit";
 "Confirm" = "Confirm";
+"Please write title." = "Please write title.";
+"Please write quotes." = "Please write quotes.";
+"Search with book title or quotes" = "Search with book title or quotes";

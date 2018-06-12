@@ -13,7 +13,7 @@
 
 #define MILLI_SECONDS           1000.f
 
-@interface BookmarkViewController () <UICollectionViewDelegate, UICollectionViewDataSource>
+@interface BookmarkViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UISearchBarDelegate>
 
 @end
 
@@ -46,6 +46,26 @@
     // Dispose of any resources that can be recreated.
 }
 
+#pragma mark - navigation action
+- (void)rightBarBtnClick:(id)sender
+{
+//    [self setNaviBarType:BAR_SEARCH];
+//    UISearchBar *searchBar = [[UISearchBar alloc] init];
+//    [searchBar setFrame:CGRectMake(0, 0, self.view.frame.size.width, 44.0f)];
+//    [searchBar setPlaceholder:NSLocalizedString(@"Search with book title or quotes", @"")];
+//    [searchBar setDelegate:self];
+//    [searchBar setUserInteractionEnabled:YES];
+//
+//    UIView *searchBarContainer = [[UIView alloc] initWithFrame:searchBar.frame];
+//    [searchBarContainer addSubview:searchBar];
+    
+//    if (@available(iOS 11.0, *)) {
+//        self.navigationItem.searchController = searchBarContainer;
+//    } else {
+//        self.navigationItem.titleView = searchBarContainer;
+//    }
+}
+
 #pragma mark - actions
 // add bookmark btn action
 - (IBAction)addBtnAction:(id)sender {
@@ -58,25 +78,25 @@
     addViewController.indexPath = indexPath;
     addViewController.isModifyMode = isModifyMode;
     
-    [addViewController setBookCompositionHandler:book bookCreateCompleted:^(NSString *bookTitle, NSString *bookAuthor, NSString *bookQuote) {
-        [self createBookmark:bookTitle bookAuthor:bookAuthor bookQuote:bookQuote indexPath:indexPath completed:^(BOOL isResult) {
+    [addViewController setBookCompositionHandler:book bookCreateCompleted:^(NSString *bookTitle, NSString *bookAuthor, NSString *bookQuote, UIImage *bookImage) {
+        [self createBookmark:bookTitle bookAuthor:bookAuthor bookQuote:bookQuote bookImage:bookImage indexPath:indexPath completed:^(BOOL isResult) {
             if (isResult) {
                 
             } else {
                 
             }
         }];
-    } bookModifyCompleted:^(NSString *bookTitle, NSString *bookAuthor, NSString *bookQuote) {
+    } bookModifyCompleted:^(NSString *bookTitle, NSString *bookAuthor, NSString *bookQuote, UIImage *bookImage) {
         
     } bookDeleteCompleted:^(NSIndexPath *indexPath) {
-        
+        [self deleteBookmark:indexPath];
     }];
     
     [self pushController:addViewController animated:YES];
 }
 
 // create bookmark
-- (void)createBookmark:(NSString *)bookTitle bookAuthor:(NSString *)bookAuthor bookQuote:(NSString *)bookQuote indexPath:(NSIndexPath *)indexPath completed:(void (^)(BOOL isResult))completed {
+- (void)createBookmark:(NSString *)bookTitle bookAuthor:(NSString *)bookAuthor bookQuote:(NSString *)bookQuote bookImage:(UIImage *)bookImage indexPath:(NSIndexPath *)indexPath completed:(void (^)(BOOL isResult))completed {
     id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][0];
     NSInteger bookCount = [sectionInfo numberOfObjects];
     
@@ -84,12 +104,15 @@
     NSDate *now = [[NSDate alloc] init];
 //    int64_t tempBookID = ([now timeIntervalSince1970] * MILLI_SECONDS);
     
+    NSData *imageData = UIImagePNGRepresentation(bookImage);
+    
     Book *book = [[Book alloc] initWithContext:context];
     book.index = bookCount;
     book.title = bookTitle;
     book.author = bookAuthor;
     book.quotes = bookQuote;
     book.modifyDate = now;
+    book.image = imageData;
     
     NSError * error = nil;
     
@@ -103,6 +126,28 @@
         completed(YES);
     }
 }
+
+// delete bookmark
+- (void)deleteBookmark:(NSIndexPath *)indexPath {
+    Book *book = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
+    NSFetchRequest <Book *> *fetchRequest = Book.fetchRequest;
+    
+    [context performBlock:^{
+        NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"modifyDate" ascending:YES];
+        [fetchRequest setSortDescriptors:@[sortDescriptor]];
+        [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"modifyDate = %@", book.modifyDate]];
+        
+        NSError * error;
+        
+        NSArray * resultArray = [context executeFetchRequest:fetchRequest error:&error];
+        
+        if([resultArray count]) {
+            [context deleteObject:[resultArray lastObject]];
+            [context save:&error];
+        }
+    }];
+ }
 
 #pragma mark - UICollectionViewDataSource
 - (nonnull __kindof UICollectionViewCell *)collectionView:(nonnull UICollectionView *)collectionView cellForItemAtIndexPath:(nonnull NSIndexPath *)indexPath {
@@ -153,7 +198,8 @@
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath;
 {
     NSLog(@"YJ << select collectionview cell");
-    [self bookConfigure:nil indexPath:indexPath isModifyMode:YES];
+    Book *book = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    [self bookConfigure:book indexPath:indexPath isModifyMode:YES];
     
 //    __block UIImage *dImg = [[UIImage alloc]init];
     
@@ -213,7 +259,6 @@
 }
 
 - (void) controllerWillChangeContent:(NSFetchedResultsController *)controller {
-//    [self.collectionView beginUpdates];
     [self.collectionView performBatchUpdates:^{} completion:^(BOOL finished){}];
 }
 
@@ -238,6 +283,7 @@
 //            [self.accntTableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
             break;
         case NSFetchedResultsChangeDelete:
+            [self.collectionView deleteItemsAtIndexPaths:@[indexPath]];
 //            [self.accntTableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
             break;
         case NSFetchedResultsChangeUpdate:
@@ -261,11 +307,9 @@
         [self.emptyView setHidden:NO];
     }
     
-//    [self.accntTableView reloadData];
-//    [self.accntTableView endUpdates];
+    [self.countLabel setText:[NSString stringWithFormat:@"%ld", bookCount]];
     
-    // 계좌정보 저장
-//    [self saveAccountInfo];
+    [self.collectionView reloadData];
 }
 
 @end

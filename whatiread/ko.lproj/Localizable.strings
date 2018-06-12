@@ -16,7 +16,7 @@
 "Author" = "작가 명";
 "Write quotes." = "기록 하고자 하는 문구를 입력하세요.";
 "Close" = "닫기";
-"작성중인 글이 있습니다." = "작성중인 글이 있습니다.";
+"Finish writing your bookmark." = "작성중인 글이 있습니다.";
 "Keep writing" = "계속 쓰기";
 "Delete & Leave" = "삭제하고 나가기";
 "Save & Leave" = "저장하고 나가기";
@@ -31,3 +31,4 @@
 "Confirm" = "확인";
 "Please write title." = "책 제목을 입력해주세요.";
 "Please write quotes." = "내용을 입력해주세요.";
+"Search with book title or quotes" = "책 제목 또는 내용으로 검색";

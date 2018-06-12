@@ -13,14 +13,14 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="gTV-IL-0wX" customClass="BookmarkCollectionViewCell">
-            <rect key="frame" x="0.0" y="0.0" width="345" height="100"/>
+            <rect key="frame" x="0.0" y="0.0" width="375" height="100"/>
             <autoresizingMask key="autoresizingMask"/>
             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                <rect key="frame" x="0.0" y="0.0" width="345" height="100"/>
+                <rect key="frame" x="0.0" y="0.0" width="375" height="100"/>
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RGM-e1-vsF">
-                        <rect key="frame" x="10" y="10" width="325" height="17"/>
+                        <rect key="frame" x="10" y="10" width="355" height="17"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="17" id="Jwo-ny-yzT"/>
                         </constraints>
@@ -29,7 +29,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="TopLeft" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MYP-Rg-nvH">
-                        <rect key="frame" x="10" y="32" width="325" height="47"/>
+                        <rect key="frame" x="10" y="32" width="355" height="47"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="47" id="vAW-NX-ZT4"/>
                         </constraints>
@@ -38,13 +38,13 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="GsG-vf-GyB">
-                        <rect key="frame" x="10" y="32" width="325" height="47"/>
+                        <rect key="frame" x="10" y="32" width="355" height="47"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="47" id="vWb-r0-uN0"/>
                         </constraints>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hCF-Li-NW6">
-                        <rect key="frame" x="10" y="85" width="325" height="15"/>
+                        <rect key="frame" x="10" y="85" width="355" height="15"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="15" id="PZW-Nj-S5J"/>
                         </constraints>

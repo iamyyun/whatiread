@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>for text detection</string>
+	<string>Add Picture in Bookmark</string>
 	<key>NSCameraUsageDescription</key>
-	<string>for text detection</string>
+	<string>Add Picture in Bookmark</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>

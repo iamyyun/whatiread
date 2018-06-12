@@ -7,8 +7,12 @@
 //
 
 #import "AddBookmarkViewController.h"
+#import <Photos/Photos.h>
 
-@interface AddBookmarkViewController () <UITextFieldDelegate, UITextViewDelegate> {
+@interface AddBookmarkViewController () <UITextFieldDelegate, UITextViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate> {
+    PHFetchResult *fetchResult;
+    PHCachingImageManager *imgManager;
+    
     UITapGestureRecognizer *bgTap;
 }
 
@@ -24,9 +28,34 @@
     if (self.isModifyMode == NO) {
         [self setNaviBarType:BAR_ADD];
         self.navigationItem.title = @"Today's date";
+        
+        [self.placeholderLabel setHidden:NO];
+        [self.addPicBtn setHidden:NO];
     } else {
         [self setNaviBarType:BAR_EDIT];
+        
+        if (self.book) {
+            UIImage *image = [UIImage imageWithData:self.book.image];
+            
+            [self.placeholderLabel setHidden:YES];
+            [self.titleLabel setText:self.book.title];
+            [self.authorLabel setText:self.book.author];
+            [self.quoteTextView setText:self.book.quotes];
+            [self.picImageView setImage:image];
+            
+            [self.addPicBtn setHidden:YES];
+        }
     }
+    
+    // test
+    self.quoteTextView.layer.borderColor = [UIColor redColor].CGColor;
+    self.quoteTextView.layer.borderWidth = 2.0f;
+    
+    // Photo Framework
+    PHFetchOptions *options = [[PHFetchOptions alloc] init];
+    options.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO]];
+    fetchResult = [PHAsset fetchAssetsWithOptions:options];
+    imgManager = [[PHCachingImageManager alloc] init];
     
     // Add Observer
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillShowNote:) name:UIKeyboardWillShowNotification object:self.view.window];
@@ -40,6 +69,7 @@
     // Dispose of any resources that can be recreated.
 }
 
+// set Blocks
 - (void)setBookCompositionHandler:(Book *)book bookCreateCompleted:(BookCreateCompleted)bookCreateCompleted bookModifyCompleted:(BookModifyCompleted)bookModifyCompleted bookDeleteCompleted:(BookDeleteCompleted)bookDeleteCompleted
 {
     self.book = book;
@@ -105,13 +135,34 @@
         } else {
             // create bookmark data
             if (self.bookCreateCompleted) {
-                self.bookCreateCompleted(self.titleLabel.text, self.authorLabel.text, self.quoteTextView.text);
+                self.bookCreateCompleted(self.titleLabel.text, self.authorLabel.text, self.quoteTextView.text, self.picImageView.image);
             }
             [self popController:YES];
         }
     }
     else {  // modify mode
-        
+        NSInteger tag = [sender tag];
+        if (tag == BTN_TYPE_DELETE) {
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Delete", @"") message:NSLocalizedString(@"Do you really want to delete?", @"") preferredStyle:UIAlertControllerStyleActionSheet];
+            
+            NSString *strFirst = NSLocalizedString(@"Deleting", @"");
+            NSString *strSecond = NSLocalizedString(@"Cancel", @"");
+            UIAlertAction *firstAction = [UIAlertAction actionWithTitle:strFirst style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+                if (self.bookDeleteCompleted) {
+                    self.bookDeleteCompleted(self.indexPath);
+                    [self popController:YES];
+                }
+            }];
+            UIAlertAction *secondAction = [UIAlertAction actionWithTitle:strSecond style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+                [alert dismissViewControllerAnimated:YES completion:nil];
+            }];
+            
+            [alert addAction:firstAction];
+            [alert addAction:secondAction];
+            [self presentViewController:alert animated:YES completion:nil];
+        } else if (tag == BTN_TYPE_EDIT) {
+            
+        }
     }
     NSLog(@"YJ << save book data");
 }
@@ -124,9 +175,19 @@
     NSString *strSecond = NSLocalizedString(@"Add from Library", @"");
     UIAlertAction *firstAction = [UIAlertAction actionWithTitle:strFirst style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
         NSLog(@"YJ << take photo");
+        UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+        picker.delegate = self;
+        picker.allowsEditing = YES;
+        picker.sourceType = UIImagePickerControllerSourceTypeCamera;
+        [self presentViewController:picker animated:YES completion:nil];
     }];
     UIAlertAction *secondAction = [UIAlertAction actionWithTitle:strSecond style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
         NSLog(@"YJ << add from library");
+        UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+        picker.delegate = self;
+        picker.allowsEditing = YES;
+        picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+        [self presentViewController:picker animated:YES completion:nil];
     }];
     UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"") style:UIAlertActionStyleCancel handler:^(UIAlertAction *action){}];
     
@@ -139,6 +200,17 @@
 
 - (void) writeFinished {
     [self.view endEditing:YES];
+}
+
+#pragma mark - UIImagePickerController Delegate
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
+    
+    // output image
+    UIImage *chosenImage = info[UIImagePickerControllerEditedImage];
+//    self.profileImageView.image = chosenImage;
+    [self.picImageView setImage:chosenImage];
+    [picker dismissViewControllerAnimated:YES completion:nil];
+    
 }
 
 #pragma mark - UITextViewDelegate

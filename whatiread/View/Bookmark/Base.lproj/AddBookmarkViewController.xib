@@ -14,6 +14,7 @@
             <connections>
                 <outlet property="addPicBtn" destination="Naa-91-7HS" id="791-ES-C8k"/>
                 <outlet property="authorLabel" destination="1JI-j5-Uc8" id="IMd-Be-Eq9"/>
+                <outlet property="picImageView" destination="JYV-AC-rix" id="G3z-HV-oP3"/>
                 <outlet property="placeholderLabel" destination="JB4-Fc-BkD" id="DYe-bX-byV"/>
                 <outlet property="quoteTextView" destination="O6e-UV-6SU" id="MSi-CG-xpP"/>
                 <outlet property="titleLabel" destination="npq-iq-BJk" id="f85-db-H3y"/>
@@ -61,6 +62,15 @@
                         <outlet property="delegate" destination="-1" id="odC-b7-6mF"/>
                     </connections>
                 </textView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Write Quotes." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JB4-Fc-BkD">
+                    <rect key="frame" x="16" y="197" width="89" height="17"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="17" id="aBu-Xx-ayB"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <color key="textColor" red="0.75406885150000003" green="0.75408679249999999" blue="0.75407713649999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="x6m-rc-97l">
                     <rect key="frame" x="0.0" y="607" width="375" height="60"/>
                     <subviews>
@@ -84,20 +94,15 @@
                         <constraint firstAttribute="trailing" secondItem="Naa-91-7HS" secondAttribute="trailing" id="yg4-YP-thI"/>
                     </constraints>
                 </view>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Write Quotes." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JB4-Fc-BkD">
-                    <rect key="frame" x="16" y="197" width="89" height="17"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="17" id="aBu-Xx-ayB"/>
-                    </constraints>
-                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                    <color key="textColor" red="0.75406885150000003" green="0.75408679249999999" blue="0.75407713649999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    <nil key="highlightedColor"/>
-                </label>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="JYV-AC-rix">
+                    <rect key="frame" x="16" y="334" width="343" height="243"/>
+                </imageView>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="O6e-UV-6SU" firstAttribute="top" secondItem="1JI-j5-Uc8" secondAttribute="bottom" constant="25" id="2zf-hJ-gcf"/>
                 <constraint firstItem="npq-iq-BJk" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="16" id="48s-Hz-ous"/>
+                <constraint firstItem="x6m-rc-97l" firstAttribute="top" secondItem="JYV-AC-rix" secondAttribute="bottom" priority="750" constant="30" id="6YW-PC-inu"/>
                 <constraint firstItem="Q5M-cg-NOt" firstAttribute="bottom" secondItem="x6m-rc-97l" secondAttribute="bottom" id="AUp-2B-1F7"/>
                 <constraint firstItem="JB4-Fc-BkD" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="16" id="BCh-lt-rwN"/>
                 <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="1JI-j5-Uc8" secondAttribute="trailing" constant="16" id="Bks-bY-r1q"/>
@@ -106,8 +111,11 @@
                 <constraint firstItem="O6e-UV-6SU" firstAttribute="top" secondItem="JB4-Fc-BkD" secondAttribute="top" constant="-8" id="SJs-cm-h7D"/>
                 <constraint firstItem="x6m-rc-97l" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="SfV-K1-Pgf"/>
                 <constraint firstItem="1JI-j5-Uc8" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="16" id="WfE-kL-ef0"/>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="JYV-AC-rix" secondAttribute="trailing" constant="16" id="bYt-a0-IUo"/>
                 <constraint firstItem="npq-iq-BJk" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="90" id="c1k-zc-l0V"/>
                 <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="O6e-UV-6SU" secondAttribute="trailing" constant="16" id="cPA-tK-Jed"/>
+                <constraint firstItem="JYV-AC-rix" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="16" id="dHJ-LQ-yOO"/>
+                <constraint firstItem="JYV-AC-rix" firstAttribute="top" secondItem="O6e-UV-6SU" secondAttribute="bottom" constant="15" id="hHT-P1-X48"/>
                 <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="npq-iq-BJk" secondAttribute="trailing" constant="16" id="jIf-BU-cMr"/>
                 <constraint firstItem="1JI-j5-Uc8" firstAttribute="top" secondItem="npq-iq-BJk" secondAttribute="bottom" constant="14" id="r2P-b0-Akz"/>
             </constraints>

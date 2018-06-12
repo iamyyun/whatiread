@@ -9,8 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "whatiread+CoreDataModel.h"
 
-typedef void (^BookCreateCompleted)(NSString *bookTitle, NSString *bookAuthor, NSString *bookQuote);
-typedef void (^BookModifyCompleted)(NSString *bookTitle, NSString *bookAuthor, NSString *bookQuote);
+typedef void (^BookCreateCompleted)(NSString *bookTitle, NSString *bookAuthor, NSString *bookQuote, UIImage *bookImage);
+typedef void (^BookModifyCompleted)(NSString *bookTitle, NSString *bookAuthor, NSString *bookQuote, UIImage *bookImage);
 typedef void (^BookDeleteCompleted)(NSIndexPath *indexPath);
 
 @interface AddBookmarkViewController : CommonViewController
@@ -27,6 +27,7 @@ typedef void (^BookDeleteCompleted)(NSIndexPath *indexPath);
 @property (weak, nonatomic) IBOutlet UITextField *authorLabel;
 @property (weak, nonatomic) IBOutlet UITextView *quoteTextView;
 @property (weak, nonatomic) IBOutlet UILabel *placeholderLabel;
+@property (weak, nonatomic) IBOutlet UIImageView *picImageView;
 @property (weak, nonatomic) IBOutlet UIButton *addPicBtn;
 
 - (IBAction)addPicBtnAction:(id)sender;
