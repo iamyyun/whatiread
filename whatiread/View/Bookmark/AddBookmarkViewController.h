@@ -20,7 +20,7 @@ typedef void (^BookDeleteCompleted)(NSIndexPath *indexPath);
 @property (nonatomic, copy) BookDeleteCompleted bookDeleteCompleted;
 @property (nonatomic, weak) Book *book;
 
-@property (nonatomic, assign) BOOL isModifyMode;
+@property (nonatomic, assign) BOOL isModifyMode;    // create / modify
 @property (nonatomic, strong) NSIndexPath *indexPath;
 
 @property (weak, nonatomic) IBOutlet UITextField *titleLabel;

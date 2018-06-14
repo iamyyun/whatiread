@@ -29,27 +29,28 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="TopLeft" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MYP-Rg-nvH">
-                        <rect key="frame" x="10" y="32" width="355" height="47"/>
+                        <rect key="frame" x="10" y="32" width="298" height="47"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="47" id="vAW-NX-ZT4"/>
                         </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                        <nil key="textColor"/>
+                        <color key="textColor" red="0.57414853570000002" green="0.57416242360000003" blue="0.57415497299999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="GsG-vf-GyB">
-                        <rect key="frame" x="10" y="32" width="355" height="47"/>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="GsG-vf-GyB">
+                        <rect key="frame" x="318" y="32" width="47" height="47"/>
                         <constraints>
+                            <constraint firstAttribute="width" constant="47" id="PMo-Aq-PiG"/>
                             <constraint firstAttribute="height" constant="47" id="vWb-r0-uN0"/>
                         </constraints>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hCF-Li-NW6">
-                        <rect key="frame" x="10" y="85" width="355" height="15"/>
+                        <rect key="frame" x="10" y="80" width="355" height="15"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="15" id="PZW-Nj-S5J"/>
                         </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                        <nil key="textColor"/>
+                        <color key="textColor" red="0.75406885150000003" green="0.75408679249999999" blue="0.75407713649999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
@@ -57,19 +58,19 @@
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="hCF-Li-NW6" secondAttribute="trailing" constant="10" id="3eB-w9-tWd"/>
                 <constraint firstItem="hCF-Li-NW6" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="10" id="C3U-IM-V64"/>
-                <constraint firstAttribute="trailing" secondItem="MYP-Rg-nvH" secondAttribute="trailing" constant="10" id="IDg-2r-NkT"/>
                 <constraint firstAttribute="trailing" secondItem="GsG-vf-GyB" secondAttribute="trailing" constant="10" id="MgN-Aa-bTh"/>
                 <constraint firstItem="MYP-Rg-nvH" firstAttribute="top" secondItem="RGM-e1-vsF" secondAttribute="bottom" constant="5" id="b03-v1-OK5"/>
                 <constraint firstItem="RGM-e1-vsF" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="10" id="hzD-y6-ULV"/>
-                <constraint firstAttribute="bottom" secondItem="hCF-Li-NW6" secondAttribute="bottom" id="im3-s1-4D6"/>
+                <constraint firstAttribute="bottom" secondItem="hCF-Li-NW6" secondAttribute="bottom" constant="5" id="im3-s1-4D6"/>
                 <constraint firstItem="MYP-Rg-nvH" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="10" id="ipx-BP-Xwf"/>
-                <constraint firstItem="GsG-vf-GyB" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="10" id="kj1-AL-KJK"/>
+                <constraint firstItem="GsG-vf-GyB" firstAttribute="leading" secondItem="MYP-Rg-nvH" secondAttribute="trailing" constant="10" id="kj1-AL-KJK"/>
                 <constraint firstItem="RGM-e1-vsF" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="10" id="nrd-dN-3yM"/>
                 <constraint firstItem="GsG-vf-GyB" firstAttribute="top" secondItem="RGM-e1-vsF" secondAttribute="bottom" constant="5" id="q76-PP-Cd3"/>
                 <constraint firstAttribute="trailing" secondItem="RGM-e1-vsF" secondAttribute="trailing" constant="10" id="vhR-0a-Hkv"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="SEy-5g-ep8"/>
             <connections>
+                <outlet property="constImageWidth" destination="PMo-Aq-PiG" id="Sap-3t-oyk"/>
                 <outlet property="dateLabel" destination="hCF-Li-NW6" id="XC1-Ih-uAX"/>
                 <outlet property="imageView" destination="GsG-vf-GyB" id="xTT-rt-wcP"/>
                 <outlet property="quoteLabel" destination="MYP-Rg-nvH" id="kZS-oA-BzY"/>

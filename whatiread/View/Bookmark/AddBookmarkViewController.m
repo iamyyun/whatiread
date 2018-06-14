@@ -14,6 +14,8 @@
     PHCachingImageManager *imgManager;
     
     UITapGestureRecognizer *bgTap;
+    
+    BOOL isEditing;     // in ModifyMode : editing/ not editing
 }
 
 @end
@@ -32,6 +34,7 @@
         [self.placeholderLabel setHidden:NO];
         [self.addPicBtn setHidden:NO];
     } else {
+        [self.navigationController setNavigationBarHidden:NO];
         [self setNaviBarType:BAR_EDIT];
         
         if (self.book) {
@@ -42,6 +45,10 @@
             [self.authorLabel setText:self.book.author];
             [self.quoteTextView setText:self.book.quotes];
             [self.picImageView setImage:image];
+            
+            [self.titleLabel setUserInteractionEnabled:NO];
+            [self.authorLabel setUserInteractionEnabled:NO];
+            [self.quoteTextView setEditable:NO];
             
             [self.addPicBtn setHidden:YES];
         }
@@ -141,28 +148,60 @@
         }
     }
     else {  // modify mode
-        NSInteger tag = [sender tag];
-        if (tag == BTN_TYPE_DELETE) {
-            UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Delete", @"") message:NSLocalizedString(@"Do you really want to delete?", @"") preferredStyle:UIAlertControllerStyleActionSheet];
-            
-            NSString *strFirst = NSLocalizedString(@"Deleting", @"");
-            NSString *strSecond = NSLocalizedString(@"Cancel", @"");
-            UIAlertAction *firstAction = [UIAlertAction actionWithTitle:strFirst style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-                if (self.bookDeleteCompleted) {
-                    self.bookDeleteCompleted(self.indexPath);
-                    [self popController:YES];
+        if (isEditing) {
+            if (self.titleLabel.text.length <= 0) {
+                UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Please write title.", @"") message:nil preferredStyle:UIAlertControllerStyleAlert];
+                UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Confirm", @"") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {}];
+                [alert addAction:okAction];
+                [self presentController:alert animated:YES];
+            } else if (self.quoteTextView.text.length <= 0) {
+                UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Please write quotes.", @"") message:nil preferredStyle:UIAlertControllerStyleAlert];
+                UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Confirm", @"") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {}];
+                [alert addAction:okAction];
+                [self presentController:alert animated:YES];
+            } else {
+                // create bookmark data
+                if (self.bookModifyCompleted) {
+                    self.bookModifyCompleted(self.titleLabel.text, self.authorLabel.text, self.quoteTextView.text, self.picImageView.image);
                 }
-            }];
-            UIAlertAction *secondAction = [UIAlertAction actionWithTitle:strSecond style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-                [alert dismissViewControllerAnimated:YES completion:nil];
-            }];
-            
-            [alert addAction:firstAction];
-            [alert addAction:secondAction];
-            [self presentViewController:alert animated:YES completion:nil];
-        } else if (tag == BTN_TYPE_EDIT) {
-            
+                [self popController:YES];
+            }
+        } else {
+            NSInteger tag = [sender tag];
+            // delete btn
+            if (tag == BTN_TYPE_DELETE) {
+                UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Delete", @"") message:NSLocalizedString(@"Do you really want to delete?", @"") preferredStyle:UIAlertControllerStyleActionSheet];
+                
+                NSString *strFirst = NSLocalizedString(@"Deleting", @"");
+                NSString *strSecond = NSLocalizedString(@"Cancel", @"");
+                UIAlertAction *firstAction = [UIAlertAction actionWithTitle:strFirst style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+                    if (self.bookDeleteCompleted) {
+                        self.bookDeleteCompleted(self.indexPath);
+                        [self popController:YES];
+                    }
+                }];
+                UIAlertAction *secondAction = [UIAlertAction actionWithTitle:strSecond style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+                    [alert dismissViewControllerAnimated:YES completion:nil];
+                }];
+                
+                [alert addAction:firstAction];
+                [alert addAction:secondAction];
+                [self presentViewController:alert animated:YES completion:nil];
+            }
+            // edit btn
+            else if (tag == BTN_TYPE_EDIT) {
+                isEditing = YES;
+                [self setNaviBarType:BAR_ADD];
+                
+                [self.titleLabel setUserInteractionEnabled:YES];
+                [self.authorLabel setUserInteractionEnabled:YES];
+                [self.quoteTextView setEditable:YES];
+                
+                [self.titleLabel becomeFirstResponder];
+                [self.addPicBtn setHidden:NO];
+            }
         }
+        
     }
     NSLog(@"YJ << save book data");
 }

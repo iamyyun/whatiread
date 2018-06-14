@@ -19,16 +19,18 @@
 		6B030EE520BE3DB90060E8AD /* CoreDataAccess.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B030EE420BE3DB90060E8AD /* CoreDataAccess.m */; };
 		6B030EE920BE44B00060E8AD /* TestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B030EE720BE44B00060E8AD /* TestViewController.m */; };
 		6B030EEA20BE44B00060E8AD /* TestViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6B030EE820BE44B00060E8AD /* TestViewController.xib */; };
+		6B3DEDC320D24D4D00996EA6 /* bookshelf@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B3DEDBF20D24D4C00996EA6 /* bookshelf@2x.png */; };
+		6B3DEDC420D24D4D00996EA6 /* bookshelf@1x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B3DEDC020D24D4D00996EA6 /* bookshelf@1x.png */; };
+		6B3DEDC520D24D4D00996EA6 /* settings@1x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B3DEDC120D24D4D00996EA6 /* settings@1x.png */; };
+		6B3DEDC620D24D4D00996EA6 /* settings@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B3DEDC220D24D4D00996EA6 /* settings@2x.png */; };
 		6B53388020C8C46700D85CD0 /* UIColor+ColorString.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B53387F20C8C46700D85CD0 /* UIColor+ColorString.m */; };
 		6B53388320C8CB7F00D85CD0 /* back@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B53388120C8CB7F00D85CD0 /* back@2x.png */; };
 		6B53388420C8CB7F00D85CD0 /* back@1x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B53388220C8CB7F00D85CD0 /* back@1x.png */; };
 		6B53388D20C8CB8C00D85CD0 /* search@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B53388520C8CB8B00D85CD0 /* search@2x.png */; };
 		6B53388E20C8CB8C00D85CD0 /* bookmark@1x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B53388620C8CB8B00D85CD0 /* bookmark@1x.png */; };
 		6B53388F20C8CB8C00D85CD0 /* search@1x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B53388720C8CB8B00D85CD0 /* search@1x.png */; };
-		6B53389020C8CB8C00D85CD0 /* bookshelf.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B53388820C8CB8B00D85CD0 /* bookshelf.png */; };
 		6B53389120C8CB8C00D85CD0 /* menu@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B53388920C8CB8B00D85CD0 /* menu@2x.png */; };
 		6B53389220C8CB8C00D85CD0 /* bookmark@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B53388A20C8CB8B00D85CD0 /* bookmark@2x.png */; };
-		6B53389320C8CB8C00D85CD0 /* settings.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B53388B20C8CB8C00D85CD0 /* settings.png */; };
 		6B53389420C8CB8C00D85CD0 /* menu@1x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B53388C20C8CB8C00D85CD0 /* menu@1x.png */; };
 		6B53389620C8CBDE00D85CD0 /* bookmark_big.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B53389520C8CBDE00D85CD0 /* bookmark_big.png */; };
 		6B5338AB20C9004F00D85CD0 /* REFrostedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B5338A020C9004F00D85CD0 /* REFrostedViewController.m */; };
@@ -92,6 +94,11 @@
 		6B030EE720BE44B00060E8AD /* TestViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TestViewController.m; sourceTree = "<group>"; };
 		6B030EE820BE44B00060E8AD /* TestViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TestViewController.xib; sourceTree = "<group>"; };
 		6B34152D20CE5CB600251043 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/AddBookmarkViewController.strings; sourceTree = "<group>"; };
+		6B3DEDBF20D24D4C00996EA6 /* bookshelf@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bookshelf@2x.png"; sourceTree = "<group>"; };
+		6B3DEDC020D24D4D00996EA6 /* bookshelf@1x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bookshelf@1x.png"; sourceTree = "<group>"; };
+		6B3DEDC120D24D4D00996EA6 /* settings@1x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "settings@1x.png"; sourceTree = "<group>"; };
+		6B3DEDC220D24D4D00996EA6 /* settings@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "settings@2x.png"; sourceTree = "<group>"; };
+		6B3DEDC820D2502700996EA6 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/BookmarkViewController.strings; sourceTree = "<group>"; };
 		6B53387E20C8C46600D85CD0 /* UIColor+ColorString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+ColorString.h"; sourceTree = "<group>"; };
 		6B53387F20C8C46700D85CD0 /* UIColor+ColorString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+ColorString.m"; sourceTree = "<group>"; };
 		6B53388120C8CB7F00D85CD0 /* back@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "back@2x.png"; sourceTree = "<group>"; };
@@ -99,10 +106,8 @@
 		6B53388520C8CB8B00D85CD0 /* search@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "search@2x.png"; sourceTree = "<group>"; };
 		6B53388620C8CB8B00D85CD0 /* bookmark@1x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bookmark@1x.png"; sourceTree = "<group>"; };
 		6B53388720C8CB8B00D85CD0 /* search@1x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "search@1x.png"; sourceTree = "<group>"; };
-		6B53388820C8CB8B00D85CD0 /* bookshelf.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bookshelf.png; sourceTree = "<group>"; };
 		6B53388920C8CB8B00D85CD0 /* menu@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "menu@2x.png"; sourceTree = "<group>"; };
 		6B53388A20C8CB8B00D85CD0 /* bookmark@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bookmark@2x.png"; sourceTree = "<group>"; };
-		6B53388B20C8CB8C00D85CD0 /* settings.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = settings.png; sourceTree = "<group>"; };
 		6B53388C20C8CB8C00D85CD0 /* menu@1x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "menu@1x.png"; sourceTree = "<group>"; };
 		6B53389520C8CBDE00D85CD0 /* bookmark_big.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bookmark_big.png; sourceTree = "<group>"; };
 		6B53389F20C9004F00D85CD0 /* UIViewController+REFrostedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+REFrostedViewController.h"; sourceTree = "<group>"; };
@@ -122,7 +127,6 @@
 		6B5338B520C9110D00D85CD0 /* BookmarkCollectionViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BookmarkCollectionViewCell.h; sourceTree = "<group>"; };
 		6B5338B620C9110D00D85CD0 /* BookmarkCollectionViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BookmarkCollectionViewCell.m; sourceTree = "<group>"; };
 		6B5338B720C9110D00D85CD0 /* BookmarkCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BookmarkCollectionViewCell.xib; sourceTree = "<group>"; };
-		6B5502B320C9195200C08D16 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/BookmarkViewController.strings; sourceTree = "<group>"; };
 		6B5502B420C91B3700C08D16 /* AddBookmarkViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AddBookmarkViewController.h; sourceTree = "<group>"; };
 		6B5502B520C91B3700C08D16 /* AddBookmarkViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AddBookmarkViewController.m; sourceTree = "<group>"; };
 		6B5502BA20C925C800C08D16 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/AddBookmarkViewController.xib; sourceTree = "<group>"; };
@@ -322,15 +326,17 @@
 		6BCBA1A820C52BF40056BAFB /* images */ = {
 			isa = PBXGroup;
 			children = (
+				6B3DEDC020D24D4D00996EA6 /* bookshelf@1x.png */,
+				6B3DEDBF20D24D4C00996EA6 /* bookshelf@2x.png */,
+				6B3DEDC120D24D4D00996EA6 /* settings@1x.png */,
+				6B3DEDC220D24D4D00996EA6 /* settings@2x.png */,
 				6B53389520C8CBDE00D85CD0 /* bookmark_big.png */,
 				6B53388620C8CB8B00D85CD0 /* bookmark@1x.png */,
 				6B53388A20C8CB8B00D85CD0 /* bookmark@2x.png */,
-				6B53388820C8CB8B00D85CD0 /* bookshelf.png */,
 				6B53388C20C8CB8C00D85CD0 /* menu@1x.png */,
 				6B53388920C8CB8B00D85CD0 /* menu@2x.png */,
 				6B53388720C8CB8B00D85CD0 /* search@1x.png */,
 				6B53388520C8CB8B00D85CD0 /* search@2x.png */,
-				6B53388B20C8CB8C00D85CD0 /* settings.png */,
 				6B53388220C8CB7F00D85CD0 /* back@1x.png */,
 				6B53388120C8CB7F00D85CD0 /* back@2x.png */,
 			);
@@ -453,16 +459,18 @@
 				6B53388D20C8CB8C00D85CD0 /* search@2x.png in Resources */,
 				6B030EEA20BE44B00060E8AD /* TestViewController.xib in Resources */,
 				6B53389420C8CB8C00D85CD0 /* menu@1x.png in Resources */,
+				6B3DEDC320D24D4D00996EA6 /* bookshelf@2x.png in Resources */,
+				6B3DEDC520D24D4D00996EA6 /* settings@1x.png in Resources */,
+				6B3DEDC620D24D4D00996EA6 /* settings@2x.png in Resources */,
 				6BCBA1B220C533590056BAFB /* BookmarkViewController.xib in Resources */,
 				6B030EB120BE374D0060E8AD /* Assets.xcassets in Resources */,
 				6B53389220C8CB8C00D85CD0 /* bookmark@2x.png in Resources */,
 				6BCBA1B020C52E8A0056BAFB /* Localizable.strings in Resources */,
 				6B53388320C8CB7F00D85CD0 /* back@2x.png in Resources */,
-				6B53389320C8CB8C00D85CD0 /* settings.png in Resources */,
 				6B030EAC20BE374D0060E8AD /* Main.storyboard in Resources */,
 				6B5502B920C925C800C08D16 /* AddBookmarkViewController.xib in Resources */,
+				6B3DEDC420D24D4D00996EA6 /* bookshelf@1x.png in Resources */,
 				6BCBA19D20C522C40056BAFB /* IntroViewController.xib in Resources */,
-				6B53389020C8CB8C00D85CD0 /* bookshelf.png in Resources */,
 				6B53389620C8CBDE00D85CD0 /* bookmark_big.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -581,7 +589,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				6BCBA1B520C5336D0056BAFB /* Base */,
-				6B5502B320C9195200C08D16 /* ko */,
+				6B3DEDC820D2502700996EA6 /* ko */,
 			);
 			name = BookmarkViewController.xib;
 			sourceTree = "<group>";

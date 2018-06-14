@@ -13,7 +13,9 @@
 
 #define MILLI_SECONDS           1000.f
 
-@interface BookmarkViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UISearchBarDelegate>
+@interface BookmarkViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UISearchBarDelegate> {
+    BOOL isSearchBarActive;
+}
 
 @end
 
@@ -49,21 +51,9 @@
 #pragma mark - navigation action
 - (void)rightBarBtnClick:(id)sender
 {
-//    [self setNaviBarType:BAR_SEARCH];
-//    UISearchBar *searchBar = [[UISearchBar alloc] init];
-//    [searchBar setFrame:CGRectMake(0, 0, self.view.frame.size.width, 44.0f)];
-//    [searchBar setPlaceholder:NSLocalizedString(@"Search with book title or quotes", @"")];
-//    [searchBar setDelegate:self];
-//    [searchBar setUserInteractionEnabled:YES];
-//
-//    UIView *searchBarContainer = [[UIView alloc] initWithFrame:searchBar.frame];
-//    [searchBarContainer addSubview:searchBar];
-    
-//    if (@available(iOS 11.0, *)) {
-//        self.navigationItem.searchController = searchBarContainer;
-//    } else {
-//        self.navigationItem.titleView = searchBarContainer;
-//    }
+    [self.searchBar setHidden:NO];
+    [self.searchBar becomeFirstResponder];
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
 }
 
 #pragma mark - actions
@@ -87,12 +77,42 @@
             }
         }];
     } bookModifyCompleted:^(NSString *bookTitle, NSString *bookAuthor, NSString *bookQuote, UIImage *bookImage) {
-        
+        [self modifyBookmark:book bookTitle:bookTitle bookAuthor:bookAuthor bookQuote:bookQuote bookImage:bookImage indexPath:indexPath completed:^(BOOL isResult) {
+            if (isResult) {
+                
+            } else {
+                
+            }
+        }];
     } bookDeleteCompleted:^(NSIndexPath *indexPath) {
         [self deleteBookmark:indexPath];
     }];
     
     [self pushController:addViewController animated:YES];
+    
+    if (isSearchBarActive) {
+        isSearchBarActive = NO;
+        
+        // refresh data
+        NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
+        NSFetchRequest <Book *> *fetchRequest = Book.fetchRequest;
+        
+        [context performBlock:^{
+            NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"modifyDate" ascending:NO];
+            [fetchRequest setSortDescriptors:@[sortDescriptor]];
+            
+            NSError * error;
+            
+            self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:context sectionNameKeyPath:nil cacheName:nil];
+            [self.fetchedResultsController performFetch:&error];
+            
+            [self.collectionView reloadData];
+        }];
+        
+        [self.view endEditing:YES];
+        [self.searchBar setHidden:YES];
+        [self.navigationController setNavigationBarHidden:NO animated:YES];
+    }
 }
 
 // create bookmark
@@ -127,6 +147,72 @@
     }
 }
 
+// modify bookmark
+- (void)modifyBookmark:(Book *)book bookTitle:(NSString *)bookTitle bookAuthor:(NSString *)bookAuthor bookQuote:(NSString *)bookQuote bookImage:(UIImage *)bookImage indexPath:(NSIndexPath *)indexPath completed:(void (^)(BOOL isResult))completed {
+    NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
+    NSFetchRequest <Book *> *fetchRequest = Book.fetchRequest;
+    
+    NSDate *now = [[NSDate alloc] init];
+    
+    [context performBlock:^{
+        NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"modifyDate" ascending:NO];
+        [fetchRequest setSortDescriptors:@[sortDescriptor]];
+        [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"modifyDate = %@", book.modifyDate]];
+        
+        NSError * error;
+        
+        NSArray * resultArray = [context executeFetchRequest:fetchRequest error:&error];
+        
+        if([resultArray count]) {
+            Book *book = [resultArray lastObject];
+            if (bookTitle) {
+                book.title = bookTitle;
+            } else {
+                book.title = @"";
+            }
+            
+            if (bookAuthor) {
+                book.author = bookAuthor;
+            } else {
+                book.author = @"";
+            }
+            
+            if (bookQuote) {
+                book.quotes = bookQuote;
+            } else {
+                book.quotes = @"";
+            }
+            
+            if (bookImage) {
+                NSData *imageData = UIImagePNGRepresentation(bookImage);
+                book.image = imageData;
+            } else {
+                book.image = nil;
+            }
+            
+            book.modifyDate = now;
+            
+            [context save:&error];
+            
+            if (!error) {
+                if (completed) {
+                    completed(YES);
+                }
+            }
+            else {
+                if (completed) {
+                    completed(NO);
+                }
+            }
+        }
+        else {
+            if (completed) {
+                completed(NO);
+            }
+        }
+    }];
+}
+
 // delete bookmark
 - (void)deleteBookmark:(NSIndexPath *)indexPath {
     Book *book = [self.fetchedResultsController objectAtIndexPath:indexPath];
@@ -134,7 +220,7 @@
     NSFetchRequest <Book *> *fetchRequest = Book.fetchRequest;
     
     [context performBlock:^{
-        NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"modifyDate" ascending:YES];
+        NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"modifyDate" ascending:NO];
         [fetchRequest setSortDescriptors:@[sortDescriptor]];
         [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"modifyDate = %@", book.modifyDate]];
         
@@ -148,6 +234,77 @@
         }
     }];
  }
+
+#pragma mark - UISearchBarDelegate
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
+{
+    isSearchBarActive = NO;
+    
+    // refresh data
+    NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
+    NSFetchRequest <Book *> *fetchRequest = Book.fetchRequest;
+    
+    [context performBlock:^{
+        NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"modifyDate" ascending:NO];
+        [fetchRequest setSortDescriptors:@[sortDescriptor]];
+        
+        NSError * error;
+        
+        self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:context sectionNameKeyPath:nil cacheName:nil];
+        [self.fetchedResultsController performFetch:&error];
+        
+        [self.collectionView reloadData];
+    }];
+    
+    [self.view endEditing:YES];
+    [self.searchBar setHidden:YES];
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
+}
+
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
+{
+    isSearchBarActive = YES;
+    
+    NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
+    NSFetchRequest <Book *> *fetchRequest = Book.fetchRequest;
+    
+    [context performBlock:^{
+        NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"modifyDate" ascending:NO];
+        [fetchRequest setSortDescriptors:@[sortDescriptor]];
+        [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"title contains[cd] %@ OR quotes contains[cd] %@", searchBar.text, searchBar.text]];
+//        [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"title contains[cd] %@", searchBar.text]];
+        
+        NSError * error;
+        
+        self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:context sectionNameKeyPath:nil cacheName:nil];
+        [self.fetchedResultsController performFetch:&error];
+        
+        [self.collectionView reloadData];
+    }];
+    NSLog(@"YJ << searchBar search button clicked");
+}
+
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
+{
+    isSearchBarActive = YES;
+    
+    NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
+    NSFetchRequest <Book *> *fetchRequest = Book.fetchRequest;
+    
+    [context performBlock:^{
+        NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"modifyDate" ascending:NO];
+        [fetchRequest setSortDescriptors:@[sortDescriptor]];
+        [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"title contains[cd] %@ OR quotes contains[cd] %@", searchBar.text, searchBar.text]];
+        
+        NSError * error;
+        
+        self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:context sectionNameKeyPath:nil cacheName:nil];
+        [self.fetchedResultsController performFetch:&error];
+        
+        [self.collectionView reloadData];
+    }];
+    NSLog(@"YJ << search bar text : %@", searchText);
+}
 
 #pragma mark - UICollectionViewDataSource
 - (nonnull __kindof UICollectionViewCell *)collectionView:(nonnull UICollectionView *)collectionView cellForItemAtIndexPath:(nonnull NSIndexPath *)indexPath {
@@ -165,15 +322,16 @@
                                                           dateStyle:NSDateFormatterShortStyle
                                                           timeStyle:NSDateFormatterShortStyle];
     [cell.dateLabel setText:dateString];
+    if (book.image) {
+        UIImage *image = [UIImage imageWithData:book.image];
+        [cell.imageView setImage:image];
+        cell.constImageWidth.constant = 47.0f;
+    } else {
+        cell.constImageWidth.constant = 0.0f;
+    }
     
-    //    PHAsset *asset = fetchResult[indexPath.item];
-    //    NSLog(@"YJ << image creation date : %@", asset.creationDate);
-    //    [imgManager requestImageForAsset:asset targetSize:cell.imgView.frame.size contentMode:PHImageContentModeAspectFit options:nil resultHandler:^(UIImage *result, NSDictionary *info)
-    //     {
-    //         NSLog(@"YJ << requestImageForAsset");
-    //         [cell.imgView setImage:result];
-    //     }];
-//    [cell.imgView setImage:imgArr[indexPath.row]];
+    cell.layer.borderColor = [UIColor darkGrayColor].CGColor;
+    cell.layer.borderWidth = 1.0f;
     
     return cell;
 }
@@ -198,16 +356,9 @@
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath;
 {
     NSLog(@"YJ << select collectionview cell");
+    
     Book *book = [self.fetchedResultsController objectAtIndexPath:indexPath];
     [self bookConfigure:book indexPath:indexPath isModifyMode:YES];
-    
-//    __block UIImage *dImg = [[UIImage alloc]init];
-    
-//    PHAsset *asset = fetchResult[indexPath.item];
-//    [imgManager requestImageForAsset:asset targetSize:self.view.frame.size contentMode:PHImageContentModeAspectFill options:nil resultHandler:^(UIImage *result, NSDictionary *info)
-//     {
-//         dImg = result;
-//     }];
 }
 
 #pragma mark - Fetched results controller
@@ -225,7 +376,7 @@
     
     [fetchRequest setFetchBatchSize:30];
     
-    NSSortDescriptor * sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"modifyDate" ascending:YES];
+    NSSortDescriptor * sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"modifyDate" ascending:NO];
     [fetchRequest setSortDescriptors:@[sortDescriptor]];
     
     NSFetchedResultsController <Book *> *aFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:_managedObjectContext sectionNameKeyPath:nil cacheName:@"MainBookList"];
@@ -242,32 +393,18 @@
     return _fetchedResultsController;
 }
 
-- (void) configureCell:(UITableViewCell *)cell withMessage:(Book *)accnt {
-    __block BookmarkCollectionViewCell *bookCell = (Book *)cell;
-    
-//    [(BookmarkCollectionViewCell *)cell setAccountDetailHandler:^(Account *accnt) {
-//        NSLog(@"YJ << set account detail handler");
-//        [self updateAccnt:accnt bankName:accnt.bankName accntNum:accnt.accntNum accntOwner:accnt.accntOwner accntNick:accnt.accntNickName completed:^(BOOL isResult) {
-//            NSString *result = @"";
-//            if (isResult) {
-//
-//            }else {
-//
-//            }
-//        }];
-//    } accnt:accnt];
-}
-
 - (void) controllerWillChangeContent:(NSFetchedResultsController *)controller {
-    [self.collectionView performBatchUpdates:^{} completion:^(BOOL finished){}];
+//    [self.collectionView performBatchUpdates:^{} completion:^(BOOL finished){}];
 }
 
 - (void) controller:(NSFetchedResultsController *)controller didChangeSection:(nonnull id<NSFetchedResultsSectionInfo>)sectionInfo atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type {
     switch(type) {
         case NSFetchedResultsChangeInsert:
+            [self.collectionView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex]];
 //            [self.accntTableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
             break;
         case NSFetchedResultsChangeDelete:
+            [self.collectionView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex]];
 //            [self.accntTableView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
             break;
         default:
@@ -280,18 +417,16 @@
     
     switch(type) {
         case NSFetchedResultsChangeInsert:
-//            [self.accntTableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+            [self.collectionView insertItemsAtIndexPaths:@[newIndexPath]];
             break;
         case NSFetchedResultsChangeDelete:
             [self.collectionView deleteItemsAtIndexPaths:@[indexPath]];
-//            [self.accntTableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
             break;
         case NSFetchedResultsChangeUpdate:
-//            [self configureCell:[self.accntTableView cellForRowAtIndexPath:indexPath] withMessage:anObject];
+            [self.collectionView reloadItemsAtIndexPaths:@[newIndexPath]];
             break;
         case NSFetchedResultsChangeMove:
-//            [self configureCell:[self.accntTableView cellForRowAtIndexPath:indexPath] withMessage:anObject];
-//            [self.accntTableView moveRowAtIndexPath:indexPath toIndexPath:newIndexPath];
+            [self.collectionView moveItemAtIndexPath:indexPath toIndexPath:newIndexPath];
             break;
     }
 }
@@ -309,7 +444,11 @@
     
     [self.countLabel setText:[NSString stringWithFormat:@"%ld", bookCount]];
     
-    [self.collectionView reloadData];
+    [self.collectionView performBatchUpdates:^{
+        [self.collectionView reloadSections:[NSIndexSet indexSetWithIndex:0]];
+    } completion:^(BOOL finished){
+    }];
+//    [self.collectionView reloadData];
 }
 
 @end

@@ -1,4 +1,13 @@
 
+/* Class = "UISearchBar"; placeholder = "Search with book title or quotes."; ObjectID = "Iku-tx-PAz"; */
+"Iku-tx-PAz.placeholder" = "책 제목 또는 내용으로 검색";
+
+/* Class = "UISearchBar"; Iku-tx-PAz.scopeButtonTitles[0] = "Title"; ObjectID = "Iku-tx-PAz"; */
+"Iku-tx-PAz.scopeButtonTitles[0]" = "취소";
+
+/* Class = "UISearchBar"; Iku-tx-PAz.scopeButtonTitles[1] = "Title"; ObjectID = "Iku-tx-PAz"; */
+"Iku-tx-PAz.scopeButtonTitles[1]" = "Title";
+
 /* Class = "UILabel"; text = "There is no data."; ObjectID = "avz-y0-XIc"; */
 "avz-y0-XIc.text" = "등록된 내역이 없습니다.";
 

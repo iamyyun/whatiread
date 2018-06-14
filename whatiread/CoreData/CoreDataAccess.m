@@ -104,7 +104,7 @@ static CoreDataAccess *coreData = nil;
     
     [fetchRequest setFetchBatchSize:30];
     
-    NSSortDescriptor * sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"modifyDate" ascending:YES];
+    NSSortDescriptor * sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"modifyDate" ascending:NO];
     [fetchRequest setSortDescriptors:@[sortDescriptor]];
     
     NSFetchedResultsController <Book *> *aFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:_managedObjectContext sectionNameKeyPath:nil cacheName:@"MainBookList"];

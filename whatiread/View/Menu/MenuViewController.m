@@ -52,21 +52,23 @@
         NSDictionary *dic = [[NSDictionary alloc] initWithDictionary:menuList[i] copyItems:YES];
         
         NSString *btnTitle = NSLocalizedString(dic[@"title"], @"");
-        CGFloat titleWidth = [btnTitle boundingRectWithSize:CGSizeMake(1000, 19) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:18.0f]} context:nil].size.width;
+        CGFloat titleWidth = [btnTitle boundingRectWithSize:CGSizeMake(1000, 15) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14.0f]} context:nil].size.width;
         UIButton *menuBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-//        [menuBtn setTitle:btnTitle forState:UIControlStateNormal];
-        menuBtn.titleLabel.text = btnTitle;
-        menuBtn.titleLabel.font = [UIFont systemFontOfSize:18.0f];
-//        [menuBtn setImage:[UIImage imageNamed:dic[@"image"]] forState:UIControlStateNormal];
-        [menuBtn setBackgroundImage:[UIImage imageNamed:dic[@"image"]] forState:UIControlStateNormal];
-        menuBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
+        [menuBtn setTitle:btnTitle forState:UIControlStateNormal];
+//        [menuBtn.titleLabel setText:btnTitle];
+        [menuBtn.titleLabel setFont:[UIFont systemFontOfSize:14.0f]];
+        [menuBtn setImage:[UIImage imageNamed:dic[@"image"]] forState:UIControlStateNormal];
+        menuBtn.imageEdgeInsets = UIEdgeInsetsMake(0, 10, 15, 10);
         [menuBtn setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
-        [menuBtn setFrame:CGRectMake((viewWidth/2-(50/2)), 100+iPosY, 50, 45)];
+        menuBtn.titleEdgeInsets = UIEdgeInsetsMake(30, -(30+titleWidth), 0, 0);
+        [menuBtn setFrame:CGRectMake((viewWidth/2-(50/2)), 100+iPosY, 100, 50)];
+        [menuBtn setContentVerticalAlignment:UIControlContentVerticalAlignmentCenter];
+        [menuBtn setContentHorizontalAlignment:UIControlContentHorizontalAlignmentCenter];
         [menuBtn setTag:i];
         [menuBtn addTarget:self action:@selector(onClickedMenuBtn:) forControlEvents:UIControlEventTouchUpInside];
         [self.view addSubview:menuBtn];
         
-        iPosY += (50 + 50);
+        iPosY += (45 + 45);
     }
 }
 

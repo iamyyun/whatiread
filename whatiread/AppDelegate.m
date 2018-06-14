@@ -36,6 +36,7 @@
     self.frostedViewController.liveBlurBackgroundStyle = REFrostedViewControllerLiveBackgroundStyleDark;
     self.frostedViewController.liveBlur = YES;
     self.frostedViewController.delegate = self;
+    self.frostedViewController.limitMenuViewSize = YES;
     
     IntroViewController *vc = [[IntroViewController alloc] init];
     [self.navigationController pushViewController:vc animated:NO];

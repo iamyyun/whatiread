@@ -94,6 +94,7 @@
         
         // rightBarButton
         NSString *rightBtnTitle = NSLocalizedString(@"Save", @"");
+        self.navigationItem.rightBarButtonItems = nil;
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:rightBtnTitle style:UIBarButtonItemStylePlain target:self action:@selector(rightBarBtnClick:)];
     }
     else if (type == BAR_EDIT) {
