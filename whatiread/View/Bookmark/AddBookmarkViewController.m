@@ -29,7 +29,11 @@
     // set navigation bar
     if (self.isModifyMode == NO) {
         [self setNaviBarType:BAR_ADD];
-        self.navigationItem.title = @"Today's date";
+        
+        NSDateFormatter *df = [[NSDateFormatter alloc] init];
+        [df setDateFormat:@"yyyy-MM-dd"];
+        NSString *strDate = [df stringFromDate:[[NSDate alloc] init]];
+        self.navigationItem.title = strDate;
         
         [self.placeholderLabel setHidden:NO];
         [self.addPicBtn setHidden:NO];

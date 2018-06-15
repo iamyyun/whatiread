@@ -92,26 +92,20 @@
     
     if (isSearchBarActive) {
         isSearchBarActive = NO;
-        
+
         // refresh data
-        NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
-        NSFetchRequest <Book *> *fetchRequest = Book.fetchRequest;
-        
-        [context performBlock:^{
-            NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"modifyDate" ascending:NO];
-            [fetchRequest setSortDescriptors:@[sortDescriptor]];
-            
-            NSError * error;
-            
-            self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:context sectionNameKeyPath:nil cacheName:nil];
-            [self.fetchedResultsController performFetch:&error];
-            
-            [self.collectionView reloadData];
-        }];
+        self.managedObjectContext = nil;
+        self.fetchedResultsController = nil;
         
         [self.view endEditing:YES];
         [self.searchBar setHidden:YES];
+        [self.searchBar setText:@""];
         [self.navigationController setNavigationBarHidden:NO animated:YES];
+        
+        [self.collectionView performBatchUpdates:^{
+            [self.collectionView reloadSections:[NSIndexSet indexSetWithIndex:0]];
+        } completion:^(BOOL finished){
+        }];
     }
 }
 
@@ -240,70 +234,65 @@
 {
     isSearchBarActive = NO;
     
-    // refresh data
-    NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
-    NSFetchRequest <Book *> *fetchRequest = Book.fetchRequest;
-    
-    [context performBlock:^{
-        NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"modifyDate" ascending:NO];
-        [fetchRequest setSortDescriptors:@[sortDescriptor]];
-        
-        NSError * error;
-        
-        self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:context sectionNameKeyPath:nil cacheName:nil];
-        [self.fetchedResultsController performFetch:&error];
-        
-        [self.collectionView reloadData];
-    }];
-    
+    self.managedObjectContext = nil;
+    self.fetchedResultsController = nil;
+
     [self.view endEditing:YES];
     [self.searchBar setHidden:YES];
+    [self.searchBar setText:@""];
     [self.navigationController setNavigationBarHidden:NO animated:YES];
+
+    [self.collectionView performBatchUpdates:^{
+        [self.collectionView reloadSections:[NSIndexSet indexSetWithIndex:0]];
+    } completion:^(BOOL finished){
+    }];
 }
 
-- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
-{
-    isSearchBarActive = YES;
-    
-    NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
-    NSFetchRequest <Book *> *fetchRequest = Book.fetchRequest;
-    
-    [context performBlock:^{
-        NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"modifyDate" ascending:NO];
-        [fetchRequest setSortDescriptors:@[sortDescriptor]];
-        [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"title contains[cd] %@ OR quotes contains[cd] %@", searchBar.text, searchBar.text]];
-//        [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"title contains[cd] %@", searchBar.text]];
-        
-        NSError * error;
-        
-        self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:context sectionNameKeyPath:nil cacheName:nil];
-        [self.fetchedResultsController performFetch:&error];
-        
-        [self.collectionView reloadData];
-    }];
-    NSLog(@"YJ << searchBar search button clicked");
-}
+//- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
+//{
+//    isSearchBarActive = YES;
+//
+//    NSFetchRequest *request = [[self fetchedResultsController] fetchRequest];
+//    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"title" ascending:YES];
+//    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"title contains[cd] %@ OR quotes contains[cd] %@", searchBar.text, searchBar.text];
+//    [request setPredicate:predicate];
+//    [request setSortDescriptors:@[sortDescriptor]];
+//
+//    NSError *error = nil;
+//    if (![[self fetchedResultsController] performFetch:&error]) {
+//        // Handle error
+//        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+//        abort();
+//    }
+//
+//    [self.collectionView performBatchUpdates:^{
+//                    [self.collectionView reloadSections:[NSIndexSet indexSetWithIndex:0]];
+//                } completion:^(BOOL finished){
+//                }];
+//}
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
     isSearchBarActive = YES;
-    
-    NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
-    NSFetchRequest <Book *> *fetchRequest = Book.fetchRequest;
-    
-    [context performBlock:^{
-        NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"modifyDate" ascending:NO];
-        [fetchRequest setSortDescriptors:@[sortDescriptor]];
-        [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"title contains[cd] %@ OR quotes contains[cd] %@", searchBar.text, searchBar.text]];
-        
-        NSError * error;
-        
-        self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:context sectionNameKeyPath:nil cacheName:nil];
-        [self.fetchedResultsController performFetch:&error];
-        
-        [self.collectionView reloadData];
+
+    self.fetchedResultsController = nil;
+    NSFetchRequest *request = [[self fetchedResultsController] fetchRequest];
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"title" ascending:YES];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"title contains[cd] %@ OR quotes contains[cd] %@", searchBar.text, searchBar.text];
+    [request setPredicate:predicate];
+    [request setSortDescriptors:@[sortDescriptor]];
+
+    NSError *error = nil;
+    if (![[self fetchedResultsController] performFetch:&error]) {
+        // Handle error
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        abort();
+    }
+
+    [self.collectionView performBatchUpdates:^{
+        [self.collectionView reloadSections:[NSIndexSet indexSetWithIndex:0]];
+    } completion:^(BOOL finished){
     }];
-    NSLog(@"YJ << search bar text : %@", searchText);
 }
 
 #pragma mark - UICollectionViewDataSource
@@ -338,9 +327,9 @@
 
 - (NSInteger)collectionView:(nonnull UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
     id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][section];
+    NSLog(@"YJ << section %ld - %ld", section, [sectionInfo numberOfObjects]);
     return [sectionInfo numberOfObjects];
 }
-
 
 #pragma mark - UICollectionViewDelegate
 - (BOOL)collectionView:(UICollectionView *)collectionView shouldHighlightItemAtIndexPath:(NSIndexPath *)indexPath
@@ -361,6 +350,11 @@
     [self bookConfigure:book indexPath:indexPath isModifyMode:YES];
 }
 
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    return CGSizeMake(CGRectGetWidth(collectionView.frame)-30, 100.0f);
+}
+
 #pragma mark - Fetched results controller
 - (NSFetchedResultsController <Book *> *)fetchedResultsController {
     if(_fetchedResultsController != nil) {
@@ -379,6 +373,9 @@
     NSSortDescriptor * sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"modifyDate" ascending:NO];
     [fetchRequest setSortDescriptors:@[sortDescriptor]];
     
+//    [fetchRequest setReturnsObjectsAsFaults:NO];
+//    [fetchRequest setShouldRefreshRefetchedObjects:YES];
+    
     NSFetchedResultsController <Book *> *aFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:_managedObjectContext sectionNameKeyPath:nil cacheName:@"MainBookList"];
     aFetchedResultsController.delegate = self;
     
@@ -389,6 +386,7 @@
     }
     
     _fetchedResultsController = aFetchedResultsController;
+    _fetchedResultsController.delegate = self;
     
     return _fetchedResultsController;
 }
@@ -448,7 +446,7 @@
         [self.collectionView reloadSections:[NSIndexSet indexSetWithIndex:0]];
     } completion:^(BOOL finished){
     }];
-//    [self.collectionView reloadData];
+    [self.collectionView reloadData];
 }
 
 @end

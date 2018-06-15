@@ -106,6 +106,7 @@ static CoreDataAccess *coreData = nil;
     
     NSSortDescriptor * sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"modifyDate" ascending:NO];
     [fetchRequest setSortDescriptors:@[sortDescriptor]];
+    [fetchRequest setReturnsObjectsAsFaults:NO];
     
     NSFetchedResultsController <Book *> *aFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:_managedObjectContext sectionNameKeyPath:nil cacheName:@"MainBookList"];
     aFetchedResultsController.delegate = self;
