@@ -1,0 +1,24 @@
+PODS:
+  - DatePickerDialog-ObjC (1.2)
+  - GKActionSheetPicker (0.5.1)
+  - RateView (1.2)
+
+DEPENDENCIES:
+  - DatePickerDialog-ObjC (~> 1.2)
+  - GKActionSheetPicker
+  - RateView
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - DatePickerDialog-ObjC
+    - GKActionSheetPicker
+    - RateView
+
+SPEC CHECKSUMS:
+  DatePickerDialog-ObjC: 63266ee38d3d7b8b7a3e03f7512693b940baaddd
+  GKActionSheetPicker: c44947e518cda1e68f5ebb17007ef1a9d7d741df
+  RateView: d4d12e9bb76dc23a77a56f4e5c5fb530a3f3f998
+
+PODFILE CHECKSUM: db2e2463fce1d4d1c5ae68596a19e3e6b0c300d0
+
+COCOAPODS: 1.5.3

@@ -1,0 +1,9 @@
+GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
+HEADER_SEARCH_PATHS = $(inherited) "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/DatePickerDialog-ObjC" "${PODS_ROOT}/Headers/Public/GKActionSheetPicker" "${PODS_ROOT}/Headers/Public/RateView"
+LIBRARY_SEARCH_PATHS = $(inherited) "${PODS_CONFIGURATION_BUILD_DIR}/DatePickerDialog-ObjC" "${PODS_CONFIGURATION_BUILD_DIR}/GKActionSheetPicker" "${PODS_CONFIGURATION_BUILD_DIR}/RateView"
+OTHER_CFLAGS = $(inherited) -isystem "${PODS_ROOT}/Headers/Public" -isystem "${PODS_ROOT}/Headers/Public/DatePickerDialog-ObjC" -isystem "${PODS_ROOT}/Headers/Public/GKActionSheetPicker" -isystem "${PODS_ROOT}/Headers/Public/RateView"
+OTHER_LDFLAGS = $(inherited) -ObjC -l"DatePickerDialog-ObjC" -l"GKActionSheetPicker" -l"RateView"
+PODS_BUILD_DIR = ${BUILD_DIR}
+PODS_CONFIGURATION_BUILD_DIR = ${PODS_BUILD_DIR}/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)
+PODS_PODFILE_DIR_PATH = ${SRCROOT}/.
+PODS_ROOT = ${SRCROOT}/Pods

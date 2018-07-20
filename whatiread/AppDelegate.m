@@ -20,6 +20,7 @@
     // Override point for customization after application launch.
     
     // make Main viewcontroller
+//    self.rootViewController = [[BookShelfViewController alloc] init];
     self.rootViewController = [[BookmarkViewController alloc] init];
 //    self.rootViewController = [[TestViewController alloc] init];
     

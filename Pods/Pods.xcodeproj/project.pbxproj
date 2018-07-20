@@ -1,0 +1,819 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 48;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0EADF4FB70DB37407E35348606DC08D5 /* DatePickerDialog-ObjC-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = BA3BBD076D401DF88631D4E053345978 /* DatePickerDialog-ObjC-dummy.m */; };
+		21C5CB205D9B2C48960FF19066DE075B /* GKActionSheetPickerItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 55964BB89E7615AE4AF048476DCEC140 /* GKActionSheetPickerItem.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		556AB51B08F48C8522B344F0E08B74BC /* RateView-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = B30CF9BF3FDC00DCD1542093C06BAC2F /* RateView-dummy.m */; };
+		5DE7D976AA5458EE48F42E62BD205004 /* GKActionSheetPicker-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 60E38182EF2B317CCE6DAD0EB72F2826 /* GKActionSheetPicker-dummy.m */; };
+		90BF9877080B265F84D750B0C79C39C8 /* Pods-whatiread-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B44663F2EC37DB1745D0E7476197904 /* Pods-whatiread-dummy.m */; };
+		9491C2742E6C2B3575688A95F3368C5D /* GKActionSheetPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 12A52A85763492F7A052E1FF6A8C3FFA /* GKActionSheetPicker.m */; };
+		9DFBA275D1363F1E910F2BBB4456003D /* RateView.m in Sources */ = {isa = PBXBuildFile; fileRef = 59A7CDE2FC105106C915B084D036E153 /* RateView.m */; };
+		A2FAC351102DC28C63485A14D7F27047 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6604A7D69453B4569E4E4827FB9155A9 /* Foundation.framework */; };
+		A6462867E87213BB96BBAA8630694D17 /* LSLDatePickerDialog.h in Headers */ = {isa = PBXBuildFile; fileRef = 25A824BEED1D8FE0537DE4C519691FE2 /* LSLDatePickerDialog.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		A66157BD7E85DFFEA585D40019B20ED8 /* GKActionSheetPickerItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 440D600F6971F753932D99D54F0F298D /* GKActionSheetPickerItem.m */; };
+		AE4A9F8853B26A11D11B78B8E33AEDF6 /* RateView.h in Headers */ = {isa = PBXBuildFile; fileRef = 4973CAB88CFBBBCAA23A3A92CA4FB4F1 /* RateView.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		C926B514F6236084ABAADAE82827CD0E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6604A7D69453B4569E4E4827FB9155A9 /* Foundation.framework */; };
+		ED2CBAFABC0761865CC199210A18E582 /* LSLDatePickerDialog.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEB35B6F22E2DF43DE3031264D6955F /* LSLDatePickerDialog.m */; };
+		EF038558E19EB8C8911B0DEE12A88DC0 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6604A7D69453B4569E4E4827FB9155A9 /* Foundation.framework */; };
+		F2AB9FF5653E234BC4D2600E15968BBD /* GKActionSheetPicker.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E3D572F6EF56E3A0E7F925B417C5C98 /* GKActionSheetPicker.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		F99AC7F419C31E2D5CA9801E88AB86A2 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6604A7D69453B4569E4E4827FB9155A9 /* Foundation.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		0ED9B29EC8BBD002BC591B3814486405 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 651F41BF9053F19F93F9ACDBF55F3FC1;
+			remoteInfo = RateView;
+		};
+		1A798987B0A0E73DBE18AA0FB6050FF0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B9C3B0B519A0A7B8C2FCFF0B214A09D8;
+			remoteInfo = GKActionSheetPicker;
+		};
+		92A2F96FF1E29E19342E4F206996FDDF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 650889CF9940814D5E28EB5044E8BADC;
+			remoteInfo = "DatePickerDialog-ObjC";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		05751A2FE1C29C2C26BB45D4B3952156 /* libPods-whatiread.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = "libPods-whatiread.a"; path = "libPods-whatiread.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		0E3D572F6EF56E3A0E7F925B417C5C98 /* GKActionSheetPicker.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = GKActionSheetPicker.h; path = Pod/Classes/GKActionSheetPicker.h; sourceTree = "<group>"; };
+		12A52A85763492F7A052E1FF6A8C3FFA /* GKActionSheetPicker.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = GKActionSheetPicker.m; path = Pod/Classes/GKActionSheetPicker.m; sourceTree = "<group>"; };
+		12D080F258944DF99422449EED459F1C /* Pods-whatiread-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-whatiread-acknowledgements.plist"; sourceTree = "<group>"; };
+		1671A46C2C18F7BDD494CAB961A3718B /* GKActionSheetPicker.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = GKActionSheetPicker.xcconfig; sourceTree = "<group>"; };
+		212A2046A10C4B5C2730CC25D3EE4D9B /* libGKActionSheetPicker.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = libGKActionSheetPicker.a; path = libGKActionSheetPicker.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		25A824BEED1D8FE0537DE4C519691FE2 /* LSLDatePickerDialog.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = LSLDatePickerDialog.h; path = Sources/LSLDatePickerDialog.h; sourceTree = "<group>"; };
+		294ABAF121DE0D89935555FF449BBE00 /* DatePickerDialog-ObjC-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "DatePickerDialog-ObjC-prefix.pch"; sourceTree = "<group>"; };
+		2B44663F2EC37DB1745D0E7476197904 /* Pods-whatiread-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-whatiread-dummy.m"; sourceTree = "<group>"; };
+		2C682ACA414F59B2FB893DBE1C330AC7 /* countries.json */ = {isa = PBXFileReference; includeInIndex = 1; name = countries.json; path = Pod/Assets/countries.json; sourceTree = "<group>"; };
+		440D600F6971F753932D99D54F0F298D /* GKActionSheetPickerItem.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = GKActionSheetPickerItem.m; path = Pod/Classes/GKActionSheetPickerItem.m; sourceTree = "<group>"; };
+		4973CAB88CFBBBCAA23A3A92CA4FB4F1 /* RateView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = RateView.h; path = RateView/RateView.h; sourceTree = "<group>"; };
+		49BC77CFC14C9979216F0D33E0185CA2 /* Pods-whatiread-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-whatiread-frameworks.sh"; sourceTree = "<group>"; };
+		55964BB89E7615AE4AF048476DCEC140 /* GKActionSheetPickerItem.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = GKActionSheetPickerItem.h; path = Pod/Classes/GKActionSheetPickerItem.h; sourceTree = "<group>"; };
+		59A7CDE2FC105106C915B084D036E153 /* RateView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RateView.m; path = RateView/RateView.m; sourceTree = "<group>"; };
+		60E38182EF2B317CCE6DAD0EB72F2826 /* GKActionSheetPicker-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "GKActionSheetPicker-dummy.m"; sourceTree = "<group>"; };
+		6604A7D69453B4569E4E4827FB9155A9 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.3.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		747EAFF6260B78FD1798A025302C2793 /* Pods-whatiread.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-whatiread.release.xcconfig"; sourceTree = "<group>"; };
+		78203F1BF89F00632628F435ED07F192 /* RateView.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = RateView.xcconfig; sourceTree = "<group>"; };
+		913E75C9B285B899E131073BD8595960 /* Pods-whatiread-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-whatiread-acknowledgements.markdown"; sourceTree = "<group>"; };
+		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		9E2ACC71B4EEB38708B77ABC41FA815D /* libRateView.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = libRateView.a; path = libRateView.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		A7DB65FD33C07AA258EF16C86C815BD8 /* DatePickerDialog-ObjC.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "DatePickerDialog-ObjC.xcconfig"; sourceTree = "<group>"; };
+		B30CF9BF3FDC00DCD1542093C06BAC2F /* RateView-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "RateView-dummy.m"; sourceTree = "<group>"; };
+		BA3BBD076D401DF88631D4E053345978 /* DatePickerDialog-ObjC-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "DatePickerDialog-ObjC-dummy.m"; sourceTree = "<group>"; };
+		C4175865954DDD6847D9A76E48BC7320 /* libDatePickerDialog-ObjC.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = "libDatePickerDialog-ObjC.a"; path = "libDatePickerDialog-ObjC.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		CEEB35B6F22E2DF43DE3031264D6955F /* LSLDatePickerDialog.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = LSLDatePickerDialog.m; path = Sources/LSLDatePickerDialog.m; sourceTree = "<group>"; };
+		D5280490F33A6000C4F85474AB01F895 /* Pods-whatiread.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-whatiread.debug.xcconfig"; sourceTree = "<group>"; };
+		D54D3CA6A93B5E87A4B413CDFF6B9100 /* RateView-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "RateView-prefix.pch"; sourceTree = "<group>"; };
+		FCC57139A1CB1AC95B16890A5478794D /* Pods-whatiread-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-whatiread-resources.sh"; sourceTree = "<group>"; };
+		FE24DBA9893A73F49696EEFA99DCFEFF /* GKActionSheetPicker-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "GKActionSheetPicker-prefix.pch"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		4EF611930D13612BFDD22A02FFFB6CA6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F99AC7F419C31E2D5CA9801E88AB86A2 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7CC35CE6E1F39AC41F427A478BF77748 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C926B514F6236084ABAADAE82827CD0E /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CA8A0460EE0A8354290E42848A000CF6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EF038558E19EB8C8911B0DEE12A88DC0 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EA568988BCFD76D8C96E8FBC0093BCF6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A2FAC351102DC28C63485A14D7F27047 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		0842A98D54A1555148CD1DC2BF18EF20 /* RateView */ = {
+			isa = PBXGroup;
+			children = (
+				4973CAB88CFBBBCAA23A3A92CA4FB4F1 /* RateView.h */,
+				59A7CDE2FC105106C915B084D036E153 /* RateView.m */,
+				C5A2E193A080284B3CF6E6807DFFD02C /* Support Files */,
+			);
+			name = RateView;
+			path = RateView;
+			sourceTree = "<group>";
+		};
+		0FA864042429B27E19328985A56A5232 /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				1671A46C2C18F7BDD494CAB961A3718B /* GKActionSheetPicker.xcconfig */,
+				60E38182EF2B317CCE6DAD0EB72F2826 /* GKActionSheetPicker-dummy.m */,
+				FE24DBA9893A73F49696EEFA99DCFEFF /* GKActionSheetPicker-prefix.pch */,
+			);
+			name = "Support Files";
+			path = "../Target Support Files/GKActionSheetPicker";
+			sourceTree = "<group>";
+		};
+		5297B55F1A36B4C6BF4715D293625FDB /* GKActionSheetPicker */ = {
+			isa = PBXGroup;
+			children = (
+				0E3D572F6EF56E3A0E7F925B417C5C98 /* GKActionSheetPicker.h */,
+				12A52A85763492F7A052E1FF6A8C3FFA /* GKActionSheetPicker.m */,
+				55964BB89E7615AE4AF048476DCEC140 /* GKActionSheetPickerItem.h */,
+				440D600F6971F753932D99D54F0F298D /* GKActionSheetPickerItem.m */,
+				8384820A3E8FF05104C4A897CED6FE52 /* Resources */,
+				0FA864042429B27E19328985A56A5232 /* Support Files */,
+			);
+			name = GKActionSheetPicker;
+			path = GKActionSheetPicker;
+			sourceTree = "<group>";
+		};
+		768DA5164968B1D72B96E2DC0170A265 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C4175865954DDD6847D9A76E48BC7320 /* libDatePickerDialog-ObjC.a */,
+				212A2046A10C4B5C2730CC25D3EE4D9B /* libGKActionSheetPicker.a */,
+				05751A2FE1C29C2C26BB45D4B3952156 /* libPods-whatiread.a */,
+				9E2ACC71B4EEB38708B77ABC41FA815D /* libRateView.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		7DB346D0F39D3F0E887471402A8071AB = {
+			isa = PBXGroup;
+			children = (
+				93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */,
+				BC3CA7F9E30CC8F7E2DD044DD34432FC /* Frameworks */,
+				E7E2052507B86BFB16345108498C1C25 /* Pods */,
+				768DA5164968B1D72B96E2DC0170A265 /* Products */,
+				FD9754D67617E87B023ED82BE681F743 /* Targets Support Files */,
+			);
+			sourceTree = "<group>";
+		};
+		8384820A3E8FF05104C4A897CED6FE52 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				2C682ACA414F59B2FB893DBE1C330AC7 /* countries.json */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		9E07DEBB866B9B098912121679394FC9 /* Pods-whatiread */ = {
+			isa = PBXGroup;
+			children = (
+				913E75C9B285B899E131073BD8595960 /* Pods-whatiread-acknowledgements.markdown */,
+				12D080F258944DF99422449EED459F1C /* Pods-whatiread-acknowledgements.plist */,
+				2B44663F2EC37DB1745D0E7476197904 /* Pods-whatiread-dummy.m */,
+				49BC77CFC14C9979216F0D33E0185CA2 /* Pods-whatiread-frameworks.sh */,
+				FCC57139A1CB1AC95B16890A5478794D /* Pods-whatiread-resources.sh */,
+				D5280490F33A6000C4F85474AB01F895 /* Pods-whatiread.debug.xcconfig */,
+				747EAFF6260B78FD1798A025302C2793 /* Pods-whatiread.release.xcconfig */,
+			);
+			name = "Pods-whatiread";
+			path = "Target Support Files/Pods-whatiread";
+			sourceTree = "<group>";
+		};
+		AC063E46884EAFE3FF9E914D8C9CF520 /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				A7DB65FD33C07AA258EF16C86C815BD8 /* DatePickerDialog-ObjC.xcconfig */,
+				BA3BBD076D401DF88631D4E053345978 /* DatePickerDialog-ObjC-dummy.m */,
+				294ABAF121DE0D89935555FF449BBE00 /* DatePickerDialog-ObjC-prefix.pch */,
+			);
+			name = "Support Files";
+			path = "../Target Support Files/DatePickerDialog-ObjC";
+			sourceTree = "<group>";
+		};
+		BC3CA7F9E30CC8F7E2DD044DD34432FC /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D35AF013A5F0BAD4F32504907A52519E /* iOS */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		C5A2E193A080284B3CF6E6807DFFD02C /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				78203F1BF89F00632628F435ED07F192 /* RateView.xcconfig */,
+				B30CF9BF3FDC00DCD1542093C06BAC2F /* RateView-dummy.m */,
+				D54D3CA6A93B5E87A4B413CDFF6B9100 /* RateView-prefix.pch */,
+			);
+			name = "Support Files";
+			path = "../Target Support Files/RateView";
+			sourceTree = "<group>";
+		};
+		D330778F75958DE4083AEB95418762D2 /* DatePickerDialog-ObjC */ = {
+			isa = PBXGroup;
+			children = (
+				25A824BEED1D8FE0537DE4C519691FE2 /* LSLDatePickerDialog.h */,
+				CEEB35B6F22E2DF43DE3031264D6955F /* LSLDatePickerDialog.m */,
+				AC063E46884EAFE3FF9E914D8C9CF520 /* Support Files */,
+			);
+			name = "DatePickerDialog-ObjC";
+			path = "DatePickerDialog-ObjC";
+			sourceTree = "<group>";
+		};
+		D35AF013A5F0BAD4F32504907A52519E /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				6604A7D69453B4569E4E4827FB9155A9 /* Foundation.framework */,
+			);
+			name = iOS;
+			sourceTree = "<group>";
+		};
+		E7E2052507B86BFB16345108498C1C25 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				D330778F75958DE4083AEB95418762D2 /* DatePickerDialog-ObjC */,
+				5297B55F1A36B4C6BF4715D293625FDB /* GKActionSheetPicker */,
+				0842A98D54A1555148CD1DC2BF18EF20 /* RateView */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		FD9754D67617E87B023ED82BE681F743 /* Targets Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				9E07DEBB866B9B098912121679394FC9 /* Pods-whatiread */,
+			);
+			name = "Targets Support Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		8A2C233721B7026290C8DB04D6880BE8 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AE4A9F8853B26A11D11B78B8E33AEDF6 /* RateView.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C79E7CC351BB22C169CC8DAB090DB911 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A6462867E87213BB96BBAA8630694D17 /* LSLDatePickerDialog.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DEC7B19C33C99D3C2B84B1F0C07AD473 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F2AB9FF5653E234BC4D2600E15968BBD /* GKActionSheetPicker.h in Headers */,
+				21C5CB205D9B2C48960FF19066DE075B /* GKActionSheetPickerItem.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		610C1EAEA40537CAADC440F080A99108 /* Pods-whatiread */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A8B4E48C610DBEC3A9A4D4DFCDD6044C /* Build configuration list for PBXNativeTarget "Pods-whatiread" */;
+			buildPhases = (
+				216C08BDF5B6F54B7542D492571A7879 /* Sources */,
+				CA8A0460EE0A8354290E42848A000CF6 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				CC60A6BDCB9D02DEE616286090DA15D7 /* PBXTargetDependency */,
+				0E3BFD31E980E2BEDE91D3B709AC9AAB /* PBXTargetDependency */,
+				15DE9FE9B5C1AC00F8C066FF0604B17E /* PBXTargetDependency */,
+			);
+			name = "Pods-whatiread";
+			productName = "Pods-whatiread";
+			productReference = 05751A2FE1C29C2C26BB45D4B3952156 /* libPods-whatiread.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		650889CF9940814D5E28EB5044E8BADC /* DatePickerDialog-ObjC */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9F871E1C9D3E329B52575896FBE08C9D /* Build configuration list for PBXNativeTarget "DatePickerDialog-ObjC" */;
+			buildPhases = (
+				3128E7BA8C3F634B11EC8EC951F4C03C /* Sources */,
+				4EF611930D13612BFDD22A02FFFB6CA6 /* Frameworks */,
+				C79E7CC351BB22C169CC8DAB090DB911 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "DatePickerDialog-ObjC";
+			productName = "DatePickerDialog-ObjC";
+			productReference = C4175865954DDD6847D9A76E48BC7320 /* libDatePickerDialog-ObjC.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		651F41BF9053F19F93F9ACDBF55F3FC1 /* RateView */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 739AF0845B2ED1506FB2D0349C74A4E2 /* Build configuration list for PBXNativeTarget "RateView" */;
+			buildPhases = (
+				4DAEC8197D3CAC0949D602C236D7D112 /* Sources */,
+				7CC35CE6E1F39AC41F427A478BF77748 /* Frameworks */,
+				8A2C233721B7026290C8DB04D6880BE8 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = RateView;
+			productName = RateView;
+			productReference = 9E2ACC71B4EEB38708B77ABC41FA815D /* libRateView.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		B9C3B0B519A0A7B8C2FCFF0B214A09D8 /* GKActionSheetPicker */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 59C15175B5B4CB777AFAE8B95AA1D992 /* Build configuration list for PBXNativeTarget "GKActionSheetPicker" */;
+			buildPhases = (
+				AF59C535C6D7436E17BD8D92D239ACA8 /* Sources */,
+				EA568988BCFD76D8C96E8FBC0093BCF6 /* Frameworks */,
+				DEC7B19C33C99D3C2B84B1F0C07AD473 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = GKActionSheetPicker;
+			productName = GKActionSheetPicker;
+			productReference = 212A2046A10C4B5C2730CC25D3EE4D9B /* libGKActionSheetPicker.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		D41D8CD98F00B204E9800998ECF8427E /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0930;
+				LastUpgradeCheck = 0930;
+			};
+			buildConfigurationList = 2D8E8EC45A3A1A1D94AE762CB5028504 /* Build configuration list for PBXProject "Pods" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 7DB346D0F39D3F0E887471402A8071AB;
+			productRefGroup = 768DA5164968B1D72B96E2DC0170A265 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				650889CF9940814D5E28EB5044E8BADC /* DatePickerDialog-ObjC */,
+				B9C3B0B519A0A7B8C2FCFF0B214A09D8 /* GKActionSheetPicker */,
+				610C1EAEA40537CAADC440F080A99108 /* Pods-whatiread */,
+				651F41BF9053F19F93F9ACDBF55F3FC1 /* RateView */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		216C08BDF5B6F54B7542D492571A7879 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				90BF9877080B265F84D750B0C79C39C8 /* Pods-whatiread-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3128E7BA8C3F634B11EC8EC951F4C03C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0EADF4FB70DB37407E35348606DC08D5 /* DatePickerDialog-ObjC-dummy.m in Sources */,
+				ED2CBAFABC0761865CC199210A18E582 /* LSLDatePickerDialog.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4DAEC8197D3CAC0949D602C236D7D112 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				556AB51B08F48C8522B344F0E08B74BC /* RateView-dummy.m in Sources */,
+				9DFBA275D1363F1E910F2BBB4456003D /* RateView.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AF59C535C6D7436E17BD8D92D239ACA8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5DE7D976AA5458EE48F42E62BD205004 /* GKActionSheetPicker-dummy.m in Sources */,
+				9491C2742E6C2B3575688A95F3368C5D /* GKActionSheetPicker.m in Sources */,
+				A66157BD7E85DFFEA585D40019B20ED8 /* GKActionSheetPickerItem.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		0E3BFD31E980E2BEDE91D3B709AC9AAB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = GKActionSheetPicker;
+			target = B9C3B0B519A0A7B8C2FCFF0B214A09D8 /* GKActionSheetPicker */;
+			targetProxy = 1A798987B0A0E73DBE18AA0FB6050FF0 /* PBXContainerItemProxy */;
+		};
+		15DE9FE9B5C1AC00F8C066FF0604B17E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = RateView;
+			target = 651F41BF9053F19F93F9ACDBF55F3FC1 /* RateView */;
+			targetProxy = 0ED9B29EC8BBD002BC591B3814486405 /* PBXContainerItemProxy */;
+		};
+		CC60A6BDCB9D02DEE616286090DA15D7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "DatePickerDialog-ObjC";
+			target = 650889CF9940814D5E28EB5044E8BADC /* DatePickerDialog-ObjC */;
+			targetProxy = 92A2F96FF1E29E19342E4F206996FDDF /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		3D5511641A5AEBDDC6B4AA36B70A3340 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 78203F1BF89F00632628F435ED07F192 /* RateView.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				GCC_PREFIX_HEADER = "Target Support Files/RateView/RateView-prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRIVATE_HEADERS_FOLDER_PATH = "";
+				PRODUCT_MODULE_NAME = RateView;
+				PRODUCT_NAME = RateView;
+				PUBLIC_HEADERS_FOLDER_PATH = "";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		553022A828EE1991F07D2D73F565AEF8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_ALLOWED = NO;
+				CODE_SIGNING_REQUIRED = NO;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"POD_CONFIGURATION_DEBUG=1",
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRIP_INSTALLED_PRODUCT = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SYMROOT = "${SRCROOT}/../build";
+			};
+			name = Debug;
+		};
+		58CE816B060A41D32CEC095441D0E3E0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_ALLOWED = NO;
+				CODE_SIGNING_REQUIRED = NO;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"POD_CONFIGURATION_RELEASE=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRIP_INSTALLED_PRODUCT = NO;
+				SYMROOT = "${SRCROOT}/../build";
+			};
+			name = Release;
+		};
+		8F370CA0E504248394B97CF83FF65F80 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = A7DB65FD33C07AA258EF16C86C815BD8 /* DatePickerDialog-ObjC.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				GCC_PREFIX_HEADER = "Target Support Files/DatePickerDialog-ObjC/DatePickerDialog-ObjC-prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRIVATE_HEADERS_FOLDER_PATH = "";
+				PRODUCT_MODULE_NAME = DatePickerDialog_ObjC;
+				PRODUCT_NAME = "DatePickerDialog-ObjC";
+				PUBLIC_HEADERS_FOLDER_PATH = "";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		90F3F64853ACBCEA6B29B47BCB92FD0C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = D5280490F33A6000C4F85474AB01F895 /* Pods-whatiread.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				MACH_O_TYPE = staticlib;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		BA37EF8F1AA5DB2B6DF066E4F82D8DA9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1671A46C2C18F7BDD494CAB961A3718B /* GKActionSheetPicker.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				GCC_PREFIX_HEADER = "Target Support Files/GKActionSheetPicker/GKActionSheetPicker-prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRIVATE_HEADERS_FOLDER_PATH = "";
+				PRODUCT_MODULE_NAME = GKActionSheetPicker;
+				PRODUCT_NAME = GKActionSheetPicker;
+				PUBLIC_HEADERS_FOLDER_PATH = "";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		BD84DC3768E6AD19A6FE39DBC463AC77 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1671A46C2C18F7BDD494CAB961A3718B /* GKActionSheetPicker.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				GCC_PREFIX_HEADER = "Target Support Files/GKActionSheetPicker/GKActionSheetPicker-prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRIVATE_HEADERS_FOLDER_PATH = "";
+				PRODUCT_MODULE_NAME = GKActionSheetPicker;
+				PRODUCT_NAME = GKActionSheetPicker;
+				PUBLIC_HEADERS_FOLDER_PATH = "";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		D3216A5FD5BEE47868F37A3923CDF6BE /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 78203F1BF89F00632628F435ED07F192 /* RateView.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				GCC_PREFIX_HEADER = "Target Support Files/RateView/RateView-prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRIVATE_HEADERS_FOLDER_PATH = "";
+				PRODUCT_MODULE_NAME = RateView;
+				PRODUCT_NAME = RateView;
+				PUBLIC_HEADERS_FOLDER_PATH = "";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		E14E3C4AC313B1360E0C80AFBC1B6A03 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = A7DB65FD33C07AA258EF16C86C815BD8 /* DatePickerDialog-ObjC.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				GCC_PREFIX_HEADER = "Target Support Files/DatePickerDialog-ObjC/DatePickerDialog-ObjC-prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRIVATE_HEADERS_FOLDER_PATH = "";
+				PRODUCT_MODULE_NAME = DatePickerDialog_ObjC;
+				PRODUCT_NAME = "DatePickerDialog-ObjC";
+				PUBLIC_HEADERS_FOLDER_PATH = "";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		E1BAB68FE2B9704BB641AC862FD0C34B /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 747EAFF6260B78FD1798A025302C2793 /* Pods-whatiread.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				MACH_O_TYPE = staticlib;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		2D8E8EC45A3A1A1D94AE762CB5028504 /* Build configuration list for PBXProject "Pods" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				553022A828EE1991F07D2D73F565AEF8 /* Debug */,
+				58CE816B060A41D32CEC095441D0E3E0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		59C15175B5B4CB777AFAE8B95AA1D992 /* Build configuration list for PBXNativeTarget "GKActionSheetPicker" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BD84DC3768E6AD19A6FE39DBC463AC77 /* Debug */,
+				BA37EF8F1AA5DB2B6DF066E4F82D8DA9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		739AF0845B2ED1506FB2D0349C74A4E2 /* Build configuration list for PBXNativeTarget "RateView" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3D5511641A5AEBDDC6B4AA36B70A3340 /* Debug */,
+				D3216A5FD5BEE47868F37A3923CDF6BE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9F871E1C9D3E329B52575896FBE08C9D /* Build configuration list for PBXNativeTarget "DatePickerDialog-ObjC" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E14E3C4AC313B1360E0C80AFBC1B6A03 /* Debug */,
+				8F370CA0E504248394B97CF83FF65F80 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A8B4E48C610DBEC3A9A4D4DFCDD6044C /* Build configuration list for PBXNativeTarget "Pods-whatiread" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				90F3F64853ACBCEA6B29B47BCB92FD0C /* Debug */,
+				E1BAB68FE2B9704BB641AC862FD0C34B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
+}

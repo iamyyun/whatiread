@@ -18,7 +18,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    [self setNaviBarType:BAR_NONE];
+    [self setNaviBarType:BAR_NONE title:nil image:nil];
     [self performSelector:@selector(moveToMainVC) withObject:nil afterDelay:2.0];
 }
 

@@ -8,12 +8,16 @@
 
 #import "AddBookmarkViewController.h"
 #import <Photos/Photos.h>
+#import "LSLDatePickerDialog.h"
 
 @interface AddBookmarkViewController () <UITextFieldDelegate, UITextViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate> {
     PHFetchResult *fetchResult;
     PHCachingImageManager *imgManager;
     
     UITapGestureRecognizer *bgTap;
+    NSMutableArray *arrQuotes;
+    
+    NSDate *compDate;
     
     BOOL isEditing;     // in ModifyMode : editing/ not editing
 }
@@ -26,9 +30,24 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
+    compDate = [NSDate date];
+    NSDateFormatter *format = [[NSDateFormatter alloc] init];
+    [format setDateFormat:@"yyyy.MM.dd"];
+    NSString *strDate = [format stringFromDate:compDate];
+    self.compDateTextField.text = strDate;
+    
+    [self.compDateTextField resignFirstResponder];
+    [self.compDateTextField setAutocorrectionType:UITextAutocorrectionTypeNo];
+    
+    [self.rateView setStarFillColor:[UIColor colorWithHexString:@"F0C330"]];
+    [self.rateView setStarNormalColor:[UIColor lightGrayColor]];
+    [self.rateView setCanRate:YES];
+    [self.rateView setStarSize:20.f];
+    [self.rateView setStep:0.5f];
+    
     // set navigation bar
     if (self.isModifyMode == NO) {
-        [self setNaviBarType:BAR_ADD];
+        [self setNaviBarType:BAR_ADD title:nil image:nil];
         
         NSDateFormatter *df = [[NSDateFormatter alloc] init];
         [df setDateFormat:@"yyyy-MM-dd"];
@@ -39,19 +58,31 @@
         [self.addPicBtn setHidden:NO];
     } else {
         [self.navigationController setNavigationBarHidden:NO];
-        [self setNaviBarType:BAR_EDIT];
+        [self setNaviBarType:BAR_EDIT title:nil image:nil];
         
         if (self.book) {
             UIImage *image = [UIImage imageWithData:self.book.image];
+            NSMutableArray *quotes = [[NSMutableArray alloc] initWithArray:self.book.quotes];
+            
+            compDate = self.book.completeDate;
+            NSDateFormatter *format = [[NSDateFormatter alloc] init];
+            [format setDateFormat:@"yyyy.MM.dd"];
+            NSString *strDate = [format stringFromDate:compDate];
             
             [self.placeholderLabel setHidden:YES];
             [self.titleLabel setText:self.book.title];
             [self.authorLabel setText:self.book.author];
-            [self.quoteTextView setText:self.book.quotes];
+            [self.compDateTextField setText:strDate];
+            [self.rateView setRating:self.book.rate];
+            if (quotes && quotes.count > 0) {
+                [self.quoteTextView setText:quotes[0]];
+            }
             [self.picImageView setImage:image];
             
             [self.titleLabel setUserInteractionEnabled:NO];
             [self.authorLabel setUserInteractionEnabled:NO];
+            [self.compDateTextField setUserInteractionEnabled:NO];
+            [self.rateView setUserInteractionEnabled:NO];
             [self.quoteTextView setEditable:NO];
             
             [self.addPicBtn setHidden:YES];
@@ -61,6 +92,8 @@
     // test
     self.quoteTextView.layer.borderColor = [UIColor redColor].CGColor;
     self.quoteTextView.layer.borderWidth = 2.0f;
+    
+    arrQuotes = [NSMutableArray array];
     
     // Photo Framework
     PHFetchOptions *options = [[PHFetchOptions alloc] init];
@@ -146,7 +179,8 @@
         } else {
             // create bookmark data
             if (self.bookCreateCompleted) {
-                self.bookCreateCompleted(self.titleLabel.text, self.authorLabel.text, self.quoteTextView.text, self.picImageView.image);
+                NSMutableArray *arr = [[NSMutableArray alloc] initWithObjects:self.quoteTextView.text, nil];
+                self.bookCreateCompleted(self.titleLabel.text, self.authorLabel.text, compDate, self.rateView.rating, arr, self.picImageView.image);
             }
             [self popController:YES];
         }
@@ -166,7 +200,8 @@
             } else {
                 // create bookmark data
                 if (self.bookModifyCompleted) {
-                    self.bookModifyCompleted(self.titleLabel.text, self.authorLabel.text, self.quoteTextView.text, self.picImageView.image);
+                    NSMutableArray *arr = [[NSMutableArray alloc] initWithObjects:self.quoteTextView.text, nil];
+                    self.bookModifyCompleted(self.titleLabel.text, self.authorLabel.text, compDate, self.rateView.rating, arr, self.picImageView.image);
                 }
                 [self popController:YES];
             }
@@ -195,10 +230,12 @@
             // edit btn
             else if (tag == BTN_TYPE_EDIT) {
                 isEditing = YES;
-                [self setNaviBarType:BAR_ADD];
+                [self setNaviBarType:BAR_ADD title:nil image:nil];
                 
                 [self.titleLabel setUserInteractionEnabled:YES];
                 [self.authorLabel setUserInteractionEnabled:YES];
+                [self.compDateTextField setUserInteractionEnabled:YES];
+                [self.rateView setUserInteractionEnabled:YES];
                 [self.quoteTextView setEditable:YES];
                 
                 [self.titleLabel becomeFirstResponder];
@@ -256,6 +293,27 @@
     
 }
 
+#pragma mark - UITextFieldDelegate
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
+{
+    if (textField == self.compDateTextField) {
+        LSLDatePickerDialog *dpDialog = [[LSLDatePickerDialog alloc] init];
+        [dpDialog showWithTitle:@"완독일" doneButtonTitle:@"확인" cancelButtonTitle:@"취소" defaultDate:[NSDate date] datePickerMode:UIDatePickerModeDate callback:^(NSDate *date) {
+            if (date) {
+                compDate = date;
+                NSDateFormatter *format = [[NSDateFormatter alloc] init];
+                [format setDateFormat:@"yyyy.MM.dd"];
+                NSString *strDate = [format stringFromDate:date];
+                self.compDateTextField.text = strDate;
+                NSLog(@"YJ << get date : %@", strDate);
+            }
+        }];
+        return NO;
+    }
+    
+    return YES;
+}
+
 #pragma mark - UITextViewDelegate
 - (void)textViewDidBeginEditing:(UITextView *)textView {
 //    [self.memoBtn setSelected:YES];
@@ -293,20 +351,6 @@
 //    }
 }
 
-#pragma mark - UITextFieldDelegate
-- (BOOL)textFieldShouldEndEditing:(UITextField *)textField
-{
-    NSLog(@"YJ << textfield should end");
-    return YES;
-}
-
-- (BOOL)textFieldShouldReturn:(UITextField *)textField
-{
-    NSLog(@"YJ << textfield should return");
-//    [itemTF resignFirstResponder];
-    [textField resignFirstResponder];
-    return YES;
-}
 
 #pragma mark - keyboard actions
 - (void)handleKeyboardWillShowNote:(NSNotification *)notification

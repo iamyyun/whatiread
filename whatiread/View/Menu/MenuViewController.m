@@ -7,6 +7,8 @@
 //
 
 #import "MenuViewController.h"
+#import "BookmarkViewController.h"
+#import "BookShelfViewController.h"
 
 @interface MenuViewController () {
     NSMutableArray *menuList;
@@ -23,13 +25,13 @@
     
     menuList = [NSMutableArray array];
     [menuList addObject:@{@"title":@"Bookmark",
-                          @"image":@"bookmark"
+                          @"image":@"icon_menu_bookmark"
                           }];
     [menuList addObject:@{@"title":@"Bookshelf",
-                          @"image":@"bookshelf"
+                          @"image":@"icon_menu_bookshelf"
                           }];
     [menuList addObject:@{@"title":@"Settings",
-                          @"image":@"settings"
+                          @"image":@"icon_menu_setting"
                           }];
     
     [self drawViews];
@@ -39,12 +41,9 @@
 {
     CGFloat viewWidth = CGRectGetWidth(self.view.frame) - 110.0f;
     
-    NSString *strTitle = @"whatiread";
-    CGFloat width = [strTitle boundingRectWithSize:CGSizeMake(1000, 21) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:20.0f]} context:nil].size.width;
-    UILabel *logo = [[UILabel alloc] initWithFrame:CGRectMake(viewWidth/2-(width/2), 100, width, 21)];
-    [logo setText:@"whatiread"];
-    [logo setTextColor:[UIColor darkGrayColor]];
-    [self.view addSubview:logo];
+    UIImageView *logoView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo"]];
+    [logoView setFrame:CGRectMake(viewWidth/2-(190/2), 100, 190, 79)];
+    [self.view addSubview:logoView];
     
     CGFloat iPosY = 100.f;
     for (int i = 0; i < menuList.count; i++) {
@@ -52,19 +51,25 @@
         NSDictionary *dic = [[NSDictionary alloc] initWithDictionary:menuList[i] copyItems:YES];
         
         NSString *btnTitle = NSLocalizedString(dic[@"title"], @"");
-        CGFloat titleWidth = [btnTitle boundingRectWithSize:CGSizeMake(1000, 15) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14.0f]} context:nil].size.width;
+        CGFloat titleWidth = [btnTitle boundingRectWithSize:CGSizeMake(1000, 16) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:15.0f]} context:nil].size.width;
+        
         UIButton *menuBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        [menuBtn setTitle:btnTitle forState:UIControlStateNormal];
-//        [menuBtn.titleLabel setText:btnTitle];
-        [menuBtn.titleLabel setFont:[UIFont systemFontOfSize:14.0f]];
-        [menuBtn setImage:[UIImage imageNamed:dic[@"image"]] forState:UIControlStateNormal];
-        menuBtn.imageEdgeInsets = UIEdgeInsetsMake(0, 10, 15, 10);
-        [menuBtn setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
-        menuBtn.titleEdgeInsets = UIEdgeInsetsMake(30, -(30+titleWidth), 0, 0);
-        [menuBtn setFrame:CGRectMake((viewWidth/2-(50/2)), 100+iPosY, 100, 50)];
-        [menuBtn setContentVerticalAlignment:UIControlContentVerticalAlignmentCenter];
-        [menuBtn setContentHorizontalAlignment:UIControlContentHorizontalAlignmentCenter];
+        
+        UIImageView *imgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:dic[@"image"]]];
+        [imgView setFrame:CGRectMake(0, 0, 45, 45)];
+        [menuBtn addSubview:imgView];
+        
+        UILabel *label = [[UILabel alloc] init];
+        [label setText:btnTitle];
+        [label setFont:[UIFont systemFontOfSize:15.f]];
+        [label setTextColor:[UIColor darkGrayColor]];
+        [label setTextAlignment:NSTextAlignmentCenter];
+        [label setFrame:CGRectMake(0, 45, 45, 16)];
+        [menuBtn addSubview:label];
+        
+        [menuBtn setFrame:CGRectMake((viewWidth/2-(45/2)), 100+iPosY, 45, 61)];
         [menuBtn setTag:i];
+        [menuBtn setBackgroundColor:[UIColor clearColor]];
         [menuBtn addTarget:self action:@selector(onClickedMenuBtn:) forControlEvents:UIControlEventTouchUpInside];
         [self.view addSubview:menuBtn];
         
@@ -76,14 +81,21 @@
 {
     NSInteger menuIndex = [sender tag];
     if (menuIndex == MENU_BOOKMARK) {
-        [SHAREDAPPDELEGATE.frostedViewController hideMenuViewController];
+        if (![SHAREDAPPDELEGATE.navigationController.topViewController isKindOfClass:[BookmarkViewController class]]) {
+            BookmarkViewController *bmVC = [[BookmarkViewController alloc] init];
+            [self pushController:bmVC animated:YES];
+        }
     }
     else if (menuIndex == MENU_BOOKSHELF) {
-        
+        if (![SHAREDAPPDELEGATE.navigationController.topViewController isKindOfClass:[BookShelfViewController class]]) {
+            BookShelfViewController *bsVC = [[BookShelfViewController alloc] init];
+            [self pushController:bsVC animated:YES];
+        }
     }
     else if (menuIndex == MENU_SETTINGS) {
         
     }
+    [SHAREDAPPDELEGATE.frostedViewController hideMenuViewController];
 }
 
 - (void)didReceiveMemoryWarning {

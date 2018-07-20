@@ -15,9 +15,11 @@
 + (CoreDataAccess *)sharedInstance;
 + (void)removeInstance;
 
-@property (readonly, strong) NSPersistentContainer *persistentContainer;
+//@property (readonly, strong) NSPersistentContainer *persistentContainer;
 
 @property (strong, nonatomic) NSFetchedResultsController <Book *> * fetchedResultsController;
 @property (strong, nonatomic) NSManagedObjectContext * managedObjectContext;
+
+- (void) coreDataInitialize;
 
 @end

@@ -31,7 +31,7 @@ typedef enum : NSInteger
 @interface CommonViewController : UIViewController
 
 // Navigation Bar
-- (void)setNaviBarType:(NAVI_BAR_TYPE)type;
+- (void)setNaviBarType:(NAVI_BAR_TYPE)type title:(NSString *)title image:(UIImage *)image;
 
 - (void)leftBarBtnClick:(id)sender;
 - (void)rightBarBtnClick:(id)sender;

@@ -1,0 +1,6 @@
+module Pods_whatiread {
+  umbrella header "Pods-whatiread-umbrella.h"
+
+  export *
+  module * { export * }
+}
