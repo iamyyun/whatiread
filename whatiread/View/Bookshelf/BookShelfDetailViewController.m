@@ -9,6 +9,7 @@
 #import "BookShelfDetailViewController.h"
 #import "BookShelfDetailCollectionViewCell.h"
 #import "BookShelfViewController.h"
+#import "AddBookShelfViewController.h"
 
 @interface BookShelfDetailViewController () <UICollectionViewDelegate, UICollectionViewDataSource, BookShelfViewControllerDelegate> {
     NSMutableArray *quoteArr;
@@ -34,6 +35,15 @@
     [self.rateView setStarSize:20.f];
     [self.rateView setStep:0.5f];
     
+    [self dataInitialize];
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+- (void) dataInitialize {
     if (self.book) {
         quoteArr = [NSMutableArray arrayWithArray:self.book.quotes];
         NSDateFormatter *format = [[NSDateFormatter alloc] init];
@@ -45,18 +55,16 @@
         [self.rateView setRating:self.book.rate];
         [self.bmCountLabel setText:[NSString stringWithFormat:@"%ld", quoteArr.count]];
         [self.completeDateLabel setText:strDate];
+        
+        [self.bookShelfCollectionView reloadData];
     }
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
 // Set Block
-- (void)setBookCompositionHandler:(Book *)book bookDeleteCompleted:(BookDeleteCompleted)bookDeleteCompleted bookmarkDeleteCompleted:(BookmarkDeleteCompleted)bookmarkDeleteCompleted
+- (void)setBookCompositionHandler:(Book *)book bookModifyCompleted:(BookModifyCompleted)bookModifyCompleted bookDeleteCompleted:(BookDeleteCompleted)bookDeleteCompleted bookmarkDeleteCompleted:(BookmarkDeleteCompleted)bookmarkDeleteCompleted
 {
     self.book = book;
+    self.bookModifyCompleted = bookModifyCompleted;
     self.bookDeleteCompleted = bookDeleteCompleted;
     self.bookmarkDeleteCompleted = bookmarkDeleteCompleted;
 }
@@ -99,7 +107,23 @@
     }
     // edit btn
     else if (tag == BTN_TYPE_EDIT) {
-        
+        AddBookShelfViewController *addVC = [[AddBookShelfViewController alloc] init];
+        addVC.book = self.book;
+        addVC.isModifyMode = YES;
+        [addVC setBookCompositionHandler:nil bookModifyCompleted:^(NSString *bookTitle, NSString *bookAuthor, NSDate *bookDate, CGFloat fRate, NSMutableArray *bookQuotes, UIImage *bookImage){
+            self.book.title = bookTitle;
+            self.book.author = bookAuthor;
+            self.book.completeDate = bookDate;
+            self.book.rate = fRate;
+            self.book.quotes = bookQuotes;
+            self.book.image = bookImage;
+            [self dataInitialize];
+            
+            if (self.bookModifyCompleted) {
+                self.bookModifyCompleted(bookTitle, bookAuthor, bookDate, fRate, bookQuotes, bookImage);
+            }
+        }];
+        [self pushController:addVC animated:YES];
     }
 }
 

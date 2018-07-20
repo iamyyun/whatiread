@@ -11,12 +11,13 @@
 #import "RateView.h"
 #import "BookShelfViewController.h"
 
-//typedef void (^BookModifyCompleted)
+typedef void (^BookModifyCompleted)(NSString *bookTitle, NSString *bookAuthor, NSDate *bookDate, CGFloat fRate, NSMutableArray *bookQuotes, UIImage *bookImage);
 typedef void (^BookDeleteCompleted)(NSIndexPath *indexPath);
 typedef void (^BookmarkDeleteCompleted)(NSIndexPath *indexPath, NSInteger index, id<BookShelfViewControllerDelegate>delegate);
 
 @interface BookShelfDetailViewController : CommonViewController
 
+@property (nonatomic, copy) BookModifyCompleted bookModifyCompleted;
 @property (nonatomic, copy) BookDeleteCompleted bookDeleteCompleted;
 @property (nonatomic, copy) BookmarkDeleteCompleted bookmarkDeleteCompleted;
 @property (nonatomic, weak) Book *book;
@@ -29,6 +30,6 @@ typedef void (^BookmarkDeleteCompleted)(NSIndexPath *indexPath, NSInteger index,
 @property (weak, nonatomic) IBOutlet UILabel *completeDateLabel;
 @property (weak, nonatomic) IBOutlet UICollectionView *bookShelfCollectionView;
 
-- (void)setBookCompositionHandler:(Book *)book bookDeleteCompleted:(BookDeleteCompleted)bookDeleteCompleted bookmarkDeleteCompleted:(BookmarkDeleteCompleted)bookmarkDeleteCompleted;
+- (void)setBookCompositionHandler:(Book *)book bookModifyCompleted:(BookModifyCompleted)bookModifyCompleted bookDeleteCompleted:(BookDeleteCompleted)bookDeleteCompleted bookmarkDeleteCompleted:(BookmarkDeleteCompleted)bookmarkDeleteCompleted;
 
 @end

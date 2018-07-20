@@ -158,7 +158,15 @@
     if (isModifyMode) {
         BookShelfDetailViewController *detailVC = [[BookShelfDetailViewController alloc] init];
         detailVC.indexPath = indexPath;
-        [detailVC setBookCompositionHandler:book bookDeleteCompleted:^(NSIndexPath *indexPath) {
+        [detailVC setBookCompositionHandler:book bookModifyCompleted:^(NSString *bookTitle, NSString *bookAuthor, NSDate *bookDate, CGFloat fRate, NSMutableArray *bookQuotes, UIImage *bookImage){
+            [self modifyBook:book bookTitle:bookTitle bookAuthor:bookAuthor compltDate:bookDate bookRate:fRate bookQuotes:bookQuotes bookImage:bookImage indexPath:indexPath completed:^(BOOL isResult) {
+                if (isResult) {
+                    
+                } else {
+                    
+                }
+            }];
+        } bookDeleteCompleted:^(NSIndexPath *indexPath) {
             [self deleteBook:indexPath];
         } bookmarkDeleteCompleted:^(NSIndexPath *indexPath, NSInteger index, id <BookShelfViewControllerDelegate>delegate) {
             self.bookshelfDelegate = delegate;
@@ -174,9 +182,17 @@
     }
     else {
         AddBookShelfViewController *addVC = [[AddBookShelfViewController alloc] init];
-        
-        [addVC setBookCreateCompleted:^(NSString *bookTitle, NSString *bookAuthor, NSDate *bookDate, CGFloat fRate, NSMutableArray *bookQuotes, UIImage *bookImage) {
-            [self createBookmark:bookTitle bookAuthor:bookAuthor compltDate:bookDate bookRate:fRate bookQuotes:bookQuotes bookImage:bookImage indexPath:nil completed:^(BOOL isResult) {
+        addVC.isModifyMode = NO;
+        [addVC setBookCompositionHandler:^(NSString *bookTitle, NSString *bookAuthor, NSDate *bookDate, CGFloat fRate, NSMutableArray *bookQuotes, UIImage *bookImage){
+            [self createBook:bookTitle bookAuthor:bookAuthor compltDate:bookDate bookRate:fRate bookQuotes:bookQuotes bookImage:bookImage indexPath:nil completed:^(BOOL isResult) {
+                if (isResult) {
+                    
+                } else {
+                    
+                }
+            }];
+        } bookModifyCompleted:^(NSString *bookTitle, NSString *bookAuthor, NSDate *bookDate, CGFloat fRate, NSMutableArray *bookQuotes, UIImage *bookImage){
+            [self modifyBook:book bookTitle:bookTitle bookAuthor:bookAuthor compltDate:bookDate bookRate:fRate bookQuotes:bookQuotes bookImage:bookImage indexPath:indexPath completed:^(BOOL isResult) {
                 if (isResult) {
                     
                 } else {
@@ -289,7 +305,7 @@
 }
 
 // create bookmark
-- (void)createBookmark:(NSString *)bookTitle bookAuthor:(NSString *)bookAuthor compltDate:(NSDate *)compltDate bookRate:(CGFloat)bookRate bookQuotes:(NSMutableArray *)bookQuotes bookImage:(UIImage *)bookImage indexPath:(NSIndexPath *)indexPath completed:(void (^)(BOOL isResult))completed {
+- (void)createBook:(NSString *)bookTitle bookAuthor:(NSString *)bookAuthor compltDate:(NSDate *)compltDate bookRate:(CGFloat)bookRate bookQuotes:(NSMutableArray *)bookQuotes bookImage:(UIImage *)bookImage indexPath:(NSIndexPath *)indexPath completed:(void (^)(BOOL isResult))completed {
     id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][0];
     NSInteger bookCount = [sectionInfo numberOfObjects];
     
@@ -320,6 +336,84 @@
     else {
         completed(YES);
     }
+}
+
+// modify bookmark
+- (void)modifyBook:(Book *)book bookTitle:(NSString *)bookTitle bookAuthor:(NSString *)bookAuthor compltDate:(NSDate *)compltDate bookRate:(CGFloat)bookRate bookQuotes:(NSMutableArray *)bookQuotes bookImage:(UIImage *)bookImage indexPath:(NSIndexPath *)indexPath completed:(void (^)(BOOL isResult))completed {
+    NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
+    NSFetchRequest <Book *> *fetchRequest = Book.fetchRequest;
+    
+    NSDate *now = [[NSDate alloc] init];
+    
+    [context performBlock:^{
+        NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"completeDate" ascending:NO];
+        [fetchRequest setSortDescriptors:@[sortDescriptor]];
+        [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"completeDate = %@", book.completeDate]];
+        
+        NSError * error;
+        
+        NSArray * resultArray = [context executeFetchRequest:fetchRequest error:&error];
+        
+        if([resultArray count]) {
+            Book *book = [resultArray lastObject];
+            if (bookTitle) {
+                book.title = bookTitle;
+            } else {
+                book.title = @"";
+            }
+            
+            if (bookAuthor) {
+                book.author = bookAuthor;
+            } else {
+                book.author = @"";
+            }
+            
+            if (compltDate) {
+                book.completeDate = compltDate;
+            } else {
+                book.completeDate = [NSDate date];
+            }
+            
+            if (bookRate) {
+                book.rate = bookRate;
+            } else {
+                book.rate = 0.f;
+            }
+            
+            if (bookQuotes) {
+                book.quotes = bookQuotes;
+            } else {
+                book.quotes = @"";
+            }
+            
+            if (bookImage) {
+                NSData *imageData = UIImagePNGRepresentation(bookImage);
+                book.image = imageData;
+            } else {
+                book.image = nil;
+            }
+            
+            book.modifyDate = now;
+            
+            [context save:&error];
+            
+            if (!error) {
+                if (completed) {
+                    completed(YES);
+                }
+            }
+            else {
+                if (completed) {
+                    completed(NO);
+                }
+            }
+        }
+        else {
+            if (completed) {
+                completed(NO);
+            }
+        }
+    }];
 }
 
 #pragma mark - UISearchBarDelegate

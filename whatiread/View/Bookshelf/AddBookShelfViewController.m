@@ -48,6 +48,23 @@
     
     bookmarkArr = [NSMutableArray array];
     
+    if (self.isModifyMode) {
+        if (self.book) {
+            bookmarkArr = [NSMutableArray arrayWithArray:self.book.quotes];
+            
+            compDate = self.book.completeDate;
+            NSDateFormatter *format = [[NSDateFormatter alloc] init];
+            [format setDateFormat:@"yyyy.MM.dd"];
+            NSString *strDate = [format stringFromDate:compDate];
+            
+            [self.titleLabel setText:self.book.title];
+            [self.authorLabel setText:self.book.author];
+            [self.compDateTextField setText:strDate];
+            [self.rateView setRating:self.book.rate];
+            
+        }
+    }
+    
 //    [self.collectionView setAllowsSelection:YES];
     [self.collectionView registerNib:[UINib nibWithNibName:@"AddBookShelfCollectionViewCell" bundle:nil] forCellWithReuseIdentifier:@"AddBookShelfCollectionViewCell"];
     [self.collectionView registerNib:[UINib nibWithNibName:@"AddBookShelfLastCollectionViewCell" bundle:nil] forCellWithReuseIdentifier:@"AddBookShelfLastCollectionViewCell"];
@@ -64,9 +81,10 @@
 }
 
 // set block
-- (void)setBookCompositionHandler:(BookCreateCompleted)bookCreateCompleted
+- (void)setBookCompositionHandler:(BookCreateCompleted)bookCreateCompleted bookModifyCompleted:(BookModifyCompleted)bookModifyCompleted
 {
     self.bookCreateCompleted = bookCreateCompleted;
+    self.bookModifyCompleted = bookModifyCompleted;
 }
 
 - (void) writeFinished {
@@ -102,10 +120,15 @@
 //        [self presentController:alert animated:YES];
 //    }
     else {
-        // create bookmark data
-        if (self.bookCreateCompleted) {
-//            NSMutableArray *arr = [[NSMutableArray alloc] initWithObjects:self.quoteTextView.text, nil];
-            self.bookCreateCompleted(self.titleLabel.text, self.authorLabel.text, compDate, self.rateView.rating, bookmarkArr, nil);
+        if (self.isModifyMode) {
+            if (self.bookModifyCompleted) {
+                self.bookModifyCompleted(self.titleLabel.text, self.authorLabel.text, compDate, self.rateView.rating, bookmarkArr, nil);
+            }
+        } else {
+            // create bookmark data
+            if (self.bookCreateCompleted) {
+                self.bookCreateCompleted(self.titleLabel.text, self.authorLabel.text, compDate, self.rateView.rating, bookmarkArr, nil);
+            }
         }
         [self popController:YES];
     }
@@ -154,7 +177,7 @@
     [cell.editView setHidden:NO];
     
     [bookmarkArr replaceObjectAtIndex:tag withObject:textView.text];
-    [self.collectionView reloadData];
+//    [self.collectionView reloadData];
 }
 
 - (void)textViewDidChange:(UITextView *)textView {
@@ -167,7 +190,7 @@
     
     NSString *strQuote = textView.text;
     NSMutableParagraphStyle *paragraph = [[NSMutableParagraphStyle alloc] init];
-    paragraph.lineBreakMode = NSLineBreakByWordWrapping;
+    paragraph.lineBreakMode = NSLineBreakByCharWrapping;
     CGFloat height = [strQuote boundingRectWithSize:CGSizeMake(width - 30, 1000) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:15.0f], NSParagraphStyleAttributeName:paragraph} context:nil].size.height;
     
     if (cell.quoteViewHeightConst.constant != height) {
