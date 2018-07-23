@@ -9,4 +9,6 @@ target 'whatiread' do
 	pod 'RateView'
 	pod 'DatePickerDialog-ObjC', '~> 1.2'
 	pod 'GKActionSheetPicker'
+	pod 'AFNetworking', '~> 3.0'
+	pod 'SDWebImage', '~> 4.0'
 end

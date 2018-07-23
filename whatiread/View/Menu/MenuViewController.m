@@ -24,11 +24,11 @@
     [self.view setBackgroundColor:[UIColor whiteColor]];
     
     menuList = [NSMutableArray array];
-    [menuList addObject:@{@"title":@"Bookmark",
-                          @"image":@"icon_menu_bookmark"
-                          }];
     [menuList addObject:@{@"title":@"Bookshelf",
                           @"image":@"icon_menu_bookshelf"
+                          }];
+    [menuList addObject:@{@"title":@"Bookmark",
+                          @"image":@"icon_menu_bookmark"
                           }];
     [menuList addObject:@{@"title":@"Settings",
                           @"image":@"icon_menu_setting"
@@ -83,13 +83,13 @@
     if (menuIndex == MENU_BOOKMARK) {
         if (![SHAREDAPPDELEGATE.navigationController.topViewController isKindOfClass:[BookmarkViewController class]]) {
             BookmarkViewController *bmVC = [[BookmarkViewController alloc] init];
-            [self pushController:bmVC animated:YES];
+            [self pushNoHistory:bmVC animated:YES];
         }
     }
     else if (menuIndex == MENU_BOOKSHELF) {
         if (![SHAREDAPPDELEGATE.navigationController.topViewController isKindOfClass:[BookShelfViewController class]]) {
             BookShelfViewController *bsVC = [[BookShelfViewController alloc] init];
-            [self pushController:bsVC animated:YES];
+            [self pushNoHistory:bsVC animated:YES];
         }
     }
     else if (menuIndex == MENU_SETTINGS) {

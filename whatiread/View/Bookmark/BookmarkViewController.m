@@ -49,7 +49,7 @@
         for (int i = 0; i < bookCount; i++) {
             NSIndexPath *indexPath = [NSIndexPath indexPathForItem:i inSection:0];
             Book *book = [self.fetchedResultsController objectAtIndexPath:indexPath];
-            NSArray *arrQuotes = [NSArray arrayWithArray:book.quotes];
+            NSArray *arrQuotes = [NSArray arrayWithArray:book.quote];
             bmCount += arrQuotes.count;
         }
         [self.collectionView setHidden:NO];
@@ -215,9 +215,9 @@
     book.author = bookAuthor;
     book.completeDate = compltDate;
     book.rate = bookRate;
-    book.quotes = bookQuotes;
+    book.quote = bookQuotes;
     book.modifyDate = now;
-    book.image = imageData;
+    book.quoteImg = imageData;
     
     NSError * error = nil;
     
@@ -275,16 +275,16 @@
             }
             
             if (bookQuotes) {
-                book.quotes = bookQuotes;
+                book.quote = bookQuotes;
             } else {
-                book.quotes = @"";
+                book.quote = @"";
             }
             
             if (bookImage) {
                 NSData *imageData = UIImagePNGRepresentation(bookImage);
-                book.image = imageData;
+                book.quoteImg = imageData;
             } else {
-                book.image = nil;
+                book.quoteImg = nil;
             }
             
             book.modifyDate = now;
@@ -393,7 +393,7 @@
     NSIndexPath *fetchIndexPath = [NSIndexPath indexPathForItem:indexPath.section inSection:0];
     Book *book = [self.fetchedResultsController objectAtIndexPath:fetchIndexPath];
     
-    NSMutableArray *quoteArr = [NSMutableArray arrayWithArray:book.quotes];
+    NSMutableArray *quoteArr = [NSMutableArray arrayWithArray:book.quote];
     if (quoteArr && quoteArr.count > 0) {
         NSString *strQuote = quoteArr[indexPath.item];
         
@@ -434,7 +434,7 @@
     
     NSIndexPath *indexPath = [NSIndexPath indexPathForItem:section inSection:0];
     Book *book = [self.fetchedResultsController objectAtIndexPath:indexPath];
-    NSArray *quoteArr = (NSArray *)book.quotes;
+    NSArray *quoteArr = (NSArray *)book.quote;
     NSLog(@"YJ << item %ld - %ld", section, quoteArr.count);
     return quoteArr.count;
 }
@@ -466,7 +466,7 @@
     NSIndexPath *fetchIndexPath = [NSIndexPath indexPathForItem:indexPath.section inSection:0];
     Book *book = [self.fetchedResultsController objectAtIndexPath:fetchIndexPath];
     
-    NSMutableArray *quoteArr = [NSMutableArray arrayWithArray:book.quotes];
+    NSMutableArray *quoteArr = [NSMutableArray arrayWithArray:book.quote];
     if (quoteArr && quoteArr.count > 0) {
         NSString *strQuote = quoteArr[indexPath.item];
         
@@ -525,7 +525,7 @@
         for (int i = 0; i < bookCount; i++) {
             NSIndexPath *indexPath = [NSIndexPath indexPathForItem:i inSection:0];
             Book *book = [self.fetchedResultsController objectAtIndexPath:indexPath];
-            NSArray *arrQuotes = [NSArray arrayWithArray:book.quotes];
+            NSArray *arrQuotes = [NSArray arrayWithArray:book.quote];
             bmCount += arrQuotes.count;
         }
         [self.collectionView setHidden:NO];

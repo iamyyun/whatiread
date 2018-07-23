@@ -12,8 +12,9 @@ typedef enum : NSInteger {
     BAR_NONE = 0,
     BAR_NORMAL,     // menu - title - search
     BAR_SEARCH,     // search bar
+    BAR_BACK,       // back - title
     BAR_ADD,        // back - title - btn(save)
-    BAR_EDIT        // back - XX - btn(edit) btn(delete)
+    BAR_EDIT,        // back - title - btn(edit) btn(delete)
 } NAVI_BAR_TYPE;
 
 typedef enum : NSInteger
@@ -45,6 +46,7 @@ typedef enum : NSInteger
 - (void)pushAndIgnoreHistory:(UIViewController *)vc animated:(BOOL)animated;
 - (void)pushNoHistory:(UIViewController *)vc animated:(BOOL)animated;
 - (void)presentController:(UIViewController *)vc animated:(BOOL)animated;
+- (void)dismissController:(BOOL)animated;
 
 @end
 

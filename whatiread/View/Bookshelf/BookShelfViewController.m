@@ -10,6 +10,7 @@
 #import "BookShelfCollectionViewCell.h"
 #import "BookShelfDetailViewController.h"
 #import "AddBookShelfViewController.h"
+#import "BookSearchViewController.h"
 #import <GKActionSheetPicker/GKActionSheetPicker.h>
 
 #define MILLI_SECONDS           1000.f
@@ -50,7 +51,7 @@
         for (int i = 0; i < bookCount; i++) {
             NSIndexPath *indexPath = [NSIndexPath indexPathForItem:i inSection:0];
             Book *book = [self.fetchedResultsController objectAtIndexPath:indexPath];
-            NSArray *arrQuotes = [NSArray arrayWithArray:book.quotes];
+            NSArray *arrQuotes = [NSArray arrayWithArray:book.quote];
             bmCount += arrQuotes.count;
         }
         [self.collectionView setHidden:NO];
@@ -105,7 +106,31 @@
 #pragma mark - actions
 // add bookmark btn action
 - (IBAction)addBtnAction:(id)sender {
-    [self bookConfigure:nil indexPath:nil isModifyMode:NO];
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    NSString *strFirst = @"책 검색";
+    NSString *strSecond = @"직접 입력";
+    UIAlertAction *firstAction = [UIAlertAction actionWithTitle:strFirst style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+        BookSearchViewController *searchVC = [[BookSearchViewController alloc] init];
+        searchVC.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+        searchVC.modalPresentationStyle = UIModalPresentationCurrentContext;
+        [searchVC setBookSearchHandler:^(NSDictionary *bookDic) {
+            if (bookDic) {
+                [self bookConfigure:nil bookDic:bookDic indexPath:nil isModifyMode:NO isSearchMode:YES];
+            }
+        }];
+        [self presentController:searchVC animated:YES];
+
+    }];
+    UIAlertAction *secondAction = [UIAlertAction actionWithTitle:strSecond style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        [self bookConfigure:nil bookDic:nil indexPath:nil isModifyMode:NO isSearchMode:NO];
+    }];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"") style:UIAlertActionStyleCancel handler:^(UIAlertAction *action){}];
+    
+    [alert addAction:firstAction];
+    [alert addAction:secondAction];
+    [alert addAction:cancelAction];
+    [self presentController:alert animated:YES];
 }
 
 // sort btn action
@@ -153,7 +178,7 @@
 }
 
 #pragma mark - BookConfigure
-- (void)bookConfigure:(Book *)book indexPath:(NSIndexPath *)indexPath isModifyMode:(BOOL)isModifyMode {
+- (void)bookConfigure:(Book *)book bookDic:(NSDictionary *)bookDic indexPath:(NSIndexPath *)indexPath isModifyMode:(BOOL)isModifyMode isSearchMode:(BOOL)isSearchMode {
     
     if (isModifyMode) {
         BookShelfDetailViewController *detailVC = [[BookShelfDetailViewController alloc] init];
@@ -182,7 +207,9 @@
     }
     else {
         AddBookShelfViewController *addVC = [[AddBookShelfViewController alloc] init];
-        addVC.isModifyMode = NO;
+        addVC.isModifyMode = isModifyMode;
+        addVC.isSearchMode = isSearchMode;
+        addVC.bookDic = bookDic;
         [addVC setBookCompositionHandler:^(NSString *bookTitle, NSString *bookAuthor, NSDate *bookDate, CGFloat fRate, NSMutableArray *bookQuotes, UIImage *bookImage){
             [self createBook:bookTitle bookAuthor:bookAuthor compltDate:bookDate bookRate:fRate bookQuotes:bookQuotes bookImage:bookImage indexPath:nil completed:^(BOOL isResult) {
                 if (isResult) {
@@ -200,7 +227,6 @@
                 }
             }];
         }];
-        
         [self pushController:addVC animated:YES];
     }
     
@@ -270,10 +296,10 @@
         if([resultArray count]) {
             Book *book = [resultArray lastObject];
             
-            NSMutableArray *quoteArr = [NSMutableArray arrayWithArray:(NSArray *)book.quotes];
+            NSMutableArray *quoteArr = [NSMutableArray arrayWithArray:(NSArray *)book.quote];
             if (quoteArr && quoteArr.count > 0) {
                 [quoteArr removeObjectAtIndex:index];
-                book.quotes = quoteArr;
+                book.quote = quoteArr;
             }
 //            if (bookQuotes) {
 //                book.quotes = bookQuotes;
@@ -321,9 +347,9 @@
     book.author = bookAuthor;
     book.completeDate = compltDate;
     book.rate = bookRate;
-    book.quotes = bookQuotes;
+    book.quote = bookQuotes;
     book.modifyDate = now;
-    book.image = imageData;
+    book.quoteImg = imageData;
     
     NSError * error = nil;
     
@@ -381,16 +407,16 @@
             }
             
             if (bookQuotes) {
-                book.quotes = bookQuotes;
+                book.quote = bookQuotes;
             } else {
-                book.quotes = @"";
+                book.quote = @"";
             }
             
             if (bookImage) {
                 NSData *imageData = UIImagePNGRepresentation(bookImage);
-                book.image = imageData;
+                book.quoteImg = imageData;
             } else {
-                book.image = nil;
+                book.quoteImg = nil;
             }
             
             book.modifyDate = now;
@@ -482,7 +508,7 @@
     
     Book *book = [self.fetchedResultsController objectAtIndexPath:indexPath];
     
-    NSMutableArray *quoteArr = [NSMutableArray arrayWithArray:book.quotes];
+    NSMutableArray *quoteArr = [NSMutableArray arrayWithArray:book.quote];
     NSDateFormatter *format = [[NSDateFormatter alloc] init];
     [format setDateFormat:@"yy.MM.dd"];
     NSString *strDate = [format stringFromDate:book.completeDate];
@@ -525,7 +551,7 @@
     NSLog(@"YJ << select collectionview cell");
     
     Book *book = [self.fetchedResultsController objectAtIndexPath:indexPath];
-    [self bookConfigure:book indexPath:indexPath isModifyMode:YES];
+    [self bookConfigure:book bookDic:nil indexPath:indexPath isModifyMode:YES isSearchMode:nil];
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
@@ -587,7 +613,7 @@
         for (int i = 0; i < bookCount; i++) {
             NSIndexPath *indexPath = [NSIndexPath indexPathForItem:i inSection:0];
             Book *book = [self.fetchedResultsController objectAtIndexPath:indexPath];
-            NSArray *arrQuotes = [NSArray arrayWithArray:book.quotes];
+            NSArray *arrQuotes = [NSArray arrayWithArray:book.quote];
             bmCount += arrQuotes.count;
         }
         [self.collectionView setHidden:NO];

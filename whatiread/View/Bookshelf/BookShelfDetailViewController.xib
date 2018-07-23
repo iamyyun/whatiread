@@ -12,10 +12,13 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="BookShelfDetailViewController">
             <connections>
+                <outlet property="addBmBtn" destination="sJF-GL-oqh" id="OkF-PZ-0L7"/>
                 <outlet property="authorLabel" destination="iqw-iT-liX" id="FPK-on-c2A"/>
                 <outlet property="bmCountLabel" destination="uPN-FZ-0A3" id="Rgi-9f-02I"/>
                 <outlet property="bookShelfCollectionView" destination="7S8-9z-Ak3" id="CZ5-hN-9uH"/>
                 <outlet property="completeDateLabel" destination="8is-mq-WW8" id="jZ0-hg-Yuf"/>
+                <outlet property="deleteBsBtn" destination="gDh-z1-vGv" id="ffZ-JH-DK4"/>
+                <outlet property="editBsBtn" destination="xyA-nf-8VW" id="4YS-YK-oEB"/>
                 <outlet property="rateView" destination="wow-Ex-pDX" id="DHh-ya-Kky"/>
                 <outlet property="titleLabel" destination="3oK-df-lbJ" id="4rO-hA-lUx"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -27,7 +30,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DDS-I2-mPb">
-                    <rect key="frame" x="0.0" y="84" width="375" height="105"/>
+                    <rect key="frame" x="0.0" y="84" width="375" height="153"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="어린왕자" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3oK-df-lbJ">
                             <rect key="frame" x="15" y="15" width="345" height="21"/>
@@ -96,6 +99,46 @@
                             <color key="textColor" red="0.43648873730964466" green="0.43648873730964466" blue="0.43648873730964466" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sfy-6C-hp1">
+                            <rect key="frame" x="15" y="105" width="345" height="1"/>
+                            <color key="backgroundColor" white="0.6279296875" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="1" id="Zdy-i5-7ZX"/>
+                            </constraints>
+                        </view>
+                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sJF-GL-oqh">
+                            <rect key="frame" x="24" y="117" width="60" height="28"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                            <state key="normal" title="책갈피 등록">
+                                <color key="titleColor" white="0.51212565104166663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </state>
+                            <connections>
+                                <action selector="addBookmarkBtnAction:" destination="-1" eventType="touchUpInside" id="b5w-UU-nvC"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xyA-nf-8VW">
+                            <rect key="frame" x="173" y="116" width="30" height="28"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                            <state key="normal" title="수정">
+                                <color key="titleColor" white="0.51212565104166663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </state>
+                            <connections>
+                                <action selector="EditBookShelfBtnAction:" destination="-1" eventType="touchUpInside" id="gaI-2a-BXb"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gDh-z1-vGv">
+                            <rect key="frame" x="303" y="116" width="30" height="28"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                            <state key="normal" title="삭제">
+                                <color key="titleColor" white="0.51212565104166663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </state>
+                            <connections>
+                                <action selector="deleteBookShelfBtnAction:" destination="-1" eventType="touchUpInside" id="hLs-l5-5DO"/>
+                            </connections>
+                        </button>
                     </subviews>
                     <color key="backgroundColor" red="0.96599381345177671" green="0.96599381345177671" blue="0.96599381345177671" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
@@ -104,20 +147,23 @@
                         <constraint firstItem="iqw-iT-liX" firstAttribute="top" secondItem="3oK-df-lbJ" secondAttribute="bottom" constant="5" id="B9W-yT-xL8"/>
                         <constraint firstItem="iqw-iT-liX" firstAttribute="leading" secondItem="DDS-I2-mPb" secondAttribute="leading" constant="15" id="BMi-lO-s8b"/>
                         <constraint firstItem="wow-Ex-pDX" firstAttribute="top" secondItem="iqw-iT-liX" secondAttribute="bottom" constant="12" id="Cu9-ys-Spu"/>
-                        <constraint firstAttribute="bottom" secondItem="wow-Ex-pDX" secondAttribute="bottom" constant="15" id="D3e-uD-fLw"/>
                         <constraint firstItem="3oK-df-lbJ" firstAttribute="top" secondItem="DDS-I2-mPb" secondAttribute="top" constant="15" id="ETH-Xq-TC2"/>
                         <constraint firstAttribute="trailing" secondItem="iqw-iT-liX" secondAttribute="trailing" constant="15" id="IRk-V4-dgT"/>
+                        <constraint firstAttribute="bottom" secondItem="sfy-6C-hp1" secondAttribute="bottom" constant="47" id="Nhf-uq-iZ9"/>
                         <constraint firstItem="8is-mq-WW8" firstAttribute="centerY" secondItem="JbN-B6-fhM" secondAttribute="centerY" id="P5i-fP-5CN"/>
                         <constraint firstItem="3oK-df-lbJ" firstAttribute="leading" secondItem="DDS-I2-mPb" secondAttribute="leading" constant="15" id="VOm-AN-qBq"/>
                         <constraint firstItem="wow-Ex-pDX" firstAttribute="leading" secondItem="DDS-I2-mPb" secondAttribute="leading" constant="15" id="Wee-e4-oMH"/>
                         <constraint firstItem="JbN-B6-fhM" firstAttribute="centerY" secondItem="7db-62-fhe" secondAttribute="centerY" id="XxQ-bm-deH"/>
                         <constraint firstItem="8is-mq-WW8" firstAttribute="leading" secondItem="JbN-B6-fhM" secondAttribute="trailing" constant="8" id="YUg-TO-ShA"/>
+                        <constraint firstItem="sfy-6C-hp1" firstAttribute="leading" secondItem="DDS-I2-mPb" secondAttribute="leading" constant="15" id="lo4-HD-E5y"/>
                         <constraint firstAttribute="trailing" secondItem="3oK-df-lbJ" secondAttribute="trailing" constant="15" id="mSV-pO-aMc"/>
+                        <constraint firstAttribute="trailing" secondItem="sfy-6C-hp1" secondAttribute="trailing" constant="15" id="sEk-5E-fq7"/>
+                        <constraint firstItem="sfy-6C-hp1" firstAttribute="top" secondItem="wow-Ex-pDX" secondAttribute="bottom" constant="15" id="t2Y-e7-gRo"/>
                         <constraint firstItem="7db-62-fhe" firstAttribute="centerY" secondItem="wow-Ex-pDX" secondAttribute="centerY" id="yPk-Ju-XaI"/>
                     </constraints>
                 </view>
                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="7S8-9z-Ak3">
-                    <rect key="frame" x="0.0" y="189" width="375" height="478"/>
+                    <rect key="frame" x="0.0" y="237" width="375" height="430"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="pHP-6H-BM7">
                         <size key="itemSize" width="50" height="50"/>

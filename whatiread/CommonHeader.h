@@ -8,10 +8,13 @@
 
 #import "AppDelegate.h"
 #import "CommonViewController.h"
+#import "AdminConnectionManager.h"
 #import "UIColor+ColorString.h"
+#import "XMLDictionary.h"
 
 // App Delegate Object
 #define SHAREDAPPDELEGATE ((AppDelegate *)[[UIApplication sharedApplication] delegate])
 
 // current version
 #define CUR_VERSION     [NSString stringWithFormat:@"%@", [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]]
+

@@ -24,7 +24,6 @@
     // Do any additional setup after loading the view from its nib.
     
     [self.navigationController setNavigationBarHidden:NO];
-    [self setNaviBarType:BAR_EDIT title:nil image:nil];
     
     [self.bookShelfCollectionView setAllowsSelection:YES];
     [self.bookShelfCollectionView registerNib:[UINib nibWithNibName:@"BookShelfDetailCollectionViewCell" bundle:nil] forCellWithReuseIdentifier:@"BookShelfDetailCollectionViewCell"];
@@ -45,7 +44,9 @@
 
 - (void) dataInitialize {
     if (self.book) {
-        quoteArr = [NSMutableArray arrayWithArray:self.book.quotes];
+        [self setNaviBarType:BAR_BACK title:self.book.title image:nil];
+        
+        quoteArr = [NSMutableArray arrayWithArray:self.book.quote];
         NSDateFormatter *format = [[NSDateFormatter alloc] init];
         [format setDateFormat:@"yy.MM.dd"];
         NSString *strDate = [format stringFromDate:self.book.completeDate];
@@ -115,8 +116,8 @@
             self.book.author = bookAuthor;
             self.book.completeDate = bookDate;
             self.book.rate = fRate;
-            self.book.quotes = bookQuotes;
-            self.book.image = bookImage;
+            self.book.quote = bookQuotes;
+            self.book.quoteImg = bookImage;
             [self dataInitialize];
             
             if (self.bookModifyCompleted) {
@@ -128,6 +129,36 @@
 }
 
 #pragma mark - Actions
+- (IBAction)addBookmarkBtnAction:(id)sender {
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    NSString *strFirst = @"직접 입력";
+    NSString *strSecond = @"사진 보관함";
+    NSString *strThird = @"사진 찍기";
+    UIAlertAction *firstAction = [UIAlertAction actionWithTitle:strFirst style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+//        BookSearchViewController *searchVC = [[BookSearchViewController alloc] init];
+//        [self presentController:searchVC animated:YES];
+    }];
+    UIAlertAction *secondAction = [UIAlertAction actionWithTitle:strSecond style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+//        [self bookConfigure:nil indexPath:nil isModifyMode:NO];
+    }];
+    UIAlertAction *thirdAction = [UIAlertAction actionWithTitle:strThird style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        
+    }];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"") style:UIAlertActionStyleCancel handler:^(UIAlertAction *action){}];
+    
+    [alert addAction:firstAction];
+    [alert addAction:secondAction];
+    [alert addAction:cancelAction];
+    [self presentController:alert animated:YES];
+}
+
+- (IBAction)EditBookShelfBtnAction:(id)sender {
+}
+
+- (IBAction)deleteBookShelfBtnAction:(id)sender {
+}
+
 - (void)bookmarkCellDelBtnAction:(id)sender
 {
     NSLog(@"YJ << bookmark cell delete : %ld", [sender tag]);
@@ -230,7 +261,7 @@
 {
     if (book) {
         self.book = book;
-        quoteArr = [NSMutableArray arrayWithArray:self.book.quotes];
+        quoteArr = [NSMutableArray arrayWithArray:self.book.quote];
         
         [self.bmCountLabel setText:[NSString stringWithFormat:@"ld", quoteArr.count]];
         [self.bookShelfCollectionView reloadData];

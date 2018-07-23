@@ -10,8 +10,8 @@
 
 typedef enum : NSInteger
 {
-    MENU_BOOKMARK = 0,   // bookmark
-    MENU_BOOKSHELF,   // bookshelf
+    MENU_BOOKSHELF = 0,   // bookshelf
+    MENU_BOOKMARK,   // bookmark
     MENU_SETTINGS       // settings
 } MENU_BTN_TYPE;
 

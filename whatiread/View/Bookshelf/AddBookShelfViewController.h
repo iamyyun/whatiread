@@ -17,11 +17,16 @@ typedef void (^BookModifyCompleted)(NSString *bookTitle, NSString *bookAuthor, N
 @property (nonatomic, copy) BookCreateCompleted bookCreateCompleted;
 @property (nonatomic, copy) BookModifyCompleted bookModifyCompleted;
 @property (nonatomic, weak) Book *book;
+@property (nonatomic, weak) NSDictionary *bookDic;
 
 @property (nonatomic, assign) BOOL isModifyMode;    // create / modify
+@property (nonatomic, assign) BOOL isSearchMode;    // search / write
 
 @property (weak, nonatomic) IBOutlet UITextField *titleLabel;
 @property (weak, nonatomic) IBOutlet UITextField *authorLabel;
+@property (weak, nonatomic) IBOutlet UITextField *publisherLabel;
+@property (weak, nonatomic) IBOutlet UITextField *pubDateTextField;
+@property (weak, nonatomic) IBOutlet UITextField *startDateTextField;
 @property (weak, nonatomic) IBOutlet UITextField *compDateTextField;
 @property (weak, nonatomic) IBOutlet RateView *rateView;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;

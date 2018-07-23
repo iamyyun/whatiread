@@ -61,8 +61,8 @@
         [self setNaviBarType:BAR_EDIT title:nil image:nil];
         
         if (self.book) {
-            UIImage *image = [UIImage imageWithData:self.book.image];
-            NSMutableArray *quotes = [[NSMutableArray alloc] initWithArray:self.book.quotes];
+            UIImage *image = [UIImage imageWithData:self.book.quoteImg];
+            NSMutableArray *quotes = [[NSMutableArray alloc] initWithArray:self.book.quote];
             
             compDate = self.book.completeDate;
             NSDateFormatter *format = [[NSDateFormatter alloc] init];

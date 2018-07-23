@@ -47,6 +47,13 @@
 		6B7DDFB720FECF7B003A954B /* AddBookShelfLastCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6B7DDFB520FECF7B003A954B /* AddBookShelfLastCollectionViewCell.xib */; };
 		6B7DDFBB20FF0FBD003A954B /* BookMarkHeaderCollectionReusableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B7DDFB920FF0FBD003A954B /* BookMarkHeaderCollectionReusableView.m */; };
 		6B7DDFBC20FF0FBD003A954B /* BookMarkHeaderCollectionReusableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6B7DDFBA20FF0FBD003A954B /* BookMarkHeaderCollectionReusableView.xib */; };
+		6B8EF31621055984001EFDCD /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B8EF31421055984001EFDCD /* Reachability.m */; };
+		6B8EF319210559B2001EFDCD /* AdminConnectionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B8EF318210559B2001EFDCD /* AdminConnectionManager.m */; };
+		6B8EF31E210562C4001EFDCD /* BookSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B8EF31C210562C4001EFDCD /* BookSearchViewController.m */; };
+		6B8EF31F210562C4001EFDCD /* BookSearchViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6B8EF31D210562C4001EFDCD /* BookSearchViewController.xib */; };
+		6B8EF32321058DB9001EFDCD /* BookSearchCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B8EF32121058DB9001EFDCD /* BookSearchCollectionViewCell.m */; };
+		6B8EF32421058DB9001EFDCD /* BookSearchCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6B8EF32221058DB9001EFDCD /* BookSearchCollectionViewCell.xib */; };
+		6B8EF3272105A595001EFDCD /* XMLDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B8EF3252105A595001EFDCD /* XMLDictionary.m */; };
 		6BCBA19C20C522C40056BAFB /* IntroViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BCBA19A20C522C40056BAFB /* IntroViewController.m */; };
 		6BCBA19D20C522C40056BAFB /* IntroViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6BCBA19B20C522C40056BAFB /* IntroViewController.xib */; };
 		6BCBA1A620C527930056BAFB /* BookmarkViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BCBA1A420C527930056BAFB /* BookmarkViewController.m */; };
@@ -145,6 +152,18 @@
 		6B7DDFB820FF0FBD003A954B /* BookMarkHeaderCollectionReusableView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BookMarkHeaderCollectionReusableView.h; sourceTree = "<group>"; };
 		6B7DDFB920FF0FBD003A954B /* BookMarkHeaderCollectionReusableView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BookMarkHeaderCollectionReusableView.m; sourceTree = "<group>"; };
 		6B7DDFBA20FF0FBD003A954B /* BookMarkHeaderCollectionReusableView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BookMarkHeaderCollectionReusableView.xib; sourceTree = "<group>"; };
+		6B8EF31421055984001EFDCD /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
+		6B8EF31521055984001EFDCD /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
+		6B8EF317210559B2001EFDCD /* AdminConnectionManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AdminConnectionManager.h; sourceTree = "<group>"; };
+		6B8EF318210559B2001EFDCD /* AdminConnectionManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AdminConnectionManager.m; sourceTree = "<group>"; };
+		6B8EF31B210562C4001EFDCD /* BookSearchViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BookSearchViewController.h; sourceTree = "<group>"; };
+		6B8EF31C210562C4001EFDCD /* BookSearchViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BookSearchViewController.m; sourceTree = "<group>"; };
+		6B8EF31D210562C4001EFDCD /* BookSearchViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BookSearchViewController.xib; sourceTree = "<group>"; };
+		6B8EF32021058DB9001EFDCD /* BookSearchCollectionViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BookSearchCollectionViewCell.h; sourceTree = "<group>"; };
+		6B8EF32121058DB9001EFDCD /* BookSearchCollectionViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BookSearchCollectionViewCell.m; sourceTree = "<group>"; };
+		6B8EF32221058DB9001EFDCD /* BookSearchCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BookSearchCollectionViewCell.xib; sourceTree = "<group>"; };
+		6B8EF3252105A595001EFDCD /* XMLDictionary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XMLDictionary.m; sourceTree = "<group>"; };
+		6B8EF3262105A595001EFDCD /* XMLDictionary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMLDictionary.h; sourceTree = "<group>"; };
 		6BCBA19920C522C40056BAFB /* IntroViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IntroViewController.h; sourceTree = "<group>"; };
 		6BCBA19A20C522C40056BAFB /* IntroViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IntroViewController.m; sourceTree = "<group>"; };
 		6BCBA19B20C522C40056BAFB /* IntroViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = IntroViewController.xib; sourceTree = "<group>"; };
@@ -210,6 +229,7 @@
 		6B030EA320BE374D0060E8AD /* whatiread */ = {
 			isa = PBXGroup;
 			children = (
+				6B8EF31221055952001EFDCD /* Connection */,
 				6B030EE220BE3D950060E8AD /* CoreData */,
 				6B030EDA20BE38030060E8AD /* Util */,
 				6B030ED920BE37F00060E8AD /* View */,
@@ -249,6 +269,7 @@
 		6B030ED920BE37F00060E8AD /* View */ = {
 			isa = PBXGroup;
 			children = (
+				6B8EF31A210562A1001EFDCD /* Search */,
 				6B53389A20C8F17900D85CD0 /* Menu */,
 				6BCBA1A220C527500056BAFB /* Bookshelf */,
 				6BCBA1A120C5273F0056BAFB /* Bookmark */,
@@ -267,6 +288,8 @@
 		6B030EDA20BE38030060E8AD /* Util */ = {
 			isa = PBXGroup;
 			children = (
+				6B8EF3262105A595001EFDCD /* XMLDictionary.h */,
+				6B8EF3252105A595001EFDCD /* XMLDictionary.m */,
 				6B53387E20C8C46600D85CD0 /* UIColor+ColorString.h */,
 				6B53387F20C8C46700D85CD0 /* UIColor+ColorString.m */,
 			);
@@ -317,6 +340,38 @@
 				6B5338A920C9004F00D85CD0 /* UIImage+REFrostedViewController.m */,
 			);
 			path = REFrostedViewController;
+			sourceTree = "<group>";
+		};
+		6B8EF31221055952001EFDCD /* Connection */ = {
+			isa = PBXGroup;
+			children = (
+				6B8EF31321055970001EFDCD /* network */,
+				6B8EF317210559B2001EFDCD /* AdminConnectionManager.h */,
+				6B8EF318210559B2001EFDCD /* AdminConnectionManager.m */,
+			);
+			path = Connection;
+			sourceTree = "<group>";
+		};
+		6B8EF31321055970001EFDCD /* network */ = {
+			isa = PBXGroup;
+			children = (
+				6B8EF31521055984001EFDCD /* Reachability.h */,
+				6B8EF31421055984001EFDCD /* Reachability.m */,
+			);
+			path = network;
+			sourceTree = "<group>";
+		};
+		6B8EF31A210562A1001EFDCD /* Search */ = {
+			isa = PBXGroup;
+			children = (
+				6B8EF31B210562C4001EFDCD /* BookSearchViewController.h */,
+				6B8EF31C210562C4001EFDCD /* BookSearchViewController.m */,
+				6B8EF31D210562C4001EFDCD /* BookSearchViewController.xib */,
+				6B8EF32021058DB9001EFDCD /* BookSearchCollectionViewCell.h */,
+				6B8EF32121058DB9001EFDCD /* BookSearchCollectionViewCell.m */,
+				6B8EF32221058DB9001EFDCD /* BookSearchCollectionViewCell.xib */,
+			);
+			path = Search;
 			sourceTree = "<group>";
 		};
 		6BCBA1A120C5273F0056BAFB /* Bookmark */ = {
@@ -493,11 +548,13 @@
 				6BCBA1B220C533590056BAFB /* BookmarkViewController.xib in Resources */,
 				6B2AF62C20FD80AC0091AE3D /* Assets.xcassets in Resources */,
 				6B7DDFB720FECF7B003A954B /* AddBookShelfLastCollectionViewCell.xib in Resources */,
+				6B8EF31F210562C4001EFDCD /* BookSearchViewController.xib in Resources */,
 				6BCBA1B020C52E8A0056BAFB /* Localizable.strings in Resources */,
 				6B7DDFB220FECF5F003A954B /* AddBookShelfCollectionViewCell.xib in Resources */,
 				6B6E047020F88659009D19BB /* BookShelfDetailCollectionViewCell.xib in Resources */,
 				6B6E046B20F88641009D19BB /* BookShelfCollectionViewCell.xib in Resources */,
 				6B030EAC20BE374D0060E8AD /* Main.storyboard in Resources */,
+				6B8EF32421058DB9001EFDCD /* BookSearchCollectionViewCell.xib in Resources */,
 				6B7DDFBC20FF0FBD003A954B /* BookMarkHeaderCollectionReusableView.xib in Resources */,
 				6B5502B920C925C800C08D16 /* AddBookmarkViewController.xib in Resources */,
 				6BCBA19D20C522C40056BAFB /* IntroViewController.xib in Resources */,
@@ -569,16 +626,19 @@
 				6B5338B020C9004F00D85CD0 /* RECommonFunctions.m in Sources */,
 				6B030EA920BE374D0060E8AD /* CommonViewController.m in Sources */,
 				6B5338B320C9007900D85CD0 /* MenuViewController.m in Sources */,
+				6B8EF3272105A595001EFDCD /* XMLDictionary.m in Sources */,
 				6B030EE920BE44B00060E8AD /* TestViewController.m in Sources */,
 				6B5338AE20C9004F00D85CD0 /* REFrostedContainerViewController.m in Sources */,
 				6B7DDFAC20FEC6B8003A954B /* AddBookShelfViewController.m in Sources */,
 				6B7DDFB120FECF5F003A954B /* AddBookShelfCollectionViewCell.m in Sources */,
 				6B7DDFB620FECF7B003A954B /* AddBookShelfLastCollectionViewCell.m in Sources */,
 				6B7DDFBB20FF0FBD003A954B /* BookMarkHeaderCollectionReusableView.m in Sources */,
+				6B8EF32321058DB9001EFDCD /* BookSearchCollectionViewCell.m in Sources */,
 				6B5502B720C91B3700C08D16 /* AddBookmarkViewController.m in Sources */,
 				6B5338AC20C9004F00D85CD0 /* UIView+REFrostedViewController.m in Sources */,
 				6B5338B820C9110D00D85CD0 /* BookmarkCollectionViewCell.m in Sources */,
 				6BCBA19C20C522C40056BAFB /* IntroViewController.m in Sources */,
+				6B8EF31E210562C4001EFDCD /* BookSearchViewController.m in Sources */,
 				6B030EAF20BE374D0060E8AD /* whatiread.xcdatamodeld in Sources */,
 				6B6E046520F8840E009D19BB /* BookShelfViewController.m in Sources */,
 				6B6E046A20F88641009D19BB /* BookShelfCollectionViewCell.m in Sources */,
@@ -589,7 +649,9 @@
 				6B030EA620BE374D0060E8AD /* AppDelegate.m in Sources */,
 				6B53388020C8C46700D85CD0 /* UIColor+ColorString.m in Sources */,
 				6BCBA1A620C527930056BAFB /* BookmarkViewController.m in Sources */,
+				6B8EF31621055984001EFDCD /* Reachability.m in Sources */,
 				6B5338AB20C9004F00D85CD0 /* REFrostedViewController.m in Sources */,
+				6B8EF319210559B2001EFDCD /* AdminConnectionManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

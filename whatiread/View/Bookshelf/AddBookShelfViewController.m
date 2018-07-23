@@ -50,7 +50,7 @@
     
     if (self.isModifyMode) {
         if (self.book) {
-            bookmarkArr = [NSMutableArray arrayWithArray:self.book.quotes];
+            bookmarkArr = [NSMutableArray arrayWithArray:self.book.quote];
             
             compDate = self.book.completeDate;
             NSDateFormatter *format = [[NSDateFormatter alloc] init];
@@ -62,6 +62,31 @@
             [self.compDateTextField setText:strDate];
             [self.rateView setRating:self.book.rate];
             
+        }
+    } else {
+        if (self.isSearchMode) {
+            if (self.bookDic) {
+                NSString *style = @"<meta charset=\"UTF-8\"><style> body { font-family: 'HelveticaNeue'; font-size: 15px; } b {font-family: 'MarkerFelt-Wide'; }</style>";
+                NSString *bTitle = [NSString stringWithFormat:@"%@%@", style, [self.bookDic objectForKey:@"title"]];
+                NSDictionary *options = @{ NSDocumentTypeDocumentAttribute : NSHTMLTextDocumentType };
+                NSAttributedString *attrString = [[NSAttributedString alloc] initWithData:[bTitle dataUsingEncoding:NSUTF8StringEncoding] options:options documentAttributes:nil error:nil];
+                
+                NSDateFormatter *format = [[NSDateFormatter alloc] init];
+                [format setDateFormat:@"yyyy.MM.dd"];
+                NSString *strDate = [format stringFromDate:compDate];
+                
+                [self.titleLabel setText:[attrString string]];
+                [self.authorLabel setText:[self.bookDic objectForKey:@"author"]];
+                [self.publisherLabel setText:[self.bookDic objectForKey:@"publisher"]];
+                [self.pubDateTextField setText:[self.bookDic objectForKey:@"pubdate"]];
+                [self.startDateTextField setText:strDate];
+                [self.compDateTextField setText:strDate];
+                
+                [self.titleLabel setUserInteractionEnabled:NO];
+                [self.authorLabel setUserInteractionEnabled:NO];
+                [self.publisherLabel setUserInteractionEnabled:NO];
+                [self.pubDateTextField setUserInteractionEnabled:NO];
+            }
         }
     }
     
@@ -137,22 +162,30 @@
 #pragma mark - UITextFieldDelegate
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
-    if (textField == self.compDateTextField) {
-        LSLDatePickerDialog *dpDialog = [[LSLDatePickerDialog alloc] init];
-        [dpDialog showWithTitle:@"완독일" doneButtonTitle:@"확인" cancelButtonTitle:@"취소" defaultDate:[NSDate date] datePickerMode:UIDatePickerModeDate callback:^(NSDate *date) {
-            if (date) {
-                compDate = date;
-                NSDateFormatter *format = [[NSDateFormatter alloc] init];
-                [format setDateFormat:@"yyyy.MM.dd"];
-                NSString *strDate = [format stringFromDate:date];
-                self.compDateTextField.text = strDate;
-                NSLog(@"YJ << get date : %@", strDate);
-            }
-        }];
-        return NO;
+    NSString *strTitle = @"";
+    if (textField == self.pubDateTextField) {
+        strTitle = @"출판일";
+    }
+    else if (textField == self.startDateTextField) {
+        strTitle = @"시작일";
+    }
+    else if (textField == self.compDateTextField) {
+        strTitle = @"완독일";
     }
     
-    return YES;
+    LSLDatePickerDialog *dpDialog = [[LSLDatePickerDialog alloc] init];
+    [dpDialog showWithTitle:strTitle doneButtonTitle:@"확인" cancelButtonTitle:@"취소" defaultDate:[NSDate date] datePickerMode:UIDatePickerModeDate callback:^(NSDate *date) {
+        if (date) {
+            compDate = date;
+            NSDateFormatter *format = [[NSDateFormatter alloc] init];
+            [format setDateFormat:@"yyyy.MM.dd"];
+            NSString *strDate = [format stringFromDate:date];
+            textField.text = strDate;
+            NSLog(@"YJ << get date : %@", strDate);
+        }
+    }];
+    
+    return NO;
 }
 
 #pragma mark - UITextViewDelegate

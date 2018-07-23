@@ -28,7 +28,14 @@ typedef void (^BookmarkDeleteCompleted)(NSIndexPath *indexPath, NSInteger index,
 @property (weak, nonatomic) IBOutlet RateView *rateView;
 @property (weak, nonatomic) IBOutlet UILabel *bmCountLabel;
 @property (weak, nonatomic) IBOutlet UILabel *completeDateLabel;
+@property (weak, nonatomic) IBOutlet UIButton *addBmBtn;
+@property (weak, nonatomic) IBOutlet UIButton *editBsBtn;
+@property (weak, nonatomic) IBOutlet UIButton *deleteBsBtn;
 @property (weak, nonatomic) IBOutlet UICollectionView *bookShelfCollectionView;
+
+- (IBAction)addBookmarkBtnAction:(id)sender;
+- (IBAction)EditBookShelfBtnAction:(id)sender;
+- (IBAction)deleteBookShelfBtnAction:(id)sender;
 
 - (void)setBookCompositionHandler:(Book *)book bookModifyCompleted:(BookModifyCompleted)bookModifyCompleted bookDeleteCompleted:(BookDeleteCompleted)bookDeleteCompleted bookmarkDeleteCompleted:(BookmarkDeleteCompleted)bookmarkDeleteCompleted;
 

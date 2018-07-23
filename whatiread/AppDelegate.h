@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
-#import "BookmarkViewController.h"
 #import "BookShelfViewController.h"
 #import "IntroViewController.h"
 #import "TestViewController.h"
@@ -18,9 +17,8 @@
 
 @property (strong, nonatomic) UIWindow *window;
 @property (strong, nonatomic) UINavigationController *navigationController;
-@property (strong, nonatomic) BookmarkViewController *rootViewController;
 //@property (strong, nonatomic) TestViewController *rootViewController;
-//@property (strong, nonatomic) BookShelfViewController *rootViewController;
+@property (strong, nonatomic) BookShelfViewController *rootViewController;
 @property (strong, nonatomic) REFrostedViewController *frostedViewController;
 
 @property (readonly, strong) NSPersistentContainer *persistentContainer;

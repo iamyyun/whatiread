@@ -8,7 +8,7 @@
 
 #import "CommonViewController.h"
 
-@interface CommonViewController () {
+@interface CommonViewController () <UINavigationControllerDelegate> {
     UILabel *titleLabel;
     UIButton *leftBtn;
     UIButton *rightBtn;
@@ -21,6 +21,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
+    SHAREDAPPDELEGATE.navigationController.interactivePopGestureRecognizer.delegate = self;
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -86,6 +87,35 @@
 //        self.searchDisplayController.displaysSearchBarInNavigationBar = YES;
 //        UISearchBar *searchBar = [[UISearchBar alloc] init];
 //        self.navigationItem.titleView = searchBar;
+    }
+    else if (type == BAR_BACK) {
+        // leftBarButton
+        leftBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        [leftBtn setImage:[UIImage imageNamed:@"btn_back"] forState:UIControlStateNormal];
+        [leftBtn setTag:BTN_TYPE_BACK];
+        [leftBtn addTarget:self action:@selector(leftBarBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+        [leftBtn setFrame:CGRectMake(0, 5, 34, 34)];
+        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:leftBtn];
+        
+        if (title && title.length > 0) {
+            UIView *centerView = [[UIView alloc] initWithFrame:CGRectZero];
+            [centerView setBackgroundColor:[UIColor whiteColor]];
+            
+            UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
+            //            [imgView setImage:[UIImage imageNamed:@"icon_bookmark"]];
+            [imgView setImage:image];
+            [centerView addSubview:imgView];
+            
+            NSString *strTitle = NSLocalizedString(title, @"");
+            CGFloat width = [strTitle boundingRectWithSize:CGSizeMake(1000, 44) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:18.0f]} context:nil].size.width;
+            titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(44, 0, width, 44)];
+            [titleLabel setText:strTitle];
+            [titleLabel setTextColor:[UIColor darkGrayColor]];
+            [centerView addSubview:titleLabel];
+            
+            [centerView setFrame:CGRectMake(0, 0, 44+width, 44)];
+            self.navigationItem.titleView = centerView;
+        }
     }
     else if (type == BAR_ADD) {
         // titleView
@@ -175,7 +205,7 @@
 
 - (void)rightBarBtnClick:(id)sender
 {
-    
+    [self popController:YES];
 }
 
 - (void)setFrame
@@ -203,31 +233,40 @@
 #pragma - Navigation
 - (void)popController:(BOOL)animated {
     [SHAREDAPPDELEGATE.navigationController popViewControllerAnimated:animated];
+//    SHAREDAPPDELEGATE.navigationController.interactivePopGestureRecognizer.enabled = YES;
 }
 
 - (void)popController:(NSInteger)index animated:(BOOL)animated {
     NSMutableArray *controllers = [[NSMutableArray alloc] initWithArray:SHAREDAPPDELEGATE.navigationController.viewControllers];
     [controllers removeObjectAtIndex:[controllers count] - index];
     [SHAREDAPPDELEGATE.navigationController setViewControllers:controllers animated:animated];
+//    SHAREDAPPDELEGATE.navigationController.interactivePopGestureRecognizer.enabled = YES;
 }
 
 - (void)pushController:(UIViewController *)vc animated:(BOOL)animated {
     [SHAREDAPPDELEGATE.navigationController pushViewController:vc animated:animated];
+//    SHAREDAPPDELEGATE.navigationController.interactivePopGestureRecognizer.enabled = NO;
 }
 
 - (void)pushAndIgnoreHistory:(UIViewController *)vc animated:(BOOL)animated {
     [SHAREDAPPDELEGATE.navigationController popViewControllerAnimated:NO];
     [SHAREDAPPDELEGATE.navigationController pushViewController:vc animated:animated];
+//    SHAREDAPPDELEGATE.navigationController.interactivePopGestureRecognizer.enabled = NO;
 }
 
 - (void)pushNoHistory:(UIViewController *)vc animated:(BOOL)animated {
     [SHAREDAPPDELEGATE.navigationController popToRootViewControllerAnimated:NO];
     [SHAREDAPPDELEGATE.navigationController pushViewController:vc animated:animated];
+//    SHAREDAPPDELEGATE.navigationController.interactivePopGestureRecognizer.enabled = NO;
 }
 
 - (void)presentController:(UIViewController *)vc animated:(BOOL)animated {
     [SHAREDAPPDELEGATE.navigationController presentViewController:vc animated:animated completion:nil];
 }
 
+- (void)dismissController:(BOOL)animated
+{
+    [SHAREDAPPDELEGATE.navigationController dismissViewControllerAnimated:animated completion:nil];
+}
 
 @end

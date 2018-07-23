@@ -10,6 +10,7 @@
 #import <CoreData/CoreData.h>
 #import "whatiread+CoreDataModel.h"
 #import "CoreDataAccess.h"
+#import "CommonViewController.h"
 
 @protocol BookShelfViewControllerDelegate
 
