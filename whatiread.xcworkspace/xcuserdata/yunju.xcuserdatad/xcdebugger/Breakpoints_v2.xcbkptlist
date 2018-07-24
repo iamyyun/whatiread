@@ -20,7 +20,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "whatiread/View/Bookmark/BookmarkViewController.m"
-            timestampString = "554028105.81933"
+            timestampString = "554090231.0607769"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "381"
@@ -52,12 +52,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "whatiread/View/Bookshelf/BookShelfViewController.m"
-            timestampString = "554028105.819465"
+            timestampString = "554114607.740647"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "357"
-            endingLineNumber = "357"
-            landmarkName = "-createBook:bookAuthor:compltDate:bookRate:bookQuotes:bookImage:indexPath:completed:"
+            startingLineNumber = "361"
+            endingLineNumber = "361"
+            landmarkName = "-createBook:isSearchMode:indexPath:completed:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -68,11 +68,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "whatiread/View/Bookshelf/BookShelfViewController.m"
-            timestampString = "554028105.8195339"
+            timestampString = "554114607.740733"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "609"
-            endingLineNumber = "609"
+            startingLineNumber = "643"
+            endingLineNumber = "643"
             landmarkName = "-controllerDidChangeContent:"
             landmarkType = "7">
          </BreakpointContent>
@@ -84,11 +84,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "whatiread/View/Bookshelf/BookShelfViewController.m"
-            timestampString = "554028105.819595"
+            timestampString = "554114607.7408"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "582"
-            endingLineNumber = "582"
+            startingLineNumber = "616"
+            endingLineNumber = "616"
             landmarkName = "-controller:didChangeObject:atIndexPath:forChangeType:newIndexPath:"
             landmarkType = "7">
          </BreakpointContent>
@@ -100,12 +100,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "whatiread/View/Bookshelf/BookShelfViewController.m"
-            timestampString = "554028105.8196549"
+            timestampString = "554114607.740862"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "356"
-            endingLineNumber = "356"
-            landmarkName = "-createBook:bookAuthor:compltDate:bookRate:bookQuotes:bookImage:indexPath:completed:"
+            startingLineNumber = "360"
+            endingLineNumber = "360"
+            landmarkName = "-createBook:isSearchMode:indexPath:completed:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -116,7 +116,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "whatiread/View/Bookmark/BookmarkViewController.m"
-            timestampString = "554028105.819713"
+            timestampString = "554090231.061124"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "203"
@@ -132,7 +132,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "whatiread/View/Bookmark/BookmarkViewController.m"
-            timestampString = "554028105.819757"
+            timestampString = "554090231.061168"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "500"
@@ -148,7 +148,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "whatiread/View/Bookmark/BookmarkViewController.m"
-            timestampString = "554028105.819797"
+            timestampString = "554090231.0612119"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "521"
@@ -164,7 +164,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "whatiread/View/Bookmark/BookmarkViewController.m"
-            timestampString = "554028105.819838"
+            timestampString = "554090231.061254"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "455"
@@ -180,12 +180,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "whatiread/View/Bookshelf/BookShelfViewController.m"
-            timestampString = "554028105.81988"
+            timestampString = "554114607.741027"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "335"
             endingLineNumber = "335"
-            landmarkName = "-createBook:bookAuthor:compltDate:bookRate:bookQuotes:bookImage:indexPath:completed:"
+            landmarkName = "-createBook:isSearchMode:indexPath:completed:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -196,11 +196,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "whatiread/View/Bookshelf/BookShelfDetailViewController.m"
-            timestampString = "554028105.81994"
+            timestampString = "554114607.741094"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "190"
-            endingLineNumber = "190"
+            startingLineNumber = "188"
+            endingLineNumber = "188"
             landmarkName = "-collectionView:cellForItemAtIndexPath:"
             landmarkType = "7">
          </BreakpointContent>
@@ -211,28 +211,12 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "whatiread/View/Bookshelf/BookShelfDetailViewController.m"
-            timestampString = "554028105.819989"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "217"
-            endingLineNumber = "217"
-            landmarkName = "-collectionView:numberOfItemsInSection:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "whatiread/View/Bookshelf/AddBookShelfViewController.m"
-            timestampString = "554028105.8200459"
+            timestampString = "554114607.741154"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "297"
-            endingLineNumber = "297"
+            startingLineNumber = "378"
+            endingLineNumber = "378"
             landmarkName = "-collectionView:didSelectItemAtIndexPath:"
             landmarkType = "7">
          </BreakpointContent>
@@ -244,12 +228,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "whatiread/View/Bookshelf/BookShelfDetailViewController.m"
-            timestampString = "554028105.8203861"
+            timestampString = "554114607.741522"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "121"
-            endingLineNumber = "121"
-            landmarkName = "-rightBarBtnClick:"
+            startingLineNumber = "116"
+            endingLineNumber = "116"
+            landmarkName = "-EditBookShelfBtnAction:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -259,13 +243,93 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "whatiread/View/Bookshelf/BookShelfDetailViewController.m"
-            timestampString = "554028105.8204401"
+            filePath = "whatiread/View/Bookshelf/BookShelfViewController.m"
+            timestampString = "554114607.74158"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "115"
-            endingLineNumber = "115"
-            landmarkName = "-rightBarBtnClick:"
+            startingLineNumber = "187"
+            endingLineNumber = "187"
+            landmarkName = "-bookConfigure:bookDic:indexPath:isModifyMode:isSearchMode:"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__85-[BookShelfViewController bookConfigure:bookDic:indexPath:isModifyMode:isSearchMode:]_block_invoke"
+                  moduleName = "whatiread"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/yunju/Yunju/projects/whatiread/project/whatIread/whatiread/View/Bookshelf/BookShelfViewController.m"
+                  timestampString = "554113556.019415"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "187"
+                  endingLineNumber = "187"
+                  offsetFromSymbolStart = "64">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__85-[BookShelfViewController bookConfigure:bookDic:indexPath:isModifyMode:isSearchMode:]_block_invoke_2"
+                  moduleName = "whatiread"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/yunju/Yunju/projects/whatiread/project/whatIread/whatiread/View/Bookshelf/BookShelfViewController.m"
+                  timestampString = "554113556.025269"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "188"
+                  endingLineNumber = "188"
+                  offsetFromSymbolStart = "16">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "whatiread/View/Bookshelf/BookShelfViewController.m"
+            timestampString = "554114607.7416461"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "373"
+            endingLineNumber = "373"
+            landmarkName = "-modifyBook:bookDic:indexPath:completed:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "whatiread/View/Bookshelf/BookShelfViewController.m"
+            timestampString = "554114607.741766"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "118"
+            endingLineNumber = "118"
+            landmarkName = "-addBtnAction:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "whatiread/View/Bookshelf/BookShelfViewController.m"
+            timestampString = "554114607.741827"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "209"
+            endingLineNumber = "209"
+            landmarkName = "-bookConfigure:bookDic:indexPath:isModifyMode:isSearchMode:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -276,12 +340,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "whatiread/View/Bookshelf/AddBookShelfViewController.m"
-            timestampString = "554028105.8204941"
+            timestampString = "554114607.7418849"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "150"
-            endingLineNumber = "150"
-            landmarkName = "-rightBarBtnClick:"
+            startingLineNumber = "86"
+            endingLineNumber = "86"
+            landmarkName = "-viewDidLoad"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -291,14 +355,78 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "whatiread/View/Bookshelf/BookShelfDetailViewController.m"
-            timestampString = "554028105.820888"
+            filePath = "whatiread/View/Bookshelf/AddBookShelfViewController.m"
+            timestampString = "554114607.742162"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "49"
-            endingLineNumber = "49"
-            landmarkName = "-dataInitialize"
+            startingLineNumber = "35"
+            endingLineNumber = "35"
+            landmarkName = "-viewDidLoad"
             landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "whatiread/View/Bookshelf/AddBookShelfViewController.m"
+            timestampString = "554114607.742426"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "134"
+            endingLineNumber = "134"
+            landmarkName = "-setBookshelfCompositionHandler:bookshelfCreateCompleted:bookshelfModifyCompleted:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "whatiread/View/Bookshelf/BookShelfViewController.m"
+            timestampString = "554114607.742685"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "214"
+            endingLineNumber = "214"
+            landmarkName = "-bookConfigure:bookDic:indexPath:isModifyMode:isSearchMode:"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__85-[BookShelfViewController bookConfigure:bookDic:indexPath:isModifyMode:isSearchMode:]_block_invoke.249"
+                  moduleName = "whatiread"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/yunju/Yunju/projects/whatiread/project/whatIread/whatiread/View/Bookshelf/BookShelfViewController.m"
+                  timestampString = "554113556.177691"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "214"
+                  endingLineNumber = "214"
+                  offsetFromSymbolStart = "76">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__85-[BookShelfViewController bookConfigure:bookDic:indexPath:isModifyMode:isSearchMode:]_block_invoke_2.250"
+                  moduleName = "whatiread"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/yunju/Yunju/projects/whatiread/project/whatIread/whatiread/View/Bookshelf/BookShelfViewController.m"
+                  timestampString = "554113556.18353"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "215"
+                  endingLineNumber = "215"
+                  offsetFromSymbolStart = "16">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

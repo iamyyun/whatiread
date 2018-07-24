@@ -14,7 +14,12 @@
             <connections>
                 <outlet property="closeBtn" destination="mDN-xE-dWu" id="i1o-aY-iEd"/>
                 <outlet property="collectionView" destination="ZXh-bq-5Ry" id="o8S-89-3Ah"/>
+                <outlet property="flashBtn" destination="pjY-S3-42u" id="3sz-be-ZkS"/>
+                <outlet property="previewView" destination="8pN-YP-50Z" id="0Lt-9j-HaN"/>
+                <outlet property="scanCloseBtn" destination="Ms1-q2-1mS" id="BGI-W8-aNd"/>
+                <outlet property="scanView" destination="o4k-E4-I8G" id="oFC-4e-vKR"/>
                 <outlet property="searchBar" destination="fOG-ge-Z22" id="vhJ-TJ-HlS"/>
+                <outlet property="switchBtn" destination="lDg-Qd-V4T" id="UNC-J5-Bel"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -63,7 +68,7 @@
                         <constraint firstAttribute="trailing" secondItem="bFU-lr-H5d" secondAttribute="trailing" id="PIS-4O-hxt"/>
                     </constraints>
                 </view>
-                <searchBar contentMode="redraw" placeholder="책 제목을 입력하세요." translatesAutoresizingMaskIntoConstraints="NO" id="fOG-ge-Z22">
+                <searchBar contentMode="redraw" placeholder="책 제목을 입력하세요." showsBookmarkButton="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fOG-ge-Z22">
                     <rect key="frame" x="0.0" y="84" width="375" height="56"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="56" id="ouG-4v-ers"/>
@@ -91,11 +96,74 @@
                         <outlet property="delegate" destination="-1" id="sld-a1-BJs"/>
                     </connections>
                 </collectionView>
+                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="o4k-E4-I8G">
+                    <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8pN-YP-50Z">
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
+                            <subviews>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ms1-q2-1mS">
+                                    <rect key="frame" x="325" y="15" width="35" height="35"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="35" id="876-7t-eFI"/>
+                                        <constraint firstAttribute="width" constant="35" id="WbG-3r-XH6"/>
+                                    </constraints>
+                                    <state key="normal" image="btn_close_white"/>
+                                    <connections>
+                                        <action selector="scanCloseBtnAction:" destination="-1" eventType="touchUpInside" id="oM0-AD-k01"/>
+                                    </connections>
+                                </button>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lDg-Qd-V4T">
+                                    <rect key="frame" x="15" y="15" width="35" height="35"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="35" id="FKZ-E1-Mmi"/>
+                                        <constraint firstAttribute="height" constant="35" id="Pdd-4v-qUc"/>
+                                    </constraints>
+                                    <state key="normal" image="btn_switch"/>
+                                    <connections>
+                                        <action selector="swtichBtnAction:" destination="-1" eventType="touchUpInside" id="VTh-vN-hJb"/>
+                                    </connections>
+                                </button>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pjY-S3-42u">
+                                    <rect key="frame" x="15" y="65" width="35" height="35"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="35" id="Cl0-wM-tJU"/>
+                                        <constraint firstAttribute="width" constant="35" id="cUa-ZA-3k7"/>
+                                    </constraints>
+                                    <state key="normal" image="btn_flash_off"/>
+                                    <connections>
+                                        <action selector="flashBtnAction:" destination="-1" eventType="touchUpInside" id="esX-3p-nXQ"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="trailing" secondItem="Ms1-q2-1mS" secondAttribute="trailing" constant="15" id="Fdj-3d-AVN"/>
+                                <constraint firstItem="pjY-S3-42u" firstAttribute="top" secondItem="lDg-Qd-V4T" secondAttribute="bottom" constant="15" id="GFP-VI-hK8"/>
+                                <constraint firstItem="lDg-Qd-V4T" firstAttribute="top" secondItem="8pN-YP-50Z" secondAttribute="top" constant="15" id="IiC-n6-cTd"/>
+                                <constraint firstItem="Ms1-q2-1mS" firstAttribute="top" secondItem="8pN-YP-50Z" secondAttribute="top" constant="15" id="MaX-Jn-eFz"/>
+                                <constraint firstItem="lDg-Qd-V4T" firstAttribute="leading" secondItem="8pN-YP-50Z" secondAttribute="leading" constant="15" id="mHG-HF-s7X"/>
+                                <constraint firstItem="pjY-S3-42u" firstAttribute="leading" secondItem="8pN-YP-50Z" secondAttribute="leading" constant="15" id="y1M-Cw-dMf"/>
+                            </constraints>
+                        </view>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="bottom" secondItem="8pN-YP-50Z" secondAttribute="bottom" id="IPQ-Zv-hDM"/>
+                        <constraint firstItem="8pN-YP-50Z" firstAttribute="leading" secondItem="o4k-E4-I8G" secondAttribute="leading" id="T8J-WZ-Tx4"/>
+                        <constraint firstAttribute="trailing" secondItem="8pN-YP-50Z" secondAttribute="trailing" id="epl-Ch-aXQ"/>
+                        <constraint firstItem="8pN-YP-50Z" firstAttribute="top" secondItem="o4k-E4-I8G" secondAttribute="top" id="oTH-zG-xWh"/>
+                    </constraints>
+                </view>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="bottom" secondItem="o4k-E4-I8G" secondAttribute="bottom" id="8gV-uz-aaR"/>
                 <constraint firstItem="fOG-ge-Z22" firstAttribute="top" secondItem="nfJ-7d-SbK" secondAttribute="bottom" id="9rO-tC-THo"/>
+                <constraint firstItem="o4k-E4-I8G" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="AeZ-o0-S7C"/>
                 <constraint firstItem="nfJ-7d-SbK" firstAttribute="trailing" secondItem="Q5M-cg-NOt" secondAttribute="trailing" id="Cbv-jw-kgH"/>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="o4k-E4-I8G" secondAttribute="trailing" id="I9h-MP-Uxk"/>
+                <constraint firstItem="o4k-E4-I8G" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="top" id="RME-K0-xnl"/>
                 <constraint firstItem="nfJ-7d-SbK" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="top" constant="20" id="WQw-2Z-AbG"/>
                 <constraint firstItem="fOG-ge-Z22" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="ajg-qj-yFf"/>
                 <constraint firstItem="ZXh-bq-5Ry" firstAttribute="top" secondItem="fOG-ge-Z22" secondAttribute="bottom" id="bOR-9y-rgk"/>
@@ -111,5 +179,8 @@
     </objects>
     <resources>
         <image name="btn_close" width="44" height="44"/>
+        <image name="btn_close_white" width="45" height="45"/>
+        <image name="btn_flash_off" width="45" height="45"/>
+        <image name="btn_switch" width="45" height="45"/>
     </resources>
 </document>

@@ -19,6 +19,7 @@
 		6B030EE920BE44B00060E8AD /* TestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B030EE720BE44B00060E8AD /* TestViewController.m */; };
 		6B030EEA20BE44B00060E8AD /* TestViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6B030EE820BE44B00060E8AD /* TestViewController.xib */; };
 		6B2AF62C20FD80AC0091AE3D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6B2AF62B20FD80AC0091AE3D /* Assets.xcassets */; };
+		6B30CDF32106A51400EDF627 /* IndicatorUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B30CDF22106A51400EDF627 /* IndicatorUtil.m */; };
 		6B53388020C8C46700D85CD0 /* UIColor+ColorString.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B53387F20C8C46700D85CD0 /* UIColor+ColorString.m */; };
 		6B5338AB20C9004F00D85CD0 /* REFrostedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B5338A020C9004F00D85CD0 /* REFrostedViewController.m */; };
 		6B5338AC20C9004F00D85CD0 /* UIView+REFrostedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B5338A520C9004F00D85CD0 /* UIView+REFrostedViewController.m */; };
@@ -105,6 +106,8 @@
 		6B030EE720BE44B00060E8AD /* TestViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TestViewController.m; sourceTree = "<group>"; };
 		6B030EE820BE44B00060E8AD /* TestViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TestViewController.xib; sourceTree = "<group>"; };
 		6B2AF62B20FD80AC0091AE3D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		6B30CDF12106A51400EDF627 /* IndicatorUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IndicatorUtil.h; sourceTree = "<group>"; };
+		6B30CDF22106A51400EDF627 /* IndicatorUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IndicatorUtil.m; sourceTree = "<group>"; };
 		6B3DEDC820D2502700996EA6 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/BookmarkViewController.strings; sourceTree = "<group>"; };
 		6B53387E20C8C46600D85CD0 /* UIColor+ColorString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+ColorString.h"; sourceTree = "<group>"; };
 		6B53387F20C8C46700D85CD0 /* UIColor+ColorString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+ColorString.m"; sourceTree = "<group>"; };
@@ -269,6 +272,7 @@
 		6B030ED920BE37F00060E8AD /* View */ = {
 			isa = PBXGroup;
 			children = (
+				6B30CDF02106A50400EDF627 /* Util */,
 				6B8EF31A210562A1001EFDCD /* Search */,
 				6B53389A20C8F17900D85CD0 /* Menu */,
 				6BCBA1A220C527500056BAFB /* Bookshelf */,
@@ -311,6 +315,15 @@
 				F4FB39A6FE0614D7FB8AACEC /* libPods-whatiread.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		6B30CDF02106A50400EDF627 /* Util */ = {
+			isa = PBXGroup;
+			children = (
+				6B30CDF12106A51400EDF627 /* IndicatorUtil.h */,
+				6B30CDF22106A51400EDF627 /* IndicatorUtil.m */,
+			);
+			path = Util;
 			sourceTree = "<group>";
 		};
 		6B53389A20C8F17900D85CD0 /* Menu */ = {
@@ -626,6 +639,7 @@
 				6B5338B020C9004F00D85CD0 /* RECommonFunctions.m in Sources */,
 				6B030EA920BE374D0060E8AD /* CommonViewController.m in Sources */,
 				6B5338B320C9007900D85CD0 /* MenuViewController.m in Sources */,
+				6B30CDF32106A51400EDF627 /* IndicatorUtil.m in Sources */,
 				6B8EF3272105A595001EFDCD /* XMLDictionary.m in Sources */,
 				6B030EE920BE44B00060E8AD /* TestViewController.m in Sources */,
 				6B5338AE20C9004F00D85CD0 /* REFrostedContainerViewController.m in Sources */,

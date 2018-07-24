@@ -10,10 +10,15 @@
 
 @interface BookShelfCollectionViewCell : UICollectionViewCell
 
+@property (weak, nonatomic) IBOutlet UIImageView *coverImgView;
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *authorLabel;
 @property (weak, nonatomic) IBOutlet UILabel *compDateLabel;
 @property (weak, nonatomic) IBOutlet UILabel *bMarkCountLabel;
 @property (weak, nonatomic) IBOutlet UILabel *rateLabel;
+
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *coverImgViewWidthConst;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *titleLeadingMarginConst;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *authorLeadingMarginConst;
 
 @end

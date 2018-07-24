@@ -19,7 +19,7 @@ typedef void (^BookDeleteCompleted)(NSIndexPath *indexPath);
 @property (nonatomic, copy) BookCreateCompleted bookCreateCompleted;
 @property (nonatomic, copy) BookModifyCompleted bookModifyCompleted;
 @property (nonatomic, copy) BookDeleteCompleted bookDeleteCompleted;
-@property (nonatomic, weak) Book *book;
+@property (nonatomic, strong) Book *book;
 
 @property (nonatomic, assign) BOOL isModifyMode;    // create / modify
 @property (nonatomic, strong) NSIndexPath *indexPath;

@@ -183,12 +183,12 @@
     if (isModifyMode) {
         BookShelfDetailViewController *detailVC = [[BookShelfDetailViewController alloc] init];
         detailVC.indexPath = indexPath;
-        [detailVC setBookCompositionHandler:book bookModifyCompleted:^(NSString *bookTitle, NSString *bookAuthor, NSDate *bookDate, CGFloat fRate, NSMutableArray *bookQuotes, UIImage *bookImage){
-            [self modifyBook:book bookTitle:bookTitle bookAuthor:bookAuthor compltDate:bookDate bookRate:fRate bookQuotes:bookQuotes bookImage:bookImage indexPath:indexPath completed:^(BOOL isResult) {
+        [detailVC setBookCompositionHandler:book bookModifyCompleted:^(NSDictionary *dic){
+            [self modifyBook:book bookDic:[dic copy] indexPath:indexPath completed:^(BOOL isResult) {
                 if (isResult) {
-                    
+
                 } else {
-                    
+
                 }
             }];
         } bookDeleteCompleted:^(NSIndexPath *indexPath) {
@@ -199,7 +199,7 @@
                 if (isResult) {
                     [self.bookshelfDelegate modifyBookCallback:book];
                 } else {
-                    
+
                 }
             }];
         }];
@@ -210,16 +210,16 @@
         addVC.isModifyMode = isModifyMode;
         addVC.isSearchMode = isSearchMode;
         addVC.bookDic = bookDic;
-        [addVC setBookCompositionHandler:^(NSString *bookTitle, NSString *bookAuthor, NSDate *bookDate, CGFloat fRate, NSMutableArray *bookQuotes, UIImage *bookImage){
-            [self createBook:bookTitle bookAuthor:bookAuthor compltDate:bookDate bookRate:fRate bookQuotes:bookQuotes bookImage:bookImage indexPath:nil completed:^(BOOL isResult) {
+        [addVC setBookshelfCompositionHandler:bookDic bookshelfCreateCompleted:^(NSDictionary *dic){
+            [self createBook:dic isSearchMode:isSearchMode indexPath:nil completed:^(BOOL isResult) {
                 if (isResult) {
                     
                 } else {
                     
                 }
             }];
-        } bookModifyCompleted:^(NSString *bookTitle, NSString *bookAuthor, NSDate *bookDate, CGFloat fRate, NSMutableArray *bookQuotes, UIImage *bookImage){
-            [self modifyBook:book bookTitle:bookTitle bookAuthor:bookAuthor compltDate:bookDate bookRate:fRate bookQuotes:bookQuotes bookImage:bookImage indexPath:indexPath completed:^(BOOL isResult) {
+        } bookshelfModifyCompleted:^(NSDictionary *dic){
+            [self modifyBook:book bookDic:dic indexPath:indexPath completed:^(BOOL isResult) {
                 if (isResult) {
                     
                 } else {
@@ -331,24 +331,28 @@
 }
 
 // create bookmark
-- (void)createBook:(NSString *)bookTitle bookAuthor:(NSString *)bookAuthor compltDate:(NSDate *)compltDate bookRate:(CGFloat)bookRate bookQuotes:(NSMutableArray *)bookQuotes bookImage:(UIImage *)bookImage indexPath:(NSIndexPath *)indexPath completed:(void (^)(BOOL isResult))completed {
+- (void)createBook:(NSDictionary *)bookDic isSearchMode:(BOOL)isSearchMode indexPath:(NSIndexPath *)indexPath completed:(void (^)(BOOL isResult))completed {
     id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][0];
     NSInteger bookCount = [sectionInfo numberOfObjects];
     
 //    NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
     NSDate *now = [[NSDate alloc] init];
-    //    int64_t tempBookID = ([now timeIntervalSince1970] * MILLI_SECONDS);
     
-    NSData *imageData = UIImagePNGRepresentation(bookImage);
+    NSData *imageData = UIImagePNGRepresentation([bookDic objectForKey:@"bCoverImg"]);
     
     Book *book = [[Book alloc] initWithContext:self.managedObjectContext];
     book.index = bookCount;
-    book.title = bookTitle;
-    book.author = bookAuthor;
-    book.completeDate = compltDate;
-    book.rate = bookRate;
-    book.quote = bookQuotes;
+    book.title = [bookDic objectForKey:@"bTitle"];
+    book.author = [bookDic objectForKey:@"bAuthor"];
+    book.publisher = [bookDic objectForKey:@"bPublisher"];
+    book.publishDate = [bookDic objectForKey:@"bPubDate"];
+    book.startDate = [bookDic objectForKey:@"bStartDate"];
+    book.completeDate = [bookDic objectForKey:@"bCompleteDate"];
+    book.rate = [[bookDic objectForKey:@"bRate"] floatValue];
+    book.coverImg = imageData;
+//    book.quote = bookQuotes;
     book.modifyDate = now;
+    book.isSearchMode = isSearchMode;
     book.quoteImg = imageData;
     
     NSError * error = nil;
@@ -365,7 +369,7 @@
 }
 
 // modify bookmark
-- (void)modifyBook:(Book *)book bookTitle:(NSString *)bookTitle bookAuthor:(NSString *)bookAuthor compltDate:(NSDate *)compltDate bookRate:(CGFloat)bookRate bookQuotes:(NSMutableArray *)bookQuotes bookImage:(UIImage *)bookImage indexPath:(NSIndexPath *)indexPath completed:(void (^)(BOOL isResult))completed {
+- (void)modifyBook:(Book *)book bookDic:(NSDictionary *)bookDic indexPath:(NSIndexPath *)indexPath completed:(void (^)(BOOL isResult))completed {
     NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
     NSFetchRequest <Book *> *fetchRequest = Book.fetchRequest;
     
@@ -382,41 +386,59 @@
         
         if([resultArray count]) {
             Book *book = [resultArray lastObject];
-            if (bookTitle) {
-                book.title = bookTitle;
+            if ([bookDic objectForKey:@"bTitle"]) {
+                book.title = [bookDic objectForKey:@"bTitle"];
             } else {
                 book.title = @"";
             }
             
-            if (bookAuthor) {
-                book.author = bookAuthor;
+            if ([bookDic objectForKey:@"bAuthor"]) {
+                book.author = [bookDic objectForKey:@"bAuthor"];
             } else {
                 book.author = @"";
             }
             
-            if (compltDate) {
-                book.completeDate = compltDate;
+            if ([bookDic objectForKey:@"bPublisher"]) {
+                book.publisher = [bookDic objectForKey:@"bPublisher"];
+            } else {
+                book.publisher = @"";
+            }
+            
+            if ([bookDic objectForKey:@"bPubDate"]) {
+                book.publishDate = [bookDic objectForKey:@"bPubDate"];
+            } else {
+                book.publishDate = [NSDate date];
+            }
+            
+            if ([bookDic objectForKey:@"bStartDate"]) {
+                book.startDate = [bookDic objectForKey:@"bStartDate"];
+            } else {
+                book.startDate = [NSDate date];
+            }
+            
+            if ([bookDic objectForKey:@"bCompleteDate"]) {
+                book.completeDate = [bookDic objectForKey:@"bCompleteDate"];
             } else {
                 book.completeDate = [NSDate date];
             }
             
-            if (bookRate) {
-                book.rate = bookRate;
+            if ([bookDic objectForKey:@"bRate"]) {
+                book.rate = [[bookDic objectForKey:@"bRate"] floatValue];
             } else {
                 book.rate = 0.f;
             }
             
-            if (bookQuotes) {
-                book.quote = bookQuotes;
+//            if (bookQuotes) {
+//                book.quote = bookQuotes;
+//            } else {
+//                book.quote = @"";
+//            }
+//            
+            if ([bookDic objectForKey:@"bCoverImg"]) {
+                NSData *imageData = UIImagePNGRepresentation([bookDic objectForKey:@"bCoverImg"]);
+                book.coverImg = imageData;
             } else {
-                book.quote = @"";
-            }
-            
-            if (bookImage) {
-                NSData *imageData = UIImagePNGRepresentation(bookImage);
-                book.quoteImg = imageData;
-            } else {
-                book.quoteImg = nil;
+                book.coverImg = nil;
             }
             
             book.modifyDate = now;
@@ -513,6 +535,18 @@
     [format setDateFormat:@"yy.MM.dd"];
     NSString *strDate = [format stringFromDate:book.completeDate];
     
+    cell.coverImgViewWidthConst.constant = 0.f;
+    cell.titleLeadingMarginConst.constant = 0.f;
+    cell.authorLeadingMarginConst.constant = 0.f;
+    
+    if (book.isSearchMode) {
+        if (book.coverImg) {
+            [cell.coverImgView setImage:[UIImage imageWithData:book.coverImg]];
+            cell.coverImgViewWidthConst.constant = 51.f;
+            cell.titleLeadingMarginConst.constant = 10.f;
+            cell.authorLeadingMarginConst.constant = 10.f;
+        }
+    }
     [cell.titleLabel setText:book.title];
     [cell.authorLabel setText:book.author];
     [cell.bMarkCountLabel setText:[NSString stringWithFormat:@"%ld", quoteArr.count]];

@@ -11,10 +11,13 @@
 #import "AddBookShelfLastCollectionViewCell.h"
 #import <Photos/Photos.h>
 #import "LSLDatePickerDialog.h"
+#import <SDWebImage/UIImageView+WebCache.h>
 
 @interface AddBookShelfViewController () <UITextFieldDelegate, UITextViewDelegate, UIImagePickerControllerDelegate, UICollectionViewDelegate, UICollectionViewDataSource> {
     UITapGestureRecognizer *bgTap;
     
+    NSDate *publishDate;
+    NSDate *startDate;
     NSDate *compDate;
     
     NSMutableArray *bookmarkArr;
@@ -31,10 +34,14 @@
     // set NavigationBar
     [self setNaviBarType:BAR_ADD title:nil image:nil];
     
+    publishDate = [NSDate date];
+    startDate = [NSDate date];
     compDate = [NSDate date];
     NSDateFormatter *format = [[NSDateFormatter alloc] init];
     [format setDateFormat:@"yyyy.MM.dd"];
     NSString *strDate = [format stringFromDate:compDate];
+    self.pubDateTextField.text = strDate;
+    self.startDateTextField.text = strDate;
     self.compDateTextField.text = strDate;
     
     [self.compDateTextField resignFirstResponder];
@@ -50,16 +57,28 @@
     
     if (self.isModifyMode) {
         if (self.book) {
+            if (self.book.isSearchMode) {
+                [self.titleLabel setUserInteractionEnabled:NO];
+                [self.authorLabel setUserInteractionEnabled:NO];
+                [self.publisherLabel setUserInteractionEnabled:NO];
+                [self.pubDateTextField setUserInteractionEnabled:NO];
+                
+                [self.coverImgView setImage:[UIImage imageWithData:self.book.coverImg]];
+            }
             bookmarkArr = [NSMutableArray arrayWithArray:self.book.quote];
             
+            publishDate = self.book.publishDate;
+            startDate = self.book.startDate;
             compDate = self.book.completeDate;
             NSDateFormatter *format = [[NSDateFormatter alloc] init];
             [format setDateFormat:@"yyyy.MM.dd"];
-            NSString *strDate = [format stringFromDate:compDate];
             
             [self.titleLabel setText:self.book.title];
             [self.authorLabel setText:self.book.author];
-            [self.compDateTextField setText:strDate];
+            [self.publisherLabel setText:self.book.publisher];
+            [self.pubDateTextField setText:[format stringFromDate:publishDate]];
+            [self.startDateTextField setText:[format stringFromDate:startDate]];
+            [self.compDateTextField setText:[format stringFromDate:compDate]];
             [self.rateView setRating:self.book.rate];
             
         }
@@ -75,12 +94,16 @@
                 [format setDateFormat:@"yyyy.MM.dd"];
                 NSString *strDate = [format stringFromDate:compDate];
                 
+                NSString *strPubDate = [self makeDateString:[self.bookDic objectForKey:@"pubdate"]];
+                publishDate = [format dateFromString:strPubDate];
+                
                 [self.titleLabel setText:[attrString string]];
                 [self.authorLabel setText:[self.bookDic objectForKey:@"author"]];
                 [self.publisherLabel setText:[self.bookDic objectForKey:@"publisher"]];
-                [self.pubDateTextField setText:[self.bookDic objectForKey:@"pubdate"]];
+                [self.pubDateTextField setText:strPubDate];
                 [self.startDateTextField setText:strDate];
                 [self.compDateTextField setText:strDate];
+                [self.coverImgView sd_setImageWithURL:[NSURL URLWithString:[self.bookDic objectForKey:@"image"]]];
                 
                 [self.titleLabel setUserInteractionEnabled:NO];
                 [self.authorLabel setUserInteractionEnabled:NO];
@@ -106,14 +129,23 @@
 }
 
 // set block
-- (void)setBookCompositionHandler:(BookCreateCompleted)bookCreateCompleted bookModifyCompleted:(BookModifyCompleted)bookModifyCompleted
+- (void)setBookshelfCompositionHandler:(NSDictionary *)bDic bookshelfCreateCompleted:(BookshelfCreateCompleted)bookshelfCreateCompleted bookshelfModifyCompleted:(BookshelfModifyCompleted)bookshelfModifyCompleted
 {
-    self.bookCreateCompleted = bookCreateCompleted;
-    self.bookModifyCompleted = bookModifyCompleted;
+    self.bookDic = bDic;
+    self.bookshelfCreateCompleted = bookshelfCreateCompleted;
+    self.bookshelfModifyCompleted = bookshelfModifyCompleted;
 }
 
 - (void) writeFinished {
     [self.view endEditing:YES];
+}
+
+- (NSString *)makeDateString:(NSString *)strDate {
+    NSMutableString *muString = [NSMutableString stringWithString:strDate];
+    [muString insertString:@"." atIndex:4];
+    [muString insertString:@"." atIndex:7];
+    
+    return [NSString stringWithString:muString];
 }
 
 -(void)addDoneToolBarToKeyboard:(UITextView *)textView
@@ -146,13 +178,36 @@
 //    }
     else {
         if (self.isModifyMode) {
-            if (self.bookModifyCompleted) {
-                self.bookModifyCompleted(self.titleLabel.text, self.authorLabel.text, compDate, self.rateView.rating, bookmarkArr, nil);
+            if (self.bookshelfModifyCompleted) {
+                NSMutableDictionary *bookDic = [NSMutableDictionary dictionary];
+                [bookDic setObject:self.titleLabel.text forKey:@"bTitle"];
+                [bookDic setObject:self.authorLabel.text forKey:@"bAuthor"];
+                [bookDic setObject:self.publisherLabel.text forKey:@"bPublisher"];
+                [bookDic setObject:publishDate forKey:@"bPubDate"];
+                //                [bookDic setObject:self.coverImgView.image forKey:@""];
+                [bookDic setObject:startDate forKey:@"bStartDate"];
+                [bookDic setObject:compDate forKey:@"bCompleteDate"];
+                [bookDic setObject:[NSNumber numberWithFloat:self.rateView.rating] forKey:@"bRate"];
+                self.bookshelfModifyCompleted(bookDic);
             }
         } else {
             // create bookmark data
-            if (self.bookCreateCompleted) {
-                self.bookCreateCompleted(self.titleLabel.text, self.authorLabel.text, compDate, self.rateView.rating, bookmarkArr, nil);
+            if (self.bookshelfCreateCompleted) {
+                NSMutableDictionary *bookDic = [NSMutableDictionary dictionary];
+                [bookDic setObject:self.titleLabel.text forKey:@"bTitle"];
+                [bookDic setObject:self.authorLabel.text forKey:@"bAuthor"];
+                [bookDic setObject:self.publisherLabel.text forKey:@"bPublisher"];
+                [bookDic setObject:publishDate forKey:@"bPubDate"];
+                //                [bookDic setObject:self.coverImgView.image forKey:@""];
+                [bookDic setObject:startDate forKey:@"bStartDate"];
+                [bookDic setObject:compDate forKey:@"bCompleteDate"];
+                
+                if (self.isSearchMode) {
+                    [bookDic setObject:self.coverImgView.image forKey:@"bCoverImg"];
+                }
+                
+                [bookDic setObject:[NSNumber numberWithFloat:self.rateView.rating] forKey:@"bRate"];
+                self.bookshelfCreateCompleted(bookDic);
             }
         }
         [self popController:YES];
@@ -174,18 +229,44 @@
     }
     
     LSLDatePickerDialog *dpDialog = [[LSLDatePickerDialog alloc] init];
-    [dpDialog showWithTitle:strTitle doneButtonTitle:@"확인" cancelButtonTitle:@"취소" defaultDate:[NSDate date] datePickerMode:UIDatePickerModeDate callback:^(NSDate *date) {
-        if (date) {
-            compDate = date;
-            NSDateFormatter *format = [[NSDateFormatter alloc] init];
-            [format setDateFormat:@"yyyy.MM.dd"];
-            NSString *strDate = [format stringFromDate:date];
-            textField.text = strDate;
-            NSLog(@"YJ << get date : %@", strDate);
-        }
-    }];
+    if (textField == self.pubDateTextField) {
+        [dpDialog showWithTitle:@"출판일" doneButtonTitle:@"확인" cancelButtonTitle:@"취소" defaultDate:[NSDate date] datePickerMode:UIDatePickerModeDate callback:^(NSDate *date) {
+            if (date) {
+                publishDate = date;
+                NSDateFormatter *format = [[NSDateFormatter alloc] init];
+                [format setDateFormat:@"yyyy.MM.dd"];
+                NSString *strDate = [format stringFromDate:date];
+                textField.text = strDate;
+            }
+        }];
+        return NO;
+    }
+    else if (textField == self.startDateTextField) {
+        [dpDialog showWithTitle:@"시작일" doneButtonTitle:@"확인" cancelButtonTitle:@"취소" defaultDate:[NSDate date] datePickerMode:UIDatePickerModeDate callback:^(NSDate *date) {
+            if (date) {
+                startDate = date;
+                NSDateFormatter *format = [[NSDateFormatter alloc] init];
+                [format setDateFormat:@"yyyy.MM.dd"];
+                NSString *strDate = [format stringFromDate:date];
+                textField.text = strDate;
+            }
+        }];
+        return NO;
+    }
+    else if (textField == self.compDateTextField) {
+        [dpDialog showWithTitle:@"완독일" doneButtonTitle:@"확인" cancelButtonTitle:@"취소" defaultDate:[NSDate date] datePickerMode:UIDatePickerModeDate callback:^(NSDate *date) {
+            if (date) {
+                compDate = date;
+                NSDateFormatter *format = [[NSDateFormatter alloc] init];
+                [format setDateFormat:@"yyyy.MM.dd"];
+                NSString *strDate = [format stringFromDate:date];
+                textField.text = strDate;
+            }
+        }];
+        return NO;
+    }
     
-    return NO;
+    return YES;
 }
 
 #pragma mark - UITextViewDelegate

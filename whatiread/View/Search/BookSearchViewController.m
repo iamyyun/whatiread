@@ -10,6 +10,7 @@
 #import "BookSearchCollectionViewCell.h"
 #import "AddBookShelfViewController.h"
 #import <SDWebImage/UIImageView+WebCache.h>
+#import "MTBBarcodeScanner.h"
 
 #define SEARCH_COUNT_ONCE  20
 
@@ -18,6 +19,8 @@
     
     NSInteger searchIndex;
     NSInteger totalCount;
+    
+    MTBBarcodeScanner *scanner;
 }
 
 @end
@@ -30,8 +33,12 @@
     
     searchArr = [NSMutableArray array];
     
+    [self.searchBar setImage:[UIImage imageNamed:@"btn_barcode"] forSearchBarIcon:UISearchBarIconBookmark state:UIControlStateNormal];
+    
     [self.collectionView setAllowsSelection:YES];
     [self.collectionView registerNib:[UINib nibWithNibName:@"BookSearchCollectionViewCell" bundle:nil] forCellWithReuseIdentifier:@"BookSearchCollectionViewCell"];
+    
+    scanner = [[MTBBarcodeScanner alloc] initWithPreviewView:self.previewView];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -59,6 +66,83 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
+- (IBAction)scanCloseBtnAction:(id)sender {
+    [self.scanView setHidden:YES];
+    [scanner stopScanning];
+}
+
+- (IBAction)swtichBtnAction:(id)sender {
+    [scanner flipCamera];
+}
+
+- (IBAction)flashBtnAction:(id)sender {
+    if (scanner.torchMode == MTBTorchModeOff) {
+        scanner.torchMode = MTBTorchModeOn;
+        [self.flashBtn setImage:[UIImage imageNamed:@"btn_flash_on"] forState:UIControlStateNormal];
+    } else {
+        scanner.torchMode = MTBTorchModeOff;
+        [self.flashBtn setImage:[UIImage imageNamed:@"btn_flash_off"] forState:UIControlStateNormal];
+    }
+}
+
+- (void) barcodeBtnAction:(id)sender {
+    
+}
+
+#pragma mark - API Request
+- (void)requestSearchBook {
+    [IndicatorUtil startProcessIndicator];
+    NSMutableDictionary *dataDic = [NSMutableDictionary dictionary];
+    [dataDic setObject:self.searchBar.text forKey:@"query"];
+    [dataDic setObject:[NSString stringWithFormat:@"%i", SEARCH_COUNT_ONCE] forKey:@"display"];
+    [dataDic setObject:[NSString stringWithFormat:@"%i", 1] forKey:@"start"];
+    [dataDic setObject:@"sim" forKey:@"sort"];
+    [[AdminConnectionManager connManager] sendRequest:API_SEARCH_BOOK dataInfo:dataDic success:^(id responseData) {
+        NSDictionary *chaDic = [responseData objectForKey:@"channel"];
+        if (responseData && chaDic) {
+            searchArr = [chaDic objectForKey:@"item"];
+            searchIndex = [[chaDic objectForKey:@"start"] integerValue];
+            totalCount = [[chaDic objectForKey:@"total"] integerValue];
+            NSLog(@"YJ << book search data : %@", searchArr);
+            [self.collectionView reloadData];
+            [IndicatorUtil stopProcessIndicator];
+        }
+    } failure:^(NSError *error, NSString *serverFault) {
+        
+    }];
+}
+
+- (void)requestSearchBookDetail:(NSString *)strBarcode {
+    [IndicatorUtil startProcessIndicator];
+    NSMutableDictionary *dataDic = [NSMutableDictionary dictionary];
+//    [dataDic setObject:self.searchBar.text forKey:@"query"];
+//    [dataDic setObject:[NSString stringWithFormat:@"%i", SEARCH_COUNT_ONCE] forKey:@"display"];
+//    [dataDic setObject:[NSString stringWithFormat:@"%i", 1] forKey:@"start"];
+//    [dataDic setObject:@"sim" forKey:@"sort"];
+    [dataDic setObject:strBarcode forKey:@"d_isbn"];
+    [[AdminConnectionManager connManager] sendRequest:API_SEARCH_BOOK_DETAIL dataInfo:dataDic success:^(id responseData) {
+        NSDictionary *chaDic = [responseData objectForKey:@"channel"];
+        if (responseData && chaDic) {
+            totalCount = [[chaDic objectForKey:@"total"] integerValue];
+            if (totalCount == 0) {
+                UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"해당하는 책 정보가 없습니다." message:nil preferredStyle:UIAlertControllerStyleAlert];
+                UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Confirm", @"") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {}];
+                [alert addAction:okAction];
+                [self presentController:alert animated:YES];
+            } else {
+                if (self.bookSelectCompleted) {
+                    NSDictionary *dic = [chaDic objectForKey:@"item"];
+                    self.bookSelectCompleted(dic);
+                    [self dismissViewControllerAnimated:YES completion:nil];
+                }
+            }
+            [IndicatorUtil stopProcessIndicator];
+        }
+    } failure:^(NSError *error, NSString *serverFault) {
+        
+    }];
+}
+
 #pragma mark - UISarchBarDelegate
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
 {
@@ -68,24 +152,33 @@
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
     [self.view endEditing:YES];
+    [self requestSearchBook];
     
     NSLog(@"YJ << search btn clicked");
-    NSMutableDictionary *dataDic = [NSMutableDictionary dictionary];
-    [dataDic setValue:self.searchBar.text forKey:@"query"];
-    [dataDic setValue:[NSString stringWithFormat:@"%i", SEARCH_COUNT_ONCE] forKey:@"display"];
-    [dataDic setValue:[NSString stringWithFormat:@"%i", 1] forKey:@"start"];
-    [dataDic setValue:@"sim" forKey:@"sort"];
-    [[AdminConnectionManager connManager] sendRequest:API_SEARCH_BOOK dataInfo:dataDic success:^(id responseData) {
-        NSDictionary *chaDic = [responseData objectForKey:@"channel"];
-        if (responseData && chaDic) {
-            searchArr = [chaDic objectForKey:@"item"];
-            searchIndex = [[chaDic objectForKey:@"start"] integerValue];
-            totalCount = [[chaDic objectForKey:@"total"] integerValue];
-            NSLog(@"YJ << book search data : %@", searchArr);
-            [self.collectionView reloadData];
+    
+}
+
+- (void)searchBarBookmarkButtonClicked:(UISearchBar *)searchBar
+{
+    NSLog(@"YJ << bookmark clicked");
+    [self.scanView setHidden:NO];
+    [MTBBarcodeScanner requestCameraPermissionWithSuccess:^(BOOL success) {
+        if (success) {
+            
+            NSError *error = nil;
+            [scanner startScanningWithResultBlock:^(NSArray *codes) {
+                AVMetadataMachineReadableCodeObject *code = [codes firstObject];
+                NSLog(@"Found code: %@", code.stringValue);
+                
+                [self.scanView setHidden:YES];
+                [scanner stopScanning];
+                
+                [self requestSearchBookDetail:code.stringValue];
+            } error:&error];
+            
+        } else {
+            // The user denied access to the camera
         }
-    } failure:^(NSError *error, NSString *serverFault) {
-        
     }];
 }
 
@@ -161,11 +254,12 @@
     if (bottomEdge >= scrollView.contentSize.height) {
         NSLog(@"YJ << scrollview did end deceleratgin");
         if ((searchIndex * SEARCH_COUNT_ONCE) < totalCount) {
+            [IndicatorUtil startProcessIndicator];
             NSMutableDictionary *dataDic = [NSMutableDictionary dictionary];
-            [dataDic setValue:self.searchBar.text forKey:@"query"];
-            [dataDic setValue:[NSString stringWithFormat:@"%i", SEARCH_COUNT_ONCE] forKey:@"display"];
-            [dataDic setValue:[NSString stringWithFormat:@"%i", (searchIndex+1)] forKey:@"start"];
-            [dataDic setValue:@"sim" forKey:@"sort"];
+            [dataDic setObject:self.searchBar.text forKey:@"query"];
+            [dataDic setObject:[NSString stringWithFormat:@"%i", SEARCH_COUNT_ONCE] forKey:@"display"];
+            [dataDic setObject:[NSString stringWithFormat:@"%i", (searchIndex+1)] forKey:@"start"];
+            [dataDic setObject:@"sim" forKey:@"sort"];
             [[AdminConnectionManager connManager] sendRequest:API_SEARCH_BOOK dataInfo:dataDic success:^(id responseData) {
                 NSDictionary *chaDic = [responseData objectForKey:@"channel"];
                 if (responseData && chaDic) {
@@ -175,6 +269,7 @@
                     totalCount = [[chaDic objectForKey:@"total"] integerValue];
                     NSLog(@"YJ << book search data : %@", searchArr);
                     [self.collectionView reloadData];
+                    [IndicatorUtil stopProcessIndicator];
                 }
             } failure:^(NSError *error, NSString *serverFault) {
                 

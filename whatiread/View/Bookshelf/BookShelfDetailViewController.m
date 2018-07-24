@@ -48,14 +48,20 @@
         
         quoteArr = [NSMutableArray arrayWithArray:self.book.quote];
         NSDateFormatter *format = [[NSDateFormatter alloc] init];
-        [format setDateFormat:@"yy.MM.dd"];
-        NSString *strDate = [format stringFromDate:self.book.completeDate];
+        [format setDateFormat:@"yyyy.MM.dd"];
+        
+        UIImage *image = [UIImage imageWithData:self.book.coverImg];
         
         [self.titleLabel setText:self.book.title];
         [self.authorLabel setText:self.book.author];
+        [self.publisherLabel setText:self.book.publisher];
+        [self.pubDateLabel setText:[format stringFromDate:self.book.publishDate]];
+        [self.startDateLabel setText:[format stringFromDate:self.book.startDate]];
+        [self.compDateLabel setText:[format stringFromDate:self.book.completeDate]];
         [self.rateView setRating:self.book.rate];
+        [self.coverImgView setImage:image];
+        
         [self.bmCountLabel setText:[NSString stringWithFormat:@"%ld", quoteArr.count]];
-        [self.completeDateLabel setText:strDate];
         
         [self.bookShelfCollectionView reloadData];
     }
@@ -74,58 +80,6 @@
 - (void)leftBarBtnClick:(id)sender
 {
     [self popController:YES];
-}
-
-- (void)rightBarBtnClick:(id)sender
-{
-    NSInteger tag = [sender tag];
-    // delete btn
-    if (tag == BTN_TYPE_DELETE) {
-        if (quoteArr && quoteArr.count > 0) {
-            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"해당 책 정보에 책갈피가 등록되어 있어 책 정보를 삭제 할 수 없습니다. 책갈피 삭제 후 삭제 해 주시기 바랍니다." message:nil preferredStyle:UIAlertControllerStyleAlert];
-            UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Confirm", @"") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {}];
-            [alert addAction:okAction];
-            [self presentController:alert animated:YES];
-        } else {
-            UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Delete", @"") message:NSLocalizedString(@"Do you really want to delete?", @"") preferredStyle:UIAlertControllerStyleActionSheet];
-            
-            NSString *strFirst = NSLocalizedString(@"Deleting", @"");
-            NSString *strSecond = NSLocalizedString(@"Cancel", @"");
-            UIAlertAction *firstAction = [UIAlertAction actionWithTitle:strFirst style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-                if (self.bookDeleteCompleted) {
-                    self.bookDeleteCompleted(self.indexPath);
-                    [self popController:YES];
-                }
-            }];
-            UIAlertAction *secondAction = [UIAlertAction actionWithTitle:strSecond style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-                [alert dismissViewControllerAnimated:YES completion:nil];
-            }];
-            
-            [alert addAction:firstAction];
-            [alert addAction:secondAction];
-            [self presentViewController:alert animated:YES completion:nil];
-        }
-    }
-    // edit btn
-    else if (tag == BTN_TYPE_EDIT) {
-        AddBookShelfViewController *addVC = [[AddBookShelfViewController alloc] init];
-        addVC.book = self.book;
-        addVC.isModifyMode = YES;
-        [addVC setBookCompositionHandler:nil bookModifyCompleted:^(NSString *bookTitle, NSString *bookAuthor, NSDate *bookDate, CGFloat fRate, NSMutableArray *bookQuotes, UIImage *bookImage){
-            self.book.title = bookTitle;
-            self.book.author = bookAuthor;
-            self.book.completeDate = bookDate;
-            self.book.rate = fRate;
-            self.book.quote = bookQuotes;
-            self.book.quoteImg = bookImage;
-            [self dataInitialize];
-            
-            if (self.bookModifyCompleted) {
-                self.bookModifyCompleted(bookTitle, bookAuthor, bookDate, fRate, bookQuotes, bookImage);
-            }
-        }];
-        [self pushController:addVC animated:YES];
-    }
 }
 
 #pragma mark - Actions
@@ -149,14 +103,58 @@
     
     [alert addAction:firstAction];
     [alert addAction:secondAction];
+    [alert addAction:thirdAction];
     [alert addAction:cancelAction];
     [self presentController:alert animated:YES];
 }
 
 - (IBAction)EditBookShelfBtnAction:(id)sender {
+    AddBookShelfViewController *addVC = [[AddBookShelfViewController alloc] init];
+    addVC.book = self.book;
+    addVC.isModifyMode = YES;
+    [addVC setBookshelfCompositionHandler:nil bookshelfCreateCompleted:nil bookshelfModifyCompleted:^(NSDictionary *bookDic){
+        self.book.title = [bookDic objectForKey:@"bTitle"];
+        self.book.author = [bookDic objectForKey:@"bAuthor"];
+        self.book.publisher = [bookDic objectForKey:@"bPublisher"];
+        self.book.publishDate = [bookDic objectForKey:@"bPubDate"];
+        self.book.startDate = [bookDic objectForKey:@"bStartDate"];
+        self.book.completeDate = [bookDic objectForKey:@"bCompleteDate"];
+        self.book.rate = [[bookDic objectForKey:@"bRate"] floatValue];
+        //            self.book.quoteImg = bookImage;
+        [self dataInitialize];
+        
+        if (self.bookModifyCompleted) {
+            self.bookModifyCompleted([bookDic copy]);
+        }
+    }];
+    [self pushController:addVC animated:YES];
 }
 
 - (IBAction)deleteBookShelfBtnAction:(id)sender {
+    if (quoteArr && quoteArr.count > 0) {
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"해당 책 정보에 책갈피가 등록되어 있어 책 정보를 삭제 할 수 없습니다. 책갈피 삭제 후 삭제 해 주시기 바랍니다." message:nil preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Confirm", @"") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {}];
+        [alert addAction:okAction];
+        [self presentController:alert animated:YES];
+    } else {
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Delete", @"") message:NSLocalizedString(@"Do you really want to delete?", @"") preferredStyle:UIAlertControllerStyleActionSheet];
+        
+        NSString *strFirst = NSLocalizedString(@"Deleting", @"");
+        NSString *strSecond = NSLocalizedString(@"Cancel", @"");
+        UIAlertAction *firstAction = [UIAlertAction actionWithTitle:strFirst style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+            if (self.bookDeleteCompleted) {
+                self.bookDeleteCompleted(self.indexPath);
+                [self popController:YES];
+            }
+        }];
+        UIAlertAction *secondAction = [UIAlertAction actionWithTitle:strSecond style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+            [alert dismissViewControllerAnimated:YES completion:nil];
+        }];
+        
+        [alert addAction:firstAction];
+        [alert addAction:secondAction];
+        [self presentViewController:alert animated:YES completion:nil];
+    }
 }
 
 - (void)bookmarkCellDelBtnAction:(id)sender

@@ -9,6 +9,7 @@
 #import "AppDelegate.h"
 #import "CommonViewController.h"
 #import "AdminConnectionManager.h"
+#import "IndicatorUtil.h"
 #import "UIColor+ColorString.h"
 #import "XMLDictionary.h"
 

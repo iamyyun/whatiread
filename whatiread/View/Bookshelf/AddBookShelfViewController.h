@@ -9,15 +9,15 @@
 #import <UIKit/UIKit.h>
 #import "RateView.h"
 
-typedef void (^BookCreateCompleted)(NSString *bookTitle, NSString *bookAuthor, NSDate *bookDate, CGFloat fRate, NSMutableArray *bookQuotes, UIImage *bookImage);
-typedef void (^BookModifyCompleted)(NSString *bookTitle, NSString *bookAuthor, NSDate *bookDate, CGFloat fRate, NSMutableArray *bookQuotes, UIImage *bookimage);
+typedef void (^BookshelfCreateCompleted)(NSDictionary *bookDic);
+typedef void (^BookshelfModifyCompleted)(NSDictionary *bookDic);
 
 @interface AddBookShelfViewController : CommonViewController
 
-@property (nonatomic, copy) BookCreateCompleted bookCreateCompleted;
-@property (nonatomic, copy) BookModifyCompleted bookModifyCompleted;
-@property (nonatomic, weak) Book *book;
-@property (nonatomic, weak) NSDictionary *bookDic;
+@property (nonatomic, copy) BookshelfCreateCompleted bookshelfCreateCompleted;
+@property (nonatomic, copy) BookshelfModifyCompleted bookshelfModifyCompleted;
+@property (nonatomic, strong) Book *book;
+@property (nonatomic, strong) NSDictionary *bookDic;
 
 @property (nonatomic, assign) BOOL isModifyMode;    // create / modify
 @property (nonatomic, assign) BOOL isSearchMode;    // search / write
@@ -29,9 +29,10 @@ typedef void (^BookModifyCompleted)(NSString *bookTitle, NSString *bookAuthor, N
 @property (weak, nonatomic) IBOutlet UITextField *startDateTextField;
 @property (weak, nonatomic) IBOutlet UITextField *compDateTextField;
 @property (weak, nonatomic) IBOutlet RateView *rateView;
+@property (weak, nonatomic) IBOutlet UIImageView *coverImgView;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *collViewBottomConst;
 
-- (void)setBookCompositionHandler:(BookCreateCompleted)bookCreateCompleted bookModifyCompleted:(BookModifyCompleted)bookModifyCompleted;
+- (void)setBookshelfCompositionHandler:(NSDictionary *)bDic bookshelfCreateCompleted:(BookshelfCreateCompleted)bookshelfCreateCompleted bookshelfModifyCompleted:(BookshelfModifyCompleted)bookshelfModifyCompleted;
 
 @end

@@ -11,4 +11,5 @@ target 'whatiread' do
 	pod 'GKActionSheetPicker'
 	pod 'AFNetworking', '~> 3.0'
 	pod 'SDWebImage', '~> 4.0'
+	pod 'MTBBarcodeScanner'
 end

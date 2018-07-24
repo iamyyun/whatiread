@@ -16,6 +16,7 @@ PODS:
     - AFNetworking/NSURLSession
   - DatePickerDialog-ObjC (1.2)
   - GKActionSheetPicker (0.5.1)
+  - MTBBarcodeScanner (5.0.6)
   - RateView (1.2)
   - SDWebImage (4.4.2):
     - SDWebImage/Core (= 4.4.2)
@@ -25,6 +26,7 @@ DEPENDENCIES:
   - AFNetworking (~> 3.0)
   - DatePickerDialog-ObjC (~> 1.2)
   - GKActionSheetPicker
+  - MTBBarcodeScanner
   - RateView
   - SDWebImage (~> 4.0)
 
@@ -33,6 +35,7 @@ SPEC REPOS:
     - AFNetworking
     - DatePickerDialog-ObjC
     - GKActionSheetPicker
+    - MTBBarcodeScanner
     - RateView
     - SDWebImage
 
@@ -40,9 +43,10 @@ SPEC CHECKSUMS:
   AFNetworking: b6f891fdfaed196b46c7a83cf209e09697b94057
   DatePickerDialog-ObjC: 63266ee38d3d7b8b7a3e03f7512693b940baaddd
   GKActionSheetPicker: c44947e518cda1e68f5ebb17007ef1a9d7d741df
+  MTBBarcodeScanner: bb0bb62e18b57f8a571a482248adc20722b70a91
   RateView: d4d12e9bb76dc23a77a56f4e5c5fb530a3f3f998
   SDWebImage: 624d6e296c69b244bcede364c72ae0430ac14681
 
-PODFILE CHECKSUM: 536813955b81f9d68174a5e0b5e8c0a82c8c63b0
+PODFILE CHECKSUM: 900cbf3ddb6460590ed11c1a2c68ba7eae3601fe
 
 COCOAPODS: 1.5.3
