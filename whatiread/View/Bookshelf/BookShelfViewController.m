@@ -22,7 +22,7 @@
     GKActionSheetPicker *sortPickerView;
     NSArray *sortArr;
     
-    NSFetchedResultsChangeType *changeType;
+    UITapGestureRecognizer *bgTap;
 }
 
 @end
@@ -34,7 +34,7 @@
     // Do any additional setup after loading the view from its nib.
     
     UIImage *image = [UIImage imageNamed:@"icon_menu_bookshelf"];
-    [self setNaviBarType:BAR_NORMAL title:NSLocalizedString(@"Bookshelf", @"") image:image];
+    [self setNaviBarType:BAR_MENU title:NSLocalizedString(@"Bookshelf", @"") image:image];
     
     [self.collectionView setAllowsSelection:YES];
     [self.collectionView registerNib:[UINib nibWithNibName:@"BookShelfCollectionViewCell" bundle:nil] forCellWithReuseIdentifier:@"BookShelfCollectionViewCell"];
@@ -51,8 +51,7 @@
         for (int i = 0; i < bookCount; i++) {
             NSIndexPath *indexPath = [NSIndexPath indexPathForItem:i inSection:0];
             Book *book = [self.fetchedResultsController objectAtIndexPath:indexPath];
-            NSArray *arrQuotes = [NSArray arrayWithArray:book.quote];
-            bmCount += arrQuotes.count;
+            bmCount += book.quotes.count;
         }
         [self.collectionView setHidden:NO];
         [self.emptyView setHidden:YES];
@@ -67,7 +66,7 @@
     // Sort PickerView
     sortArr = @[@"완독일", @"책 제목", @"평점"];
     sortPickerView = [GKActionSheetPicker stringPickerWithItems:sortArr selectCallback:^(id selected) {
-        [self sortBookmark:selected];
+        [self sortBookshelf:selected];
     } cancelCallback:nil];
     sortPickerView.selectButtonTitle = @"완료";
     sortPickerView.cancelButtonTitle = @"취소";
@@ -75,6 +74,7 @@
     // Add Observer
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillShowNote:) name:UIWindowDidResignKeyNotification object:self.view.window];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillHideNote:) name:UIWindowDidBecomeKeyNotification object:self.view.window];
+    bgTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(writeFinished)];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -87,6 +87,8 @@
     self.fetchedResultsController = coreData.fetchedResultsController;
     self.fetchedResultsController.delegate = self;
     self.managedObjectContext = coreData.managedObjectContext;
+    
+    [self.collectionView reloadData];
 }
 
 
@@ -95,12 +97,20 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void) writeFinished {
+    [self.view endEditing:YES];
+    
+    [self.view removeGestureRecognizer:bgTap];
+}
+
 #pragma mark - navigation action
 - (void)rightBarBtnClick:(id)sender
 {
     [self.searchBar setHidden:NO];
     [self.searchBar becomeFirstResponder];
     [self.navigationController setNavigationBarHidden:YES animated:YES];
+    
+    [self.view addGestureRecognizer:bgTap];
 }
 
 #pragma mark - actions
@@ -116,7 +126,15 @@
         searchVC.modalPresentationStyle = UIModalPresentationCurrentContext;
         [searchVC setBookSearchHandler:^(NSDictionary *bookDic) {
             if (bookDic) {
-                [self bookConfigure:nil bookDic:bookDic indexPath:nil isModifyMode:NO isSearchMode:YES];
+                if (![self isExistItem:bookDic]) {
+                    [self bookConfigure:nil bookDic:bookDic indexPath:nil isModifyMode:NO isSearchMode:YES];
+                }
+                else {
+                    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"이미 등록된 책입니다." message:nil preferredStyle:UIAlertControllerStyleAlert];
+                    UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Confirm", @"") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {}];
+                    [alert addAction:okAction];
+                    [self presentController:alert animated:YES];
+                }
             }
         }];
         [self presentController:searchVC animated:YES];
@@ -138,8 +156,51 @@
     [sortPickerView presentPickerOnView:self.view];
 }
 
-// Sort Bookmark CollectionView
-- (void)sortBookmark:(NSString *)strSelect {
+- (NSString *)makeMetaToString:(NSString *)strMeta {
+    NSString *strResult = @"";
+    NSString *style = @"<meta charset=\"UTF-8\"><style> body { font-family: 'HelveticaNeue'; font-size: 15px; } b {font-family: 'MarkerFelt-Wide'; }</style>";
+    NSString *meta = [NSString stringWithFormat:@"%@%@", style, strMeta];
+    NSDictionary *options = @{ NSDocumentTypeDocumentAttribute : NSHTMLTextDocumentType };
+    NSAttributedString *attrString = [[NSAttributedString alloc] initWithData:[meta dataUsingEncoding:NSUTF8StringEncoding] options:options documentAttributes:nil error:nil];
+    strResult = [NSString stringWithFormat:@"%@", [attrString string]];
+    
+    return strResult;
+}
+
+- (BOOL)isExistItem:(NSDictionary *)dic {
+    
+    self.fetchedResultsController = nil;
+    
+    [coreData coreDataInitialize];
+    self.fetchedResultsController = coreData.fetchedResultsController;
+    self.fetchedResultsController.delegate = self;
+    
+    NSFetchRequest *request = [[self fetchedResultsController] fetchRequest];
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"title" ascending:YES];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"title contains[cd] %@ AND author contains[cd] %@ AND isSearchMode == YES", [self makeMetaToString:[dic objectForKey:@"title"]], [self makeMetaToString:[dic objectForKey:@"author"]]];
+//        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"title contains[cd] %@ OR quotes contains[cd] %@", searchBar.text, searchBar.text];
+    [request setPredicate:predicate];
+    [request setSortDescriptors:@[sortDescriptor]];
+    
+    NSError *error = nil;
+    if (![[self fetchedResultsController] performFetch:&error]) {
+        // Handle error
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        abort();
+    }
+    
+    id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][0];
+    NSInteger count = [sectionInfo numberOfObjects];
+    
+    if (count > 0) {
+        return YES;
+    } else {
+        return NO;
+    }
+}
+
+// Sort Bookshelf CollectionView
+- (void)sortBookshelf:(NSString *)strSelect {
     [self.sortLabel setText:strSelect];
     
     NSString *sortKey = @"";
@@ -183,26 +244,7 @@
     if (isModifyMode) {
         BookShelfDetailViewController *detailVC = [[BookShelfDetailViewController alloc] init];
         detailVC.indexPath = indexPath;
-        [detailVC setBookCompositionHandler:book bookModifyCompleted:^(NSDictionary *dic){
-            [self modifyBook:book bookDic:[dic copy] indexPath:indexPath completed:^(BOOL isResult) {
-                if (isResult) {
-
-                } else {
-
-                }
-            }];
-        } bookDeleteCompleted:^(NSIndexPath *indexPath) {
-            [self deleteBook:indexPath];
-        } bookmarkDeleteCompleted:^(NSIndexPath *indexPath, NSInteger index, id <BookShelfViewControllerDelegate>delegate) {
-            self.bookshelfDelegate = delegate;
-            [self deleteBookmark:book indexPath:indexPath index:index completed:^(BOOL isResult, Book *book) {
-                if (isResult) {
-                    [self.bookshelfDelegate modifyBookCallback:book];
-                } else {
-
-                }
-            }];
-        }];
+        detailVC.book = book;
         [self pushController:detailVC animated:YES];
     }
     else {
@@ -218,15 +260,7 @@
                     
                 }
             }];
-        } bookshelfModifyCompleted:^(NSDictionary *dic){
-            [self modifyBook:book bookDic:dic indexPath:indexPath completed:^(BOOL isResult) {
-                if (isResult) {
-                    
-                } else {
-                    
-                }
-            }];
-        }];
+        } bookshelfModifyCompleted:nil];
         [self pushController:addVC animated:YES];
     }
     
@@ -255,81 +289,6 @@
     }
 }
 
-// delete Book
-- (void)deleteBook:(NSIndexPath *)indexPath {
-    Book *book = [self.fetchedResultsController objectAtIndexPath:indexPath];
-    NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
-    NSFetchRequest <Book *> *fetchRequest = Book.fetchRequest;
-    
-    [context performBlock:^{
-        NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"completeDate" ascending:NO];
-        [fetchRequest setSortDescriptors:@[sortDescriptor]];
-        [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"completeDate = %@", book.completeDate]];
-        
-        NSError * error;
-        
-        NSArray * resultArray = [context executeFetchRequest:fetchRequest error:&error];
-        
-        if([resultArray count]) {
-            [context deleteObject:[resultArray lastObject]];
-            [context save:&error];
-        }
-    }];
-}
-
-// delete Bookmark
-- (void)deleteBookmark:(Book*)book indexPath:(NSIndexPath *)indexPath index:(NSInteger)index completed:(void (^)(BOOL isResult, Book *book))completed {
-    NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
-    NSFetchRequest <Book *> *fetchRequest = Book.fetchRequest;
-    
-    NSDate *now = [[NSDate alloc] init];
-    
-    [context performBlock:^{
-        NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"completeDate" ascending:NO];
-        [fetchRequest setSortDescriptors:@[sortDescriptor]];
-        [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"completeDate = %@", book.completeDate]];
-        
-        NSError * error;
-        
-        NSArray * resultArray = [context executeFetchRequest:fetchRequest error:&error];
-        
-        if([resultArray count]) {
-            Book *book = [resultArray lastObject];
-            
-            NSMutableArray *quoteArr = [NSMutableArray arrayWithArray:(NSArray *)book.quote];
-            if (quoteArr && quoteArr.count > 0) {
-                [quoteArr removeObjectAtIndex:index];
-                book.quote = quoteArr;
-            }
-//            if (bookQuotes) {
-//                book.quotes = bookQuotes;
-//            } else {
-//                book.quotes = @"";
-//            }
-            
-            book.modifyDate = now;
-            
-            [context save:&error];
-            
-            if (!error) {
-                if (completed) {
-                    completed(YES, book);
-                }
-            }
-            else {
-                if (completed) {
-                    completed(NO, nil);
-                }
-            }
-        }
-        else {
-            if (completed) {
-                completed(NO, nil);
-            }
-        }
-    }];
-}
-
 // create bookmark
 - (void)createBook:(NSDictionary *)bookDic isSearchMode:(BOOL)isSearchMode indexPath:(NSIndexPath *)indexPath completed:(void (^)(BOOL isResult))completed {
     id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][0];
@@ -353,7 +312,7 @@
 //    book.quote = bookQuotes;
     book.modifyDate = now;
     book.isSearchMode = isSearchMode;
-    book.quoteImg = imageData;
+//    book.quoteImg = imageData;
     
     NSError * error = nil;
     
@@ -366,102 +325,6 @@
     else {
         completed(YES);
     }
-}
-
-// modify bookmark
-- (void)modifyBook:(Book *)book bookDic:(NSDictionary *)bookDic indexPath:(NSIndexPath *)indexPath completed:(void (^)(BOOL isResult))completed {
-    NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
-    NSFetchRequest <Book *> *fetchRequest = Book.fetchRequest;
-    
-    NSDate *now = [[NSDate alloc] init];
-    
-    [context performBlock:^{
-        NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"completeDate" ascending:NO];
-        [fetchRequest setSortDescriptors:@[sortDescriptor]];
-        [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"completeDate = %@", book.completeDate]];
-        
-        NSError * error;
-        
-        NSArray * resultArray = [context executeFetchRequest:fetchRequest error:&error];
-        
-        if([resultArray count]) {
-            Book *book = [resultArray lastObject];
-            if ([bookDic objectForKey:@"bTitle"]) {
-                book.title = [bookDic objectForKey:@"bTitle"];
-            } else {
-                book.title = @"";
-            }
-            
-            if ([bookDic objectForKey:@"bAuthor"]) {
-                book.author = [bookDic objectForKey:@"bAuthor"];
-            } else {
-                book.author = @"";
-            }
-            
-            if ([bookDic objectForKey:@"bPublisher"]) {
-                book.publisher = [bookDic objectForKey:@"bPublisher"];
-            } else {
-                book.publisher = @"";
-            }
-            
-            if ([bookDic objectForKey:@"bPubDate"]) {
-                book.publishDate = [bookDic objectForKey:@"bPubDate"];
-            } else {
-                book.publishDate = [NSDate date];
-            }
-            
-            if ([bookDic objectForKey:@"bStartDate"]) {
-                book.startDate = [bookDic objectForKey:@"bStartDate"];
-            } else {
-                book.startDate = [NSDate date];
-            }
-            
-            if ([bookDic objectForKey:@"bCompleteDate"]) {
-                book.completeDate = [bookDic objectForKey:@"bCompleteDate"];
-            } else {
-                book.completeDate = [NSDate date];
-            }
-            
-            if ([bookDic objectForKey:@"bRate"]) {
-                book.rate = [[bookDic objectForKey:@"bRate"] floatValue];
-            } else {
-                book.rate = 0.f;
-            }
-            
-//            if (bookQuotes) {
-//                book.quote = bookQuotes;
-//            } else {
-//                book.quote = @"";
-//            }
-//            
-            if ([bookDic objectForKey:@"bCoverImg"]) {
-                NSData *imageData = UIImagePNGRepresentation([bookDic objectForKey:@"bCoverImg"]);
-                book.coverImg = imageData;
-            } else {
-                book.coverImg = nil;
-            }
-            
-            book.modifyDate = now;
-            
-            [context save:&error];
-            
-            if (!error) {
-                if (completed) {
-                    completed(YES);
-                }
-            }
-            else {
-                if (completed) {
-                    completed(NO);
-                }
-            }
-        }
-        else {
-            if (completed) {
-                completed(NO);
-            }
-        }
-    }];
 }
 
 #pragma mark - UISearchBarDelegate
@@ -492,6 +355,7 @@
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
     isSearchBarActive = YES;
+    [self.view addGestureRecognizer:bgTap];
     
     self.fetchedResultsController = nil;
     
@@ -530,7 +394,6 @@
     
     Book *book = [self.fetchedResultsController objectAtIndexPath:indexPath];
     
-    NSMutableArray *quoteArr = [NSMutableArray arrayWithArray:book.quote];
     NSDateFormatter *format = [[NSDateFormatter alloc] init];
     [format setDateFormat:@"yy.MM.dd"];
     NSString *strDate = [format stringFromDate:book.completeDate];
@@ -549,7 +412,7 @@
     }
     [cell.titleLabel setText:book.title];
     [cell.authorLabel setText:book.author];
-    [cell.bMarkCountLabel setText:[NSString stringWithFormat:@"%ld", quoteArr.count]];
+    [cell.bMarkCountLabel setText:[NSString stringWithFormat:@"%ld", book.quotes.count]];
     [cell.compDateLabel setText:strDate];
     [cell.rateLabel setText:[[NSNumber numberWithFloat:book.rate] stringValue]];
     
@@ -647,8 +510,7 @@
         for (int i = 0; i < bookCount; i++) {
             NSIndexPath *indexPath = [NSIndexPath indexPathForItem:i inSection:0];
             Book *book = [self.fetchedResultsController objectAtIndexPath:indexPath];
-            NSArray *arrQuotes = [NSArray arrayWithArray:book.quote];
-            bmCount += arrQuotes.count;
+            bmCount += book.quotes.count;
         }
         [self.collectionView setHidden:NO];
         [self.emptyView setHidden:YES];
@@ -660,10 +522,6 @@
     [self.bCountLabel setText:[NSString stringWithFormat:@"%ld", bookCount]];
     [self.bmCountLabel setText:[NSString stringWithFormat:@"%ld", bmCount]];
     
-//    [self.collectionView performBatchUpdates:^{
-//        [self.collectionView reloadSections:[NSIndexSet indexSetWithIndex:0]];
-//    } completion:^(BOOL finished){
-//    }];
     [self.collectionView reloadData];
 }
 
@@ -672,7 +530,7 @@
 {
     
     NSLog(@"YJ << keyboard show");
-    //    [self.view addGestureRecognizer:bgTap];
+    [self.view addGestureRecognizer:bgTap];
     
     NSDictionary* userInfo = [notification userInfo];
     
@@ -682,7 +540,7 @@
 - (void)handleKeyboardWillHideNote:(NSNotification *)notification
 {
     NSLog(@"YJ << keyboard hide");
-    //    [self.view removeGestureRecognizer:bgTap];
+    [self.view removeGestureRecognizer:bgTap];
     
     NSDictionary* userInfo = [notification userInfo];
     

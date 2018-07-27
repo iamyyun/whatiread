@@ -21,7 +21,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
-    SHAREDAPPDELEGATE.navigationController.interactivePopGestureRecognizer.delegate = self;
+//    SHAREDAPPDELEGATE.navigationController.interactivePopGestureRecognizer.delegate = self;
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -46,7 +46,7 @@
     if (type == BAR_NONE) {
         [SHAREDAPPDELEGATE.navigationController.navigationBar setHidden:YES];
     }
-    else if (type == BAR_NORMAL) {
+    else if (type == BAR_MENU) {
         // titleView
         if (title && title.length > 0) {
             UIView *centerView = [[UIView alloc] initWithFrame:CGRectZero];
@@ -83,11 +83,6 @@
         [rightBtn setFrame:CGRectMake(0, 5, 34, 34)];
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:rightBtn];
     }
-    else if (type == BAR_SEARCH) {
-//        self.searchDisplayController.displaysSearchBarInNavigationBar = YES;
-//        UISearchBar *searchBar = [[UISearchBar alloc] init];
-//        self.navigationItem.titleView = searchBar;
-    }
     else if (type == BAR_BACK) {
         // leftBarButton
         leftBtn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -98,23 +93,22 @@
         self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:leftBtn];
         
         if (title && title.length > 0) {
-            UIView *centerView = [[UIView alloc] initWithFrame:CGRectZero];
-            [centerView setBackgroundColor:[UIColor whiteColor]];
-            
-            UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
-            //            [imgView setImage:[UIImage imageNamed:@"icon_bookmark"]];
-            [imgView setImage:image];
-            [centerView addSubview:imgView];
-            
+//            self.navigationItem.title = NSLocalizedString(title, @"");
+//            UIView *centerView = [[UIView alloc] initWithFrame:CGRectZero];
+//            [centerView setBackgroundColor:[UIColor whiteColor]];
+//
             NSString *strTitle = NSLocalizedString(title, @"");
-            CGFloat width = [strTitle boundingRectWithSize:CGSizeMake(1000, 44) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:18.0f]} context:nil].size.width;
-            titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(44, 0, width, 44)];
+//            CGFloat width = [strTitle boundingRectWithSize:CGSizeMake(1000, 44) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:18.0f]} context:nil].size.width;
+            titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width - 64, 44)];
             [titleLabel setText:strTitle];
             [titleLabel setTextColor:[UIColor darkGrayColor]];
-            [centerView addSubview:titleLabel];
+            [titleLabel setFont:[UIFont systemFontOfSize:17.f]];
+            [titleLabel setAdjustsFontSizeToFitWidth:YES];
+            [titleLabel setTextAlignment:NSTextAlignmentCenter];
+//            [centerView addSubview:titleLabel];
             
-            [centerView setFrame:CGRectMake(0, 0, 44+width, 44)];
-            self.navigationItem.titleView = centerView;
+//            [centerView setFrame:CGRectMake(0, 0, 44+width, 44)];
+            self.navigationItem.titleView = titleLabel;
         }
     }
     else if (type == BAR_ADD) {
@@ -123,20 +117,18 @@
             UIView *centerView = [[UIView alloc] initWithFrame:CGRectZero];
             [centerView setBackgroundColor:[UIColor whiteColor]];
             
-            UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
-            //            [imgView setImage:[UIImage imageNamed:@"icon_bookmark"]];
-            [imgView setImage:image];
-            [centerView addSubview:imgView];
-            
             NSString *strTitle = NSLocalizedString(title, @"");
-            CGFloat width = [strTitle boundingRectWithSize:CGSizeMake(1000, 44) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:18.0f]} context:nil].size.width;
-            titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(44, 0, width, 44)];
+//            CGFloat width = [strTitle boundingRectWithSize:CGSizeMake(1000, 44) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:18.0f]} context:nil].size.width;
+            titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width - 64, 44)];
             [titleLabel setText:strTitle];
             [titleLabel setTextColor:[UIColor darkGrayColor]];
-            [centerView addSubview:titleLabel];
+            [titleLabel setFont:[UIFont systemFontOfSize:17.f]];
+            [titleLabel setAdjustsFontSizeToFitWidth:YES];
+            [titleLabel setTextAlignment:NSTextAlignmentCenter];
+//            [centerView addSubview:titleLabel];
             
-            [centerView setFrame:CGRectMake(0, 0, 44+width, 44)];
-            self.navigationItem.titleView = centerView;
+//            [centerView setFrame:CGRectMake(0, 0, 44+width, 44)];
+            self.navigationItem.titleView = titleLabel;
         }
         
         // leftBarButton
@@ -158,20 +150,18 @@
             UIView *centerView = [[UIView alloc] initWithFrame:CGRectZero];
             [centerView setBackgroundColor:[UIColor whiteColor]];
             
-            UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
-            //            [imgView setImage:[UIImage imageNamed:@"icon_bookmark"]];
-            [imgView setImage:image];
-            [centerView addSubview:imgView];
-            
             NSString *strTitle = NSLocalizedString(title, @"");
-            CGFloat width = [strTitle boundingRectWithSize:CGSizeMake(1000, 44) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:18.0f]} context:nil].size.width;
-            titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(44, 0, width, 44)];
+//            CGFloat width = [strTitle boundingRectWithSize:CGSizeMake(1000, 44) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:18.0f]} context:nil].size.width;
+            titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width - 64, 44)];
             [titleLabel setText:strTitle];
             [titleLabel setTextColor:[UIColor darkGrayColor]];
-            [centerView addSubview:titleLabel];
+            [titleLabel setFont:[UIFont systemFontOfSize:17.f]];
+            [titleLabel setAdjustsFontSizeToFitWidth:YES];
+            [titleLabel setTextAlignment:NSTextAlignmentCenter];
+//            [centerView addSubview:titleLabel];
             
-            [centerView setFrame:CGRectMake(0, 0, 44+width, 44)];
-            self.navigationItem.titleView = centerView;
+//            [centerView setFrame:CGRectMake(0, 0, 44+width, 44)];
+            self.navigationItem.titleView = titleLabel;
         }
         
         // leftBarButton
@@ -264,9 +254,10 @@
     [SHAREDAPPDELEGATE.navigationController presentViewController:vc animated:animated completion:nil];
 }
 
-- (void)dismissController:(BOOL)animated
+- (void)dismissController:(UIViewController *)vc animated:(BOOL)animated
 {
-    [SHAREDAPPDELEGATE.navigationController dismissViewControllerAnimated:animated completion:nil];
+    [vc dismissViewControllerAnimated:animated completion:nil];
+//    [SHAREDAPPDELEGATE.navigationController dismissViewControllerAnimated:animated completion:nil];
 }
 
 @end

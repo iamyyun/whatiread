@@ -35,39 +35,13 @@
                                 <color key="textColor" red="0.59215686274509804" green="0.59215686274509804" blue="0.59215686274509804" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2MO-cc-Zcy">
-                                <rect key="frame" x="335" y="10" width="30" height="15"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="30" id="Lgw-a6-0sE"/>
-                                    <constraint firstAttribute="height" constant="15" id="TnZ-6A-4YE"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <state key="normal" title="삭제">
-                                    <color key="titleColor" red="0.59215686274509804" green="0.59215686274509804" blue="0.59215686274509804" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                </state>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="K2g-8r-ww4">
-                                <rect key="frame" x="290" y="10" width="30" height="15"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="15" id="Wtk-h2-hSV"/>
-                                    <constraint firstAttribute="width" constant="30" id="zJW-nl-aiA"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <state key="normal" title="수정">
-                                    <color key="titleColor" red="0.59215686274509804" green="0.59215686274509804" blue="0.59215686274509804" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                </state>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="poM-8s-3KP" firstAttribute="leading" secondItem="Ey6-qj-qpM" secondAttribute="trailing" constant="1" id="2GV-dK-D3I"/>
-                            <constraint firstItem="2MO-cc-Zcy" firstAttribute="top" secondItem="i71-Oc-nqY" secondAttribute="top" constant="10" id="6QL-Ks-xoX"/>
                             <constraint firstItem="poM-8s-3KP" firstAttribute="centerY" secondItem="Ey6-qj-qpM" secondAttribute="centerY" id="ffY-7V-SxI"/>
                             <constraint firstAttribute="height" constant="30" id="hYn-pK-c5I"/>
-                            <constraint firstItem="2MO-cc-Zcy" firstAttribute="leading" secondItem="K2g-8r-ww4" secondAttribute="trailing" constant="15" id="isJ-cQ-hg5"/>
-                            <constraint firstItem="K2g-8r-ww4" firstAttribute="top" secondItem="i71-Oc-nqY" secondAttribute="top" constant="10" id="kzA-FQ-Huh"/>
                             <constraint firstItem="Ey6-qj-qpM" firstAttribute="leading" secondItem="i71-Oc-nqY" secondAttribute="leading" constant="15" id="teI-ss-fDp"/>
-                            <constraint firstAttribute="trailing" secondItem="2MO-cc-Zcy" secondAttribute="trailing" constant="10" id="vuj-4m-9xu"/>
                             <constraint firstItem="Ey6-qj-qpM" firstAttribute="top" secondItem="i71-Oc-nqY" secondAttribute="top" constant="10" id="zW5-MP-U8w"/>
                         </constraints>
                     </view>
@@ -87,16 +61,26 @@
                             <constraint firstAttribute="height" constant="1" id="ceG-is-8oC"/>
                         </constraints>
                     </view>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="qA8-LZ-Uy2">
+                        <rect key="frame" x="15" y="30" width="345" height="109"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="109" id="WVB-Fa-Drd"/>
+                        </constraints>
+                    </imageView>
                 </subviews>
             </view>
             <color key="backgroundColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
+                <constraint firstItem="qA8-LZ-Uy2" firstAttribute="top" secondItem="i71-Oc-nqY" secondAttribute="bottom" id="A2E-5r-Bj1"/>
                 <constraint firstItem="fQz-GL-Kd5" firstAttribute="top" secondItem="i71-Oc-nqY" secondAttribute="bottom" id="B69-Nc-hrq"/>
                 <constraint firstItem="i71-Oc-nqY" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="C6X-Go-OM4"/>
                 <constraint firstAttribute="bottom" secondItem="QX5-da-JGy" secondAttribute="bottom" id="F17-xp-CRS"/>
                 <constraint firstItem="QX5-da-JGy" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="15" id="MZc-VU-8pV"/>
                 <constraint firstAttribute="trailing" secondItem="i71-Oc-nqY" secondAttribute="trailing" id="NKg-jh-HJW"/>
                 <constraint firstAttribute="trailing" secondItem="QX5-da-JGy" secondAttribute="trailing" constant="15" id="QvS-jy-fhh"/>
+                <constraint firstAttribute="trailing" secondItem="qA8-LZ-Uy2" secondAttribute="trailing" constant="15" id="Y5v-Av-gSm"/>
+                <constraint firstItem="QX5-da-JGy" firstAttribute="top" secondItem="qA8-LZ-Uy2" secondAttribute="bottom" constant="10" id="dgX-ug-uQz"/>
+                <constraint firstItem="qA8-LZ-Uy2" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="15" id="gFx-da-fXJ"/>
                 <constraint firstItem="QX5-da-JGy" firstAttribute="top" secondItem="fQz-GL-Kd5" secondAttribute="bottom" constant="10" id="iVk-Om-MRn"/>
                 <constraint firstAttribute="trailing" secondItem="fQz-GL-Kd5" secondAttribute="trailing" constant="15" id="nvT-cM-SP4"/>
                 <constraint firstItem="fQz-GL-Kd5" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="15" id="p3u-29-uL3"/>
@@ -105,8 +89,8 @@
             <viewLayoutGuide key="safeArea" id="SEy-5g-ep8"/>
             <connections>
                 <outlet property="bMarkCountLabel" destination="poM-8s-3KP" id="nfk-EC-TQa"/>
-                <outlet property="delBtn" destination="2MO-cc-Zcy" id="kcN-me-5vw"/>
-                <outlet property="editBtn" destination="K2g-8r-ww4" id="GtF-3S-hf3"/>
+                <outlet property="quoteImgView" destination="qA8-LZ-Uy2" id="NvM-dN-6wX"/>
+                <outlet property="quoteImgViewHeightConst" destination="WVB-Fa-Drd" id="zx7-5J-TLu"/>
                 <outlet property="quoteLabel" destination="fQz-GL-Kd5" id="Qka-0C-XfM"/>
                 <outlet property="quoteLabelHeightConst" destination="V7g-D8-63p" id="r3P-Xy-62i"/>
             </connections>

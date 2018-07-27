@@ -68,7 +68,7 @@
                         <constraint firstAttribute="trailing" secondItem="bFU-lr-H5d" secondAttribute="trailing" id="PIS-4O-hxt"/>
                     </constraints>
                 </view>
-                <searchBar contentMode="redraw" placeholder="책 제목을 입력하세요." showsBookmarkButton="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fOG-ge-Z22">
+                <searchBar contentMode="redraw" placeholder="책 제목을 입력하세요." showsBookmarkButton="YES" showsCancelButton="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fOG-ge-Z22">
                     <rect key="frame" x="0.0" y="84" width="375" height="56"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="56" id="ouG-4v-ers"/>
@@ -135,6 +135,34 @@
                                         <action selector="flashBtnAction:" destination="-1" eventType="touchUpInside" id="esX-3p-nXQ"/>
                                     </connections>
                                 </button>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rO7-uB-ERV">
+                                    <rect key="frame" x="0.0" y="173" width="375" height="300"/>
+                                    <subviews>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_corner_left" translatesAutoresizingMaskIntoConstraints="NO" id="tzD-I9-hCg">
+                                            <rect key="frame" x="10" y="10" width="40" height="40"/>
+                                            <color key="tintColor" red="0.0" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="40" id="Dt0-hq-ctE"/>
+                                                <constraint firstAttribute="width" constant="40" id="TQR-9w-dbr"/>
+                                            </constraints>
+                                        </imageView>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_corner_right" translatesAutoresizingMaskIntoConstraints="NO" id="nAT-KZ-y4x">
+                                            <rect key="frame" x="325" y="250" width="40" height="40"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="40" id="rCb-bw-5LR"/>
+                                                <constraint firstAttribute="height" constant="40" id="zve-GV-0ik"/>
+                                            </constraints>
+                                        </imageView>
+                                    </subviews>
+                                    <color key="backgroundColor" red="0.0" green="1" blue="1" alpha="0.0" colorSpace="calibratedRGB"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="300" id="1oS-QO-mey"/>
+                                        <constraint firstAttribute="trailing" secondItem="nAT-KZ-y4x" secondAttribute="trailing" constant="10" id="FfM-LX-w8O"/>
+                                        <constraint firstAttribute="bottom" secondItem="nAT-KZ-y4x" secondAttribute="bottom" constant="10" id="l2T-cZ-Dci"/>
+                                        <constraint firstItem="tzD-I9-hCg" firstAttribute="top" secondItem="rO7-uB-ERV" secondAttribute="top" constant="10" id="tr8-dP-ti5"/>
+                                        <constraint firstItem="tzD-I9-hCg" firstAttribute="leading" secondItem="rO7-uB-ERV" secondAttribute="leading" constant="10" id="x1f-fH-7Jz"/>
+                                    </constraints>
+                                </view>
                             </subviews>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
@@ -142,7 +170,10 @@
                                 <constraint firstItem="pjY-S3-42u" firstAttribute="top" secondItem="lDg-Qd-V4T" secondAttribute="bottom" constant="15" id="GFP-VI-hK8"/>
                                 <constraint firstItem="lDg-Qd-V4T" firstAttribute="top" secondItem="8pN-YP-50Z" secondAttribute="top" constant="15" id="IiC-n6-cTd"/>
                                 <constraint firstItem="Ms1-q2-1mS" firstAttribute="top" secondItem="8pN-YP-50Z" secondAttribute="top" constant="15" id="MaX-Jn-eFz"/>
+                                <constraint firstItem="rO7-uB-ERV" firstAttribute="leading" secondItem="8pN-YP-50Z" secondAttribute="leading" id="gWh-XO-b4k"/>
                                 <constraint firstItem="lDg-Qd-V4T" firstAttribute="leading" secondItem="8pN-YP-50Z" secondAttribute="leading" constant="15" id="mHG-HF-s7X"/>
+                                <constraint firstAttribute="trailing" secondItem="rO7-uB-ERV" secondAttribute="trailing" id="p0e-aM-Rvd"/>
+                                <constraint firstItem="rO7-uB-ERV" firstAttribute="centerY" secondItem="8pN-YP-50Z" secondAttribute="centerY" id="vjW-wx-cJu"/>
                                 <constraint firstItem="pjY-S3-42u" firstAttribute="leading" secondItem="8pN-YP-50Z" secondAttribute="leading" constant="15" id="y1M-Cw-dMf"/>
                             </constraints>
                         </view>
@@ -182,5 +213,7 @@
         <image name="btn_close_white" width="45" height="45"/>
         <image name="btn_flash_off" width="45" height="45"/>
         <image name="btn_switch" width="45" height="45"/>
+        <image name="icon_corner_left" width="40" height="40"/>
+        <image name="icon_corner_right" width="40" height="40"/>
     </resources>
 </document>

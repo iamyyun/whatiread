@@ -12,4 +12,6 @@ target 'whatiread' do
 	pod 'AFNetworking', '~> 3.0'
 	pod 'SDWebImage', '~> 4.0'
 	pod 'MTBBarcodeScanner'
+	pod 'TOCropViewController'
+	pod 'TesseractOCRiOS'
 end

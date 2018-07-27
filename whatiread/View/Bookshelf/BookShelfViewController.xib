@@ -121,7 +121,7 @@
                         <constraint firstItem="FVE-cn-huh" firstAttribute="centerY" secondItem="g22-Z1-6pa" secondAttribute="centerY" id="xKk-et-Di3"/>
                     </constraints>
                 </view>
-                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsVerticalScrollIndicator="NO" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="huL-oV-xsP">
+                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="huL-oV-xsP">
                     <rect key="frame" x="0.0" y="180" width="375" height="487"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="JIR-mU-VJB">

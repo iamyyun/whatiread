@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AddBookmarkViewController">
+            <connections>
+                <outlet property="textView" destination="nu3-JS-awA" id="osE-31-yl5"/>
+                <outlet property="titleLabel" destination="7DF-yg-JMN" id="840-F7-xMc"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nu3-JS-awA">
+                    <rect key="frame" x="20" y="100" width="335" height="367"/>
+                    <color key="backgroundColor" white="0.95597330729166663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
+                    <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="14"/>
+                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="next"/>
+                    <connections>
+                        <outlet property="delegate" destination="-1" id="fWa-DI-PW5"/>
+                    </connections>
+                </textView>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_small_book" translatesAutoresizingMaskIntoConstraints="NO" id="0JB-ml-HCt">
+                    <rect key="frame" x="15" y="472" width="20" height="20"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="20" id="JpH-oK-yRf"/>
+                        <constraint firstAttribute="width" constant="20" id="kBV-23-A99"/>
+                    </constraints>
+                </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="어린왕자" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7DF-yg-JMN">
+                    <rect key="frame" x="40" y="474" width="320" height="16"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                    <color key="textColor" white="0.63316514756944442" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="nu3-JS-awA" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="top" constant="80" id="Cme-Sd-Hht"/>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="nu3-JS-awA" secondAttribute="trailing" constant="20" id="Ipc-rm-Myb"/>
+                <constraint firstItem="nu3-JS-awA" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="20" id="LEh-wF-tGc"/>
+                <constraint firstItem="7DF-yg-JMN" firstAttribute="leading" secondItem="0JB-ml-HCt" secondAttribute="trailing" constant="5" id="Twr-sT-d17"/>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="bottom" secondItem="nu3-JS-awA" secondAttribute="bottom" constant="200" id="ZYb-ow-1Ae"/>
+                <constraint firstItem="0JB-ml-HCt" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="15" id="fMl-BA-JJe"/>
+                <constraint firstItem="0JB-ml-HCt" firstAttribute="top" secondItem="nu3-JS-awA" secondAttribute="bottom" constant="5" id="haU-j4-EEi"/>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="7DF-yg-JMN" secondAttribute="trailing" constant="15" id="r5Z-kg-fmZ"/>
+                <constraint firstItem="7DF-yg-JMN" firstAttribute="centerY" secondItem="0JB-ml-HCt" secondAttribute="centerY" id="saY-sz-q2G"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="Q5M-cg-NOt"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="icon_small_book" width="20" height="20"/>
+    </resources>
+</document>

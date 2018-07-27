@@ -1,4 +1,4 @@
-module Pods_whatiread {
+framework module Pods_whatiread {
   umbrella header "Pods-whatiread-umbrella.h"
 
   export *

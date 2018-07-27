@@ -51,6 +51,17 @@
     self.bookSelectCompleted = bookSelectCompleted;
 }
 
+- (NSString *)makeMetaToString:(NSString *)strMeta {
+    NSString *strResult = @"";
+    NSString *style = @"<meta charset=\"UTF-8\"><style> body { font-family: 'HelveticaNeue'; font-size: 15px; } b {font-family: 'MarkerFelt-Wide'; }</style>";
+    NSString *meta = [NSString stringWithFormat:@"%@%@", style, strMeta];
+    NSDictionary *options = @{ NSDocumentTypeDocumentAttribute : NSHTMLTextDocumentType };
+    NSAttributedString *attrString = [[NSAttributedString alloc] initWithData:[meta dataUsingEncoding:NSUTF8StringEncoding] options:options documentAttributes:nil error:nil];
+    strResult = [NSString stringWithFormat:@"%@", [attrString string]];
+    
+    return strResult;
+}
+
 /*
 #pragma mark - Navigation
 
@@ -146,21 +157,20 @@
 #pragma mark - UISarchBarDelegate
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
 {
-    NSLog(@"YJ << cancel btn clicked");
+    [self.searchBar setText:@""];
+    [self.view endEditing:YES];
+    searchArr = [NSMutableArray array];
+    [self.collectionView reloadData];
 }
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
     [self.view endEditing:YES];
     [self requestSearchBook];
-    
-    NSLog(@"YJ << search btn clicked");
-    
 }
 
 - (void)searchBarBookmarkButtonClicked:(UISearchBar *)searchBar
 {
-    NSLog(@"YJ << bookmark clicked");
     [self.scanView setHidden:NO];
     [MTBBarcodeScanner requestCameraPermissionWithSuccess:^(BOOL success) {
         if (success) {
@@ -197,13 +207,8 @@
     
     NSDictionary *dic = searchArr[indexPath.item];
     if (dic) {
-        
-        NSString *style = @"<meta charset=\"UTF-8\"><style> body { font-family: 'HelveticaNeue'; font-size: 15px; } b {font-family: 'MarkerFelt-Wide'; }</style>";
-        NSString *bTitle = [NSString stringWithFormat:@"%@%@", style, [dic objectForKey:@"title"]];
-        NSDictionary *options = @{ NSDocumentTypeDocumentAttribute : NSHTMLTextDocumentType };
-        NSAttributedString *attrString = [[NSAttributedString alloc] initWithData:[bTitle dataUsingEncoding:NSUTF8StringEncoding] options:options documentAttributes:nil error:nil];
-        NSString *strTitle = [NSString stringWithFormat:@"%@ (%@)", [attrString string], [dic objectForKey:@"pubdate"]];
-        NSString *strDesc = [NSString stringWithFormat:@"%@ | %@", [dic objectForKey:@"author"], [dic objectForKey:@"publisher"]];
+        NSString *strTitle = [NSString stringWithFormat:@"%@ (%@)", [self makeMetaToString:[dic objectForKey:@"title"]], [dic objectForKey:@"pubdate"]];
+        NSString *strDesc = [NSString stringWithFormat:@"%@ | %@", [self makeMetaToString:[dic objectForKey:@"author"]], [dic objectForKey:@"publisher"]];
         
         [cell.titleLabel setText:strTitle];
         [cell.descLabel setText:strDesc];

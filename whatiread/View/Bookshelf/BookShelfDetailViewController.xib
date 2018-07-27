@@ -15,11 +15,12 @@
                 <outlet property="addBmBtn" destination="sJF-GL-oqh" id="OkF-PZ-0L7"/>
                 <outlet property="authorLabel" destination="iqw-iT-liX" id="FPK-on-c2A"/>
                 <outlet property="bmCountLabel" destination="uPN-FZ-0A3" id="Rgi-9f-02I"/>
-                <outlet property="bookShelfCollectionView" destination="7S8-9z-Ak3" id="CZ5-hN-9uH"/>
+                <outlet property="collectionView" destination="7S8-9z-Ak3" id="CZ5-hN-9uH"/>
                 <outlet property="compDateLabel" destination="Pi3-Nb-rE6" id="Y2v-Sj-bmE"/>
                 <outlet property="coverImgView" destination="Y1B-0C-A7U" id="M2G-oI-e3I"/>
                 <outlet property="deleteBsBtn" destination="gDh-z1-vGv" id="ffZ-JH-DK4"/>
                 <outlet property="editBsBtn" destination="xyA-nf-8VW" id="4YS-YK-oEB"/>
+                <outlet property="emptyView" destination="aWp-pf-sYd" id="bk0-uu-XbV"/>
                 <outlet property="pubDateLabel" destination="n35-Ce-hQD" id="LdC-DE-4GK"/>
                 <outlet property="publisherLabel" destination="kD3-WQ-jce" id="ciE-PP-87D"/>
                 <outlet property="rateView" destination="W8t-FB-PLY" id="duW-CJ-8fC"/>
@@ -246,11 +247,31 @@
                         <outlet property="delegate" destination="-1" id="B99-bz-93j"/>
                     </connections>
                 </collectionView>
+                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aWp-pf-sYd">
+                    <rect key="frame" x="0.0" y="363" width="375" height="304"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="등록된 책갈피가 없습니다." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bA0-Ws-mTW">
+                            <rect key="frame" x="110.5" y="143" width="155" height="18"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="bA0-Ws-mTW" firstAttribute="centerY" secondItem="aWp-pf-sYd" secondAttribute="centerY" id="25s-tR-F2l"/>
+                        <constraint firstItem="bA0-Ws-mTW" firstAttribute="centerX" secondItem="aWp-pf-sYd" secondAttribute="centerX" id="oTf-G7-Cw7"/>
+                    </constraints>
+                </view>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
+                <constraint firstItem="aWp-pf-sYd" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="753-0q-Yye"/>
                 <constraint firstItem="7S8-9z-Ak3" firstAttribute="top" secondItem="DDS-I2-mPb" secondAttribute="bottom" id="7vm-fE-uli"/>
                 <constraint firstItem="7S8-9z-Ak3" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="IWs-Ga-oJS"/>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="bottom" secondItem="aWp-pf-sYd" secondAttribute="bottom" id="L6m-43-y8d"/>
+                <constraint firstItem="aWp-pf-sYd" firstAttribute="top" secondItem="DDS-I2-mPb" secondAttribute="bottom" id="NLU-6r-Faq"/>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="aWp-pf-sYd" secondAttribute="trailing" id="Sj4-2J-XAU"/>
                 <constraint firstItem="DDS-I2-mPb" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="top" constant="64" id="WHl-WI-Ss7"/>
                 <constraint firstItem="DDS-I2-mPb" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="YuP-31-29y"/>
                 <constraint firstItem="DDS-I2-mPb" firstAttribute="trailing" secondItem="Q5M-cg-NOt" secondAttribute="trailing" id="khe-if-zxV"/>

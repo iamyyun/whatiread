@@ -12,14 +12,6 @@
 #import "CoreDataAccess.h"
 #import "CommonViewController.h"
 
-@protocol BookShelfViewControllerDelegate
-
-//- (void)modifyBookmarkCallback:(Book *)book;
-//- (void)deleteBookmarkCallback:(Book *)book;
-- (void)modifyBookCallback:(Book *)book;
-
-@end
-
 @interface BookShelfViewController : CommonViewController <NSFetchedResultsControllerDelegate>
 
 @property (strong, nonatomic) NSFetchedResultsController <Book *> *fetchedResultsController;
@@ -36,7 +28,5 @@
 
 - (IBAction)addBtnAction:(id)sender;
 - (IBAction)sortBtnAction:(id)sender;
-
-@property (weak) id<BookShelfViewControllerDelegate> bookshelfDelegate;
 
 @end

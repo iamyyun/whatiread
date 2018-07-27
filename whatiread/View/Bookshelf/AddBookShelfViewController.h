@@ -30,8 +30,6 @@ typedef void (^BookshelfModifyCompleted)(NSDictionary *bookDic);
 @property (weak, nonatomic) IBOutlet UITextField *compDateTextField;
 @property (weak, nonatomic) IBOutlet RateView *rateView;
 @property (weak, nonatomic) IBOutlet UIImageView *coverImgView;
-@property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *collViewBottomConst;
 
 - (void)setBookshelfCompositionHandler:(NSDictionary *)bDic bookshelfCreateCompleted:(BookshelfCreateCompleted)bookshelfCreateCompleted bookshelfModifyCompleted:(BookshelfModifyCompleted)bookshelfModifyCompleted;
 

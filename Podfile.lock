@@ -21,6 +21,8 @@ PODS:
   - SDWebImage (4.4.2):
     - SDWebImage/Core (= 4.4.2)
   - SDWebImage/Core (4.4.2)
+  - TesseractOCRiOS (4.0.0)
+  - TOCropViewController (2.3.7)
 
 DEPENDENCIES:
   - AFNetworking (~> 3.0)
@@ -29,6 +31,8 @@ DEPENDENCIES:
   - MTBBarcodeScanner
   - RateView
   - SDWebImage (~> 4.0)
+  - TesseractOCRiOS
+  - TOCropViewController
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
@@ -38,6 +42,8 @@ SPEC REPOS:
     - MTBBarcodeScanner
     - RateView
     - SDWebImage
+    - TesseractOCRiOS
+    - TOCropViewController
 
 SPEC CHECKSUMS:
   AFNetworking: b6f891fdfaed196b46c7a83cf209e09697b94057
@@ -46,7 +52,9 @@ SPEC CHECKSUMS:
   MTBBarcodeScanner: bb0bb62e18b57f8a571a482248adc20722b70a91
   RateView: d4d12e9bb76dc23a77a56f4e5c5fb530a3f3f998
   SDWebImage: 624d6e296c69b244bcede364c72ae0430ac14681
+  TesseractOCRiOS: 90638afbe43d082433f2e76b384c7901d23956df
+  TOCropViewController: c7ae3481a3f52e52a6897383a6aba17d47381ab6
 
-PODFILE CHECKSUM: 900cbf3ddb6460590ed11c1a2c68ba7eae3601fe
+PODFILE CHECKSUM: 1a096bdc677e79c66927ec8717fc6aff0e597ab3
 
 COCOAPODS: 1.5.3

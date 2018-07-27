@@ -7,19 +7,17 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <CoreData/CoreData.h>
 #import "whatiread+CoreDataModel.h"
+#import "CoreDataAccess.h"
 #import "RateView.h"
 #import "BookShelfViewController.h"
 
-typedef void (^BookModifyCompleted)(NSDictionary *bookDic);
-typedef void (^BookDeleteCompleted)(NSIndexPath *indexPath);
-typedef void (^BookmarkDeleteCompleted)(NSIndexPath *indexPath, NSInteger index, id<BookShelfViewControllerDelegate>delegate);
+@interface BookShelfDetailViewController : CommonViewController <NSFetchedResultsControllerDelegate>
 
-@interface BookShelfDetailViewController : CommonViewController
+@property (strong, nonatomic) NSFetchedResultsController <Book *> *fetchedResultsController;
+@property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 
-@property (nonatomic, copy) BookModifyCompleted bookModifyCompleted;
-@property (nonatomic, copy) BookDeleteCompleted bookDeleteCompleted;
-@property (nonatomic, copy) BookmarkDeleteCompleted bookmarkDeleteCompleted;
 @property (nonatomic, strong) Book *book;
 @property (nonatomic, strong) NSIndexPath *indexPath;
 
@@ -35,12 +33,11 @@ typedef void (^BookmarkDeleteCompleted)(NSIndexPath *indexPath, NSInteger index,
 @property (weak, nonatomic) IBOutlet UIButton *addBmBtn;
 @property (weak, nonatomic) IBOutlet UIButton *editBsBtn;
 @property (weak, nonatomic) IBOutlet UIButton *deleteBsBtn;
-@property (weak, nonatomic) IBOutlet UICollectionView *bookShelfCollectionView;
+@property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
+@property (weak, nonatomic) IBOutlet UIView *emptyView;
 
 - (IBAction)addBookmarkBtnAction:(id)sender;
 - (IBAction)EditBookShelfBtnAction:(id)sender;
 - (IBAction)deleteBookShelfBtnAction:(id)sender;
-
-- (void)setBookCompositionHandler:(Book *)book bookModifyCompleted:(BookModifyCompleted)bookModifyCompleted bookDeleteCompleted:(BookDeleteCompleted)bookDeleteCompleted bookmarkDeleteCompleted:(BookmarkDeleteCompleted)bookmarkDeleteCompleted;
 
 @end

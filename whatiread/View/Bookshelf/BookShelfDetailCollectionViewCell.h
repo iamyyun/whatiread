@@ -11,13 +11,10 @@
 @interface BookShelfDetailCollectionViewCell : UICollectionViewCell
 
 @property (weak, nonatomic) IBOutlet UILabel *bMarkCountLabel;
-@property (weak, nonatomic) IBOutlet UIButton *delBtn;
-@property (weak, nonatomic) IBOutlet UIButton *editBtn;
 @property (weak, nonatomic) IBOutlet UILabel *quoteLabel;
+@property (weak, nonatomic) IBOutlet UIImageView *quoteImgView;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *quoteLabelHeightConst;
-
-- (IBAction)delBtnAction:(id)sender;
-- (IBAction)editBtnAction:(id)sender;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *quoteImgViewHeightConst;
 
 @end

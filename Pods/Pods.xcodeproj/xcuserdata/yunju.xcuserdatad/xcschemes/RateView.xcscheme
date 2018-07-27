@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "C09D43BF2F7C0FB688D8E3BF3BAA1CFB"
+               BlueprintIdentifier = "0D98A3B7D0389742ADF1D60BA8A81E83"
                BlueprintName = "RateView"
                ReferencedContainer = "container:Pods.xcodeproj"
                BuildableName = "libRateView.a">
