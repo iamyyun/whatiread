@@ -1,5 +1,5 @@
 //
-//  BookShelfDetailCollectionViewCell.h
+//  BookDetailCollectionViewCell.h
 //  whatiread
 //
 //  Created by Yunju on 2018. 7. 13..
@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface BookShelfDetailCollectionViewCell : UICollectionViewCell
+@interface BookDetailCollectionViewCell : UICollectionViewCell
 
 @property (weak, nonatomic) IBOutlet UILabel *bMarkCountLabel;
 @property (weak, nonatomic) IBOutlet UILabel *quoteLabel;

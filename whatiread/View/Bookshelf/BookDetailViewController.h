@@ -1,5 +1,5 @@
 //
-//  BookShelfDetailViewController.h
+//  BookDetailViewController.h
 //  whatiread
 //
 //  Created by Yunju on 2018. 7. 5..
@@ -13,7 +13,7 @@
 #import "RateView.h"
 #import "BookShelfViewController.h"
 
-@interface BookShelfDetailViewController : CommonViewController <NSFetchedResultsControllerDelegate>
+@interface BookDetailViewController : CommonViewController <NSFetchedResultsControllerDelegate>
 
 @property (strong, nonatomic) NSFetchedResultsController <Book *> *fetchedResultsController;
 @property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;

@@ -12,7 +12,7 @@ typedef enum : NSInteger {
     BAR_NONE = 0,
     BAR_MENU,     // menu - title - search
     BAR_BACK,       // back - title
-    BAR_ADD,        // back - title - btn(save)
+    BAR_ADD,        // cancel - title - btn(save)
     BAR_EDIT,        // back - title - btn(edit) btn(delete)
 } NAVI_BAR_TYPE;
 

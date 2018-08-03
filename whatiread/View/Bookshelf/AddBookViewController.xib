@@ -10,7 +10,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AddBookShelfViewController">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AddBookViewController">
             <connections>
                 <outlet property="authorLabel" destination="V5p-Vw-09M" id="vhk-x9-RY5"/>
                 <outlet property="compDateTextField" destination="u9R-cI-pty" id="rAE-aU-2GB"/>

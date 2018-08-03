@@ -1,28 +1,25 @@
 //
-//  AddBookShelfViewController.m
+//  WriteBookViewController.m
 //  whatiread
 //
-//  Created by Yunju on 2018. 7. 18..
+//  Created by Yunju on 2018. 8. 3..
 //  Copyright © 2018년 Yunju Yang. All rights reserved.
 //
 
-#import "AddBookShelfViewController.h"
+#import "WriteBookViewController.h"
 #import "LSLDatePickerDialog.h"
-#import <SDWebImage/UIImageView+WebCache.h>
 
-@interface AddBookShelfViewController () <UITextFieldDelegate, UITextViewDelegate, UIImagePickerControllerDelegate> {
+@interface WriteBookViewController () <UITextFieldDelegate, RateViewDelegate> {
     UITapGestureRecognizer *bgTap;
     
     NSDate *publishDate;
     NSDate *startDate;
     NSDate *compDate;
-    
-    NSMutableArray *bookmarkArr;
 }
 
 @end
 
-@implementation AddBookShelfViewController
+@implementation WriteBookViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -30,38 +27,24 @@
     
     [self setNaviBarType:BAR_ADD title:@"책 등록" image:nil];
     
-    publishDate = [NSDate date];
     startDate = [NSDate date];
     compDate = [NSDate date];
     NSDateFormatter *format = [[NSDateFormatter alloc] init];
     [format setDateFormat:@"yyyy.MM.dd"];
     NSString *strDate = [format stringFromDate:compDate];
-    self.pubDateTextField.text = strDate;
+    
     self.startDateTextField.text = strDate;
     self.compDateTextField.text = strDate;
-    
-    [self.compDateTextField resignFirstResponder];
-    [self.compDateTextField setAutocorrectionType:UITextAutocorrectionTypeNo];
     
     [self.rateView setStarFillColor:[UIColor colorWithHexString:@"F0C330"]];
     [self.rateView setStarNormalColor:[UIColor lightGrayColor]];
     [self.rateView setCanRate:YES];
-    [self.rateView setStarSize:20.f];
+    [self.rateView setStarSize:30.f];
     [self.rateView setStep:0.5f];
-    
-    bookmarkArr = [NSMutableArray array];
+    [self.rateView setDelegate:self];
     
     if (self.isModifyMode) {
         if (self.book) {
-            if (self.book.isSearchMode) {
-                [self.titleLabel setUserInteractionEnabled:NO];
-                [self.authorLabel setUserInteractionEnabled:NO];
-                [self.publisherLabel setUserInteractionEnabled:NO];
-                [self.pubDateTextField setUserInteractionEnabled:NO];
-                
-                [self.coverImgView setImage:[UIImage imageWithData:self.book.coverImg]];
-            }
-//            bookmarkArr = [NSMutableArray arrayWithArray:self.book.quote];
             
             publishDate = self.book.publishDate;
             startDate = self.book.startDate;
@@ -69,45 +52,26 @@
             NSDateFormatter *format = [[NSDateFormatter alloc] init];
             [format setDateFormat:@"yyyy.MM.dd"];
             
-            [self.titleLabel setText:self.book.title];
-            [self.authorLabel setText:self.book.author];
-            [self.publisherLabel setText:self.book.publisher];
+            [self.titleTextField setText:self.book.title];
+            [self.authorTextField setText:self.book.author];
+            [self.publishTextField setText:self.book.publisher];
             [self.pubDateTextField setText:[format stringFromDate:publishDate]];
             [self.startDateTextField setText:[format stringFromDate:startDate]];
             [self.compDateTextField setText:[format stringFromDate:compDate]];
             [self.rateView setRating:self.book.rate];
+            [self.rateLabel setText:[NSString stringWithFormat:@"%g", self.book.rate]];
             
             // set NavigationBar
-            [self setNaviBarType:BAR_ADD title:self.book.title image:nil];
-        }
-    } else {
-        if (self.isSearchMode) {
-            if (self.bookDic) {
-                
-                NSDateFormatter *format = [[NSDateFormatter alloc] init];
-                [format setDateFormat:@"yyyy.MM.dd"];
-                NSString *strDate = [format stringFromDate:compDate];
-                
-                NSString *strPubDate = [self makeDateString:[self.bookDic objectForKey:@"pubdate"]];
-                publishDate = [format dateFromString:strPubDate];
-                
-                [self.titleLabel setText:[self makeMetaToString:[self.bookDic objectForKey:@"title"]]];
-                [self.authorLabel setText:[self makeMetaToString:[self.bookDic objectForKey:@"author"]]];
-                [self.publisherLabel setText:[self.bookDic objectForKey:@"publisher"]];
-                [self.pubDateTextField setText:strPubDate];
-                [self.startDateTextField setText:strDate];
-                [self.compDateTextField setText:strDate];
-                [self.coverImgView sd_setImageWithURL:[NSURL URLWithString:[self.bookDic objectForKey:@"image"]]];
-                
-                [self.titleLabel setUserInteractionEnabled:NO];
-                [self.authorLabel setUserInteractionEnabled:NO];
-                [self.publisherLabel setUserInteractionEnabled:NO];
-                [self.pubDateTextField setUserInteractionEnabled:NO];
-                
-                // set NavigationBar
-                [self setNaviBarType:BAR_ADD title:[self makeMetaToString:[self.bookDic objectForKey:@"title"]] image:nil];
+            [self setNaviBarType:BAR_ADD title:@"책 수정" image:nil];
+            
+            if ([self isCheckField]) {
+                [self.navigationItem.rightBarButtonItem setEnabled:YES];
+            } else {
+                [self.navigationItem.rightBarButtonItem setEnabled:NO];
             }
         }
+    } else {
+        [self.navigationItem.rightBarButtonItem setEnabled:NO];
     }
     
     // Add Observer
@@ -121,94 +85,100 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (NSString *)makeMetaToString:(NSString *)strMeta {
-    NSString *strResult = @"";
-    NSString *style = @"<meta charset=\"UTF-8\"><style> body { font-family: 'HelveticaNeue'; font-size: 15px; } b {font-family: 'MarkerFelt-Wide'; }</style>";
-    NSString *meta = [NSString stringWithFormat:@"%@%@", style, strMeta];
-    NSDictionary *options = @{ NSDocumentTypeDocumentAttribute : NSHTMLTextDocumentType };
-    NSAttributedString *attrString = [[NSAttributedString alloc] initWithData:[meta dataUsingEncoding:NSUTF8StringEncoding] options:options documentAttributes:nil error:nil];
-    strResult = [NSString stringWithFormat:@"%@", [attrString string]];
+// check all necessary field
+- (BOOL)isCheckField {
+    NSString *strTitle = self.titleTextField.text;
+    NSString *strAuthor = self.authorTextField.text;
+    NSString *strCompDate = self.compDateTextField.text;
+    float strRate = self.rateView.rating;
     
-    return strResult;
-}
-
-// set block
-- (void)setBookshelfCompositionHandler:(NSDictionary *)bDic bookshelfCreateCompleted:(BookshelfCreateCompleted)bookshelfCreateCompleted bookshelfModifyCompleted:(BookshelfModifyCompleted)bookshelfModifyCompleted
-{
-    self.bookDic = bDic;
-    self.bookshelfCreateCompleted = bookshelfCreateCompleted;
-    self.bookshelfModifyCompleted = bookshelfModifyCompleted;
+    if (strTitle.length > 0 && strAuthor.length > 0 && strCompDate.length > 0 && strRate > 0.0f) {
+        return YES;
+    } else {
+        return NO;
+    }
 }
 
 - (void) writeFinished {
     [self.view endEditing:YES];
 }
 
-- (NSString *)makeDateString:(NSString *)strDate {
-    NSMutableString *muString = [NSMutableString stringWithString:strDate];
-    [muString insertString:@"." atIndex:4];
-    [muString insertString:@"." atIndex:7];
-    
-    return [NSString stringWithString:muString];
-}
-
--(void)addDoneToolBarToKeyboard:(UITextView *)textView
+// set blocks
+- (void)setWriteBookCompositionHandler:(Book *)book writeBookCreateCompleted:(WriteBookCreateCompleted)writeBookCreateCompleted writeBookModifyCompleted:(WriteBookModifyCompleted)writeBookModifyCompleted
 {
-    CGFloat width = self.view.frame.size.width;
-    UIToolbar* doneToolbar = [[UIToolbar alloc]initWithFrame:CGRectMake(0, 0, width, 50)];
-    doneToolbar.barStyle = UIBarStyleDefault;
-    doneToolbar.items = [NSArray arrayWithObjects:
-                         [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil],
-                         [[UIBarButtonItem alloc]initWithTitle:@"완료" style:UIBarButtonItemStyleDone target:self action:@selector(writeFinished)],
-                         nil];
-    [doneToolbar sizeToFit];
-    textView.inputAccessoryView = doneToolbar;
+    self.book = book;
+    self.writeBookCreateCompleted = writeBookCreateCompleted;
+    self.writeBookModifyCompleted = writeBookModifyCompleted;
 }
 
 #pragma mark - Navigation Bar Action
+- (void)leftBarBtnClick:(id)sender {
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Close", @"") message:@"작성중인 글이 있습니다." preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    NSString *strFirst = @"계속 쓰기";
+    NSString *strSecond = @"삭제하고 나가기";
+    NSString *strThird = @"저장하고 나가기";
+    UIAlertAction *firstAction = [UIAlertAction actionWithTitle:strFirst style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+        
+    }];
+    UIAlertAction *secondAction = [UIAlertAction actionWithTitle:strSecond style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        [self popController:YES];
+    }];
+    UIAlertAction *thirdAction = [UIAlertAction actionWithTitle:strThird style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        [self rightBarBtnClick:nil];
+    }];
+    
+    [alert addAction:firstAction];
+    [alert addAction:secondAction];
+    [alert addAction:thirdAction];
+    [self presentController:alert animated:YES];
+}
+
 - (void)rightBarBtnClick:(id)sender
 {
-    if (self.titleLabel.text.length <= 0) {
+    if (self.titleTextField.text.length <= 0) {
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Please write title.", @"") message:nil preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Confirm", @"") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {}];
+        [alert addAction:okAction];
+        [self presentController:alert animated:YES];
+    } else if (self.authorTextField.text.length <= 0) {
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"저자를 입력해주세요." message:nil preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Confirm", @"") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {}];
+        [alert addAction:okAction];
+        [self presentController:alert animated:YES];
+    } else if (self.rateView.rating == 0) {
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"평점을 매겨주세요." message:nil preferredStyle:UIAlertControllerStyleAlert];
         UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Confirm", @"") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {}];
         [alert addAction:okAction];
         [self presentController:alert animated:YES];
     }
     else {
         if (self.isModifyMode) {
-            if (self.bookshelfModifyCompleted) {
+            if (self.writeBookModifyCompleted) {
                 NSMutableDictionary *bookDic = [NSMutableDictionary dictionary];
-                [bookDic setObject:self.titleLabel.text forKey:@"bTitle"];
-                [bookDic setObject:self.authorLabel.text forKey:@"bAuthor"];
-                [bookDic setObject:self.publisherLabel.text forKey:@"bPublisher"];
-                [bookDic setObject:publishDate forKey:@"bPubDate"];
+                [bookDic setObject:self.titleTextField.text forKey:@"bTitle"];
+                [bookDic setObject:self.authorTextField.text forKey:@"bAuthor"];
+                [bookDic setObject:self.publishTextField.text forKey:@"bPublisher"];
                 [bookDic setObject:startDate forKey:@"bStartDate"];
                 [bookDic setObject:compDate forKey:@"bCompleteDate"];
+                if (publishDate) [bookDic setObject:publishDate forKey:@"bPubDate"];
                 [bookDic setObject:[NSNumber numberWithFloat:self.rateView.rating] forKey:@"bRate"];
                 
-                if (self.coverImgView.image) {
-                    [bookDic setObject:self.coverImgView.image forKey:@"bCoverImg"];
-                }
-                
-                self.bookshelfModifyCompleted(bookDic);
+                self.writeBookModifyCompleted(bookDic);
             }
         } else {
             // create bookmark data
-            if (self.bookshelfCreateCompleted) {
+            if (self.writeBookCreateCompleted) {
                 NSMutableDictionary *bookDic = [NSMutableDictionary dictionary];
-                [bookDic setObject:self.titleLabel.text forKey:@"bTitle"];
-                [bookDic setObject:self.authorLabel.text forKey:@"bAuthor"];
-                [bookDic setObject:self.publisherLabel.text forKey:@"bPublisher"];
-                [bookDic setObject:publishDate forKey:@"bPubDate"];
+                [bookDic setObject:self.titleTextField.text forKey:@"bTitle"];
+                [bookDic setObject:self.authorTextField.text forKey:@"bAuthor"];
+                [bookDic setObject:self.publishTextField.text forKey:@"bPublisher"];
                 [bookDic setObject:startDate forKey:@"bStartDate"];
                 [bookDic setObject:compDate forKey:@"bCompleteDate"];
-                
-                if (self.isSearchMode) {
-                    [bookDic setObject:self.coverImgView.image forKey:@"bCoverImg"];
-                }
+                if (publishDate) [bookDic setObject:publishDate forKey:@"bPubDate"];
                 
                 [bookDic setObject:[NSNumber numberWithFloat:self.rateView.rating] forKey:@"bRate"];
-                self.bookshelfCreateCompleted(bookDic);
+                self.writeBookCreateCompleted(bookDic);
             }
         }
         [self popController:YES];
@@ -270,6 +240,23 @@
     return YES;
 }
 
+- (void)textFieldDidEndEditing:(UITextField *)textField {
+    if ([self isCheckField]) {
+        [self.navigationItem.rightBarButtonItem setEnabled:YES];
+    } else {
+        [self.navigationItem.rightBarButtonItem setEnabled:NO];
+    }
+}
+
+#pragma mark - RateView Delegate
+- (void)rateView:(RateView *)rateView didUpdateRating:(float)rating {
+    [self performSelector:@selector(setRate) withObject:nil afterDelay:0.1];
+}
+
+- (void)setRate {
+    [self.rateLabel setText:[NSString stringWithFormat:@"%g", self.rateView.rating]];
+}
+
 #pragma mark - keyboard actions
 - (void)handleKeyboardWillShowNote:(NSNotification *)notification
 {
@@ -288,6 +275,5 @@
     
     CGSize keyboardSize = [[userInfo objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
 }
-
 
 @end

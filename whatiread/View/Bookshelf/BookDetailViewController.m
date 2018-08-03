@@ -1,21 +1,21 @@
 //
-//  BookShelfDetailViewController.m
+//  BookDetailViewController.m
 //  whatiread
 //
 //  Created by Yunju on 2018. 7. 5..
 //  Copyright © 2018년 Yunju Yang. All rights reserved.
 //
 
-#import "BookShelfDetailViewController.h"
-#import "BookShelfDetailCollectionViewCell.h"
+#import "BookDetailViewController.h"
+#import "BookDetailCollectionViewCell.h"
 #import "BookShelfViewController.h"
-#import "AddBookShelfViewController.h"
+#import "AddBookViewController.h"
 #import "AddBookmarkViewController.h"
 #import "TOCropViewController.h"
 #import <Photos/Photos.h>
 #import <TesseractOCR/TesseractOCR.h>
 
-@interface BookShelfDetailViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate, TOCropViewControllerDelegate, G8TesseractDelegate> {
+@interface BookDetailViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate, TOCropViewControllerDelegate, G8TesseractDelegate> {
     NSArray *quoteArr;
     
     CoreDataAccess *coreData;
@@ -25,7 +25,7 @@
 
 @end
 
-@implementation BookShelfDetailViewController
+@implementation BookDetailViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -52,7 +52,7 @@
     }
     
     [self.collectionView setAllowsSelection:YES];
-    [self.collectionView registerNib:[UINib nibWithNibName:@"BookShelfDetailCollectionViewCell" bundle:nil] forCellWithReuseIdentifier:@"BookShelfDetailCollectionViewCell"];
+    [self.collectionView registerNib:[UINib nibWithNibName:@"BookDetailCollectionViewCell" bundle:nil] forCellWithReuseIdentifier:@"BookDetailCollectionViewCell"];
     
     [self.rateView setStarFillColor:[UIColor colorWithHexString:@"F0C330"]];
     [self.rateView setStarNormalColor:[UIColor lightGrayColor]];
@@ -82,7 +82,7 @@
 
 - (void) dataInitialize {
     if (self.book) {
-        [self setNaviBarType:BAR_BACK title:self.book.title image:nil];
+        [self setNaviBarType:BAR_BACK title:@"책 정보" image:nil];
         
         NSDateFormatter *format = [[NSDateFormatter alloc] init];
         [format setDateFormat:@"yyyy.MM.dd"];
@@ -195,10 +195,10 @@
 
 // edit bookshelf
 - (IBAction)EditBookShelfBtnAction:(id)sender {
-    AddBookShelfViewController *addVC = [[AddBookShelfViewController alloc] init];
+    AddBookViewController *addVC = [[AddBookViewController alloc] init];
     addVC.book = self.book;
     addVC.isModifyMode = YES;
-    [addVC setBookshelfCompositionHandler:nil bookshelfCreateCompleted:nil bookshelfModifyCompleted:^(NSDictionary *bookDic){
+    [addVC setAddBookCompositionHandler:nil addBookCreateCompleted:nil addBookModifyCompleted:^(NSDictionary *bookDic){
         self.book.title = [bookDic objectForKey:@"bTitle"];
         self.book.author = [bookDic objectForKey:@"bAuthor"];
         self.book.publisher = [bookDic objectForKey:@"bPublisher"];
@@ -536,8 +536,8 @@
 
 #pragma mark - UICollectionViewDataSource
 - (nonnull __kindof UICollectionViewCell *)collectionView:(nonnull UICollectionView *)collectionView cellForItemAtIndexPath:(nonnull NSIndexPath *)indexPath {
-    NSString *cellIdentifier = @"BookShelfDetailCollectionViewCell";
-    BookShelfDetailCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:cellIdentifier forIndexPath:indexPath];
+    NSString *cellIdentifier = @"BookDetailCollectionViewCell";
+    BookDetailCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:cellIdentifier forIndexPath:indexPath];
     if (!cell) {
         cell = [[[NSBundle mainBundle] loadNibNamed:cellIdentifier owner:self options:nil] lastObject];
     }

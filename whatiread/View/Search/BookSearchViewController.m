@@ -8,7 +8,7 @@
 
 #import "BookSearchViewController.h"
 #import "BookSearchCollectionViewCell.h"
-#import "AddBookShelfViewController.h"
+#import "AddBookViewController.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "MTBBarcodeScanner.h"
 
@@ -240,12 +240,26 @@
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath;
 {
-    NSLog(@"YJ << select collectionview cell");
-    if (self.bookSelectCompleted) {
-        NSDictionary *dic = searchArr[indexPath.item];
-        self.bookSelectCompleted(dic);
-        [self dismissViewControllerAnimated:YES completion:nil];
-    }
+    BookSearchCollectionViewCell *cell = (BookSearchCollectionViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
+    [cell.checkImgView setHidden:NO];
+    
+    NSDictionary *dic = searchArr[indexPath.item];
+    NSString *strTitle = [dic objectForKey:@"title"];
+    
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:[NSString stringWithFormat:@"[%@] 을(를) 나의 책장에 추가 하시겠습니까?", [self makeMetaToString:strTitle]] message:nil preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"") style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+        [cell.checkImgView setHidden:YES];
+    }];
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Confirm", @"") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        if (self.bookSelectCompleted) {
+            NSDictionary *dic = searchArr[indexPath.item];
+            self.bookSelectCompleted(dic);
+            [self dismissViewControllerAnimated:YES completion:nil];
+        }
+    }];
+    [alert addAction:cancelAction];
+    [alert addAction:okAction];
+    [self presentController:alert animated:YES];
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath

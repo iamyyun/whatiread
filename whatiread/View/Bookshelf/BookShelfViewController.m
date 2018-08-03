@@ -8,8 +8,9 @@
 
 #import "BookShelfViewController.h"
 #import "BookShelfCollectionViewCell.h"
-#import "BookShelfDetailViewController.h"
-#import "AddBookShelfViewController.h"
+#import "BookDetailViewController.h"
+#import "AddBookViewController.h"
+#import "WriteBookViewController.h"
 #import "BookSearchViewController.h"
 #import <GKActionSheetPicker/GKActionSheetPicker.h>
 
@@ -118,7 +119,7 @@
 - (IBAction)addBtnAction:(id)sender {
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
     
-    NSString *strFirst = @"책 검색";
+    NSString *strFirst = @"책 검색하여 등록";
     NSString *strSecond = @"직접 입력";
     UIAlertAction *firstAction = [UIAlertAction actionWithTitle:strFirst style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
         BookSearchViewController *searchVC = [[BookSearchViewController alloc] init];
@@ -127,7 +128,7 @@
         [searchVC setBookSearchHandler:^(NSDictionary *bookDic) {
             if (bookDic) {
                 if (![self isExistItem:bookDic]) {
-                    [self bookConfigure:nil bookDic:bookDic indexPath:nil isModifyMode:NO isSearchMode:YES];
+                    [self bookConfigure:nil bookDic:bookDic indexPath:nil isSearchMode:YES];
                 }
                 else {
                     UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"이미 등록된 책입니다." message:nil preferredStyle:UIAlertControllerStyleAlert];
@@ -141,7 +142,7 @@
 
     }];
     UIAlertAction *secondAction = [UIAlertAction actionWithTitle:strSecond style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-        [self bookConfigure:nil bookDic:nil indexPath:nil isModifyMode:NO isSearchMode:NO];
+        [self bookConfigure:nil bookDic:nil indexPath:nil isSearchMode:NO];
     }];
     UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"") style:UIAlertActionStyleCancel handler:^(UIAlertAction *action){}];
     
@@ -239,29 +240,35 @@
 }
 
 #pragma mark - BookConfigure
-- (void)bookConfigure:(Book *)book bookDic:(NSDictionary *)bookDic indexPath:(NSIndexPath *)indexPath isModifyMode:(BOOL)isModifyMode isSearchMode:(BOOL)isSearchMode {
+- (void)bookConfigure:(Book *)book bookDic:(NSDictionary *)bookDic indexPath:(NSIndexPath *)indexPath isSearchMode:(BOOL)isSearchMode {
     
-    if (isModifyMode) {
-        BookShelfDetailViewController *detailVC = [[BookShelfDetailViewController alloc] init];
-        detailVC.indexPath = indexPath;
-        detailVC.book = book;
-        [self pushController:detailVC animated:YES];
-    }
-    else {
-        AddBookShelfViewController *addVC = [[AddBookShelfViewController alloc] init];
-        addVC.isModifyMode = isModifyMode;
-        addVC.isSearchMode = isSearchMode;
+    if (isSearchMode) {
+        AddBookViewController *addVC = [[AddBookViewController alloc] init];
+        addVC.isModifyMode = NO;
         addVC.bookDic = bookDic;
-        [addVC setBookshelfCompositionHandler:bookDic bookshelfCreateCompleted:^(NSDictionary *dic){
-            [self createBook:dic isSearchMode:isSearchMode indexPath:nil completed:^(BOOL isResult) {
+        [addVC setAddBookCompositionHandler:bookDic addBookCreateCompleted:^(NSDictionary *dic){
+            [self createBook:dic isSearchMode:YES indexPath:nil completed:^(BOOL isResult) {
                 if (isResult) {
                     
                 } else {
                     
                 }
             }];
-        } bookshelfModifyCompleted:nil];
+        } addBookModifyCompleted:nil];
         [self pushController:addVC animated:YES];
+    } else {
+        WriteBookViewController *writeVC = [[WriteBookViewController alloc] init];
+        writeVC.isModifyMode = NO;
+        [writeVC setWriteBookCompositionHandler:nil writeBookCreateCompleted:^(NSDictionary *dic){
+            [self createBook:dic isSearchMode:NO indexPath:nil completed:^(BOOL isResult) {
+                if (isResult) {
+                    
+                } else {
+                    
+                }
+            }];
+        } writeBookModifyCompleted:nil];
+        [self pushController:writeVC animated:YES];
     }
     
     if (isSearchBarActive) {
@@ -448,7 +455,30 @@
     NSLog(@"YJ << select collectionview cell");
     
     Book *book = [self.fetchedResultsController objectAtIndexPath:indexPath];
-    [self bookConfigure:book bookDic:nil indexPath:indexPath isModifyMode:YES isSearchMode:nil];
+    BookDetailViewController *detailVC = [[BookDetailViewController alloc] init];
+    detailVC.indexPath = indexPath;
+    detailVC.book = book;
+    [self pushController:detailVC animated:YES];
+    
+    if (isSearchBarActive) {
+        isSearchBarActive = NO;
+        
+        // refresh data
+        self.managedObjectContext = nil;
+        self.fetchedResultsController = nil;
+        
+        [coreData coreDataInitialize];
+        self.fetchedResultsController = coreData.fetchedResultsController;
+        self.fetchedResultsController.delegate = self;
+        self.managedObjectContext = coreData.managedObjectContext;
+        
+        [self.view endEditing:YES];
+        [self.searchBar setHidden:YES];
+        [self.searchBar setText:@""];
+        [self.navigationController setNavigationBarHidden:NO animated:YES];
+        
+        [self.collectionView reloadData];
+    }
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath

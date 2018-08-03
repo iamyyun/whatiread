@@ -132,12 +132,15 @@
         }
         
         // leftBarButton
-        leftBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        [leftBtn setImage:[UIImage imageNamed:@"btn_back"] forState:UIControlStateNormal];
-        [leftBtn setTag:BTN_TYPE_BACK];
-        [leftBtn addTarget:self action:@selector(leftBarBtnClick:) forControlEvents:UIControlEventTouchUpInside];
-        [leftBtn setFrame:CGRectMake(0, 5, 34, 34)];
-        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:leftBtn];
+//        leftBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+//        [leftBtn setImage:[UIImage imageNamed:@"btn_back"] forState:UIControlStateNormal];
+//        [leftBtn setTag:BTN_TYPE_BACK];
+//        [leftBtn addTarget:self action:@selector(leftBarBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+//        [leftBtn setFrame:CGRectMake(0, 5, 34, 34)];
+//        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:leftBtn];
+        NSString *leftBtnTitle = NSLocalizedString(@"Cancel", @"");
+        self.navigationItem.leftBarButtonItems = nil;
+        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:leftBtnTitle style:UIBarButtonItemStylePlain target:self action:@selector(leftBarBtnClick:)];
         
         // rightBarButton
         NSString *rightBtnTitle = NSLocalizedString(@"Save", @"");

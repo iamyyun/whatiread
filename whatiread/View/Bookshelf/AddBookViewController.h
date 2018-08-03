@@ -1,5 +1,5 @@
 //
-//  AddBookShelfViewController.h
+//  AddBookViewController.h
 //  whatiread
 //
 //  Created by Yunju on 2018. 7. 18..
@@ -9,18 +9,17 @@
 #import <UIKit/UIKit.h>
 #import "RateView.h"
 
-typedef void (^BookshelfCreateCompleted)(NSDictionary *bookDic);
-typedef void (^BookshelfModifyCompleted)(NSDictionary *bookDic);
+typedef void (^AddBookCreateCompleted)(NSDictionary *bookDic);
+typedef void (^AddBookModifyCompleted)(NSDictionary *bookDic);
 
-@interface AddBookShelfViewController : CommonViewController
+@interface AddBookViewController : CommonViewController
 
-@property (nonatomic, copy) BookshelfCreateCompleted bookshelfCreateCompleted;
-@property (nonatomic, copy) BookshelfModifyCompleted bookshelfModifyCompleted;
+@property (nonatomic, copy) AddBookCreateCompleted addBookCreateCompleted;
+@property (nonatomic, copy) AddBookModifyCompleted addBookModifyCompleted;
 @property (nonatomic, strong) Book *book;
 @property (nonatomic, strong) NSDictionary *bookDic;
 
 @property (nonatomic, assign) BOOL isModifyMode;    // create / modify
-@property (nonatomic, assign) BOOL isSearchMode;    // search / write
 
 @property (weak, nonatomic) IBOutlet UITextField *titleLabel;
 @property (weak, nonatomic) IBOutlet UITextField *authorLabel;
@@ -31,6 +30,6 @@ typedef void (^BookshelfModifyCompleted)(NSDictionary *bookDic);
 @property (weak, nonatomic) IBOutlet RateView *rateView;
 @property (weak, nonatomic) IBOutlet UIImageView *coverImgView;
 
-- (void)setBookshelfCompositionHandler:(NSDictionary *)bDic bookshelfCreateCompleted:(BookshelfCreateCompleted)bookshelfCreateCompleted bookshelfModifyCompleted:(BookshelfModifyCompleted)bookshelfModifyCompleted;
+- (void)setAddBookCompositionHandler:(NSDictionary *)bDic addBookCreateCompleted:(AddBookCreateCompleted)addBookCreateCompleted addBookModifyCompleted:(AddBookModifyCompleted)addBookModifyCompleted;
 
 @end
