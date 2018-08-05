@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13174"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="BookmarkDetailViewController">
+            <connections>
+                <outlet property="arrowImgView" destination="S6u-Pq-xL0" id="FEa-tg-kdP"/>
+                <outlet property="authorLabel" destination="HEU-Js-1os" id="ryn-vQ-0vr"/>
+                <outlet property="authorLabelTrailingMarginConst" destination="8UW-FB-h3k" id="7JC-LN-Qmf"/>
+                <outlet property="bookBtn" destination="HKi-Kx-vrP" id="N1w-wg-8iO"/>
+                <outlet property="textView" destination="yzn-vb-sqV" id="fVV-yv-hI3"/>
+                <outlet property="titleLabel" destination="4or-4B-YwW" id="uSh-QD-g4A"/>
+                <outlet property="titleLabelTrailingMarginConst" destination="Nhq-gS-og0" id="RXz-Gx-yex"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="yzn-vb-sqV">
+                    <rect key="frame" x="0.0" y="64" width="375" height="543"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                    <connections>
+                        <outlet property="delegate" destination="-1" id="eJ4-63-TnH"/>
+                    </connections>
+                </textView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="N3u-B3-eCf">
+                    <rect key="frame" x="0.0" y="607" width="375" height="60"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HKi-Kx-vrP">
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
+                            <connections>
+                                <action selector="bookBtnAction:" destination="-1" eventType="touchUpInside" id="a6O-S1-HQ1"/>
+                            </connections>
+                        </button>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="어린왕자" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4or-4B-YwW">
+                            <rect key="frame" x="15" y="10" width="345" height="18"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="앙투안 드 생택쥐페리" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HEU-Js-1os">
+                            <rect key="frame" x="15" y="29" width="345" height="17"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <color key="textColor" white="0.4056919642857143" alpha="1" colorSpace="calibratedWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="btn_back" translatesAutoresizingMaskIntoConstraints="NO" id="S6u-Pq-xL0">
+                            <rect key="frame" x="325" y="12.5" width="35" height="35"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="35" id="Nuw-fH-5gG"/>
+                                <constraint firstAttribute="width" constant="35" id="RSG-L4-ajW"/>
+                            </constraints>
+                        </imageView>
+                    </subviews>
+                    <color key="backgroundColor" white="0.91883370535714282" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstItem="4or-4B-YwW" firstAttribute="leading" secondItem="N3u-B3-eCf" secondAttribute="leading" constant="15" id="0yS-vm-olr"/>
+                        <constraint firstAttribute="height" constant="60" id="3cC-9A-XkA"/>
+                        <constraint firstItem="HEU-Js-1os" firstAttribute="leading" secondItem="N3u-B3-eCf" secondAttribute="leading" constant="15" id="8Qg-ZI-n5g"/>
+                        <constraint firstAttribute="trailing" secondItem="HEU-Js-1os" secondAttribute="trailing" constant="15" id="8UW-FB-h3k"/>
+                        <constraint firstAttribute="trailing" secondItem="4or-4B-YwW" secondAttribute="trailing" constant="15" id="Nhq-gS-og0"/>
+                        <constraint firstItem="HKi-Kx-vrP" firstAttribute="leading" secondItem="N3u-B3-eCf" secondAttribute="leading" id="YHb-NH-rSF"/>
+                        <constraint firstAttribute="trailing" secondItem="HKi-Kx-vrP" secondAttribute="trailing" id="e6I-KM-NNr"/>
+                        <constraint firstItem="HKi-Kx-vrP" firstAttribute="top" secondItem="N3u-B3-eCf" secondAttribute="top" id="f2p-Uq-VgV"/>
+                        <constraint firstAttribute="bottom" secondItem="HKi-Kx-vrP" secondAttribute="bottom" id="feF-nx-WX3"/>
+                        <constraint firstItem="S6u-Pq-xL0" firstAttribute="centerY" secondItem="N3u-B3-eCf" secondAttribute="centerY" id="hOc-3u-dxf"/>
+                        <constraint firstItem="HEU-Js-1os" firstAttribute="top" secondItem="4or-4B-YwW" secondAttribute="bottom" constant="1" id="oPh-UE-xVa"/>
+                        <constraint firstAttribute="trailing" secondItem="S6u-Pq-xL0" secondAttribute="trailing" constant="15" id="sfW-DM-fdZ"/>
+                        <constraint firstItem="4or-4B-YwW" firstAttribute="top" secondItem="N3u-B3-eCf" secondAttribute="top" constant="10" id="vnr-f8-Flb"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="yzn-vb-sqV" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="64" id="6xR-7A-Twn"/>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="bottom" secondItem="N3u-B3-eCf" secondAttribute="bottom" id="IDI-q5-Uwp"/>
+                <constraint firstItem="yzn-vb-sqV" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="Pg8-51-ThY"/>
+                <constraint firstItem="N3u-B3-eCf" firstAttribute="top" secondItem="yzn-vb-sqV" secondAttribute="bottom" id="fCZ-09-756"/>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="N3u-B3-eCf" secondAttribute="trailing" id="fUm-4z-Gde"/>
+                <constraint firstItem="yzn-vb-sqV" firstAttribute="trailing" secondItem="Q5M-cg-NOt" secondAttribute="trailing" id="gJw-BT-JqM"/>
+                <constraint firstItem="N3u-B3-eCf" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="pad-3K-Lko"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="Q5M-cg-NOt"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="btn_back" width="44" height="44"/>
+    </resources>
+</document>

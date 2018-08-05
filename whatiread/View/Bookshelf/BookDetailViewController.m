@@ -10,6 +10,7 @@
 #import "BookDetailCollectionViewCell.h"
 #import "BookShelfViewController.h"
 #import "AddBookViewController.h"
+#import "WriteBookViewController.h"
 #import "AddBookmarkViewController.h"
 #import "TOCropViewController.h"
 #import <Photos/Photos.h>
@@ -89,7 +90,10 @@
         
         UIImage *image = [UIImage imageWithData:self.book.coverImg];
         
-        [self.titleLabel setText:self.book.title];
+        NSString *strTitle = self.book.title;
+        CGFloat height = [strTitle boundingRectWithSize:CGSizeMake(self.titleLabel.frame.size.width, 1000) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:18.0f]} context:nil].size.height;
+        self.titleLabelHeightConst.constant = height;
+        [self.titleLabel setText:strTitle];
         [self.authorLabel setText:self.book.author];
         [self.publisherLabel setText:self.book.publisher];
         [self.pubDateLabel setText:[format stringFromDate:self.book.publishDate]];
@@ -101,6 +105,8 @@
         [self.bmCountLabel setText:[NSString stringWithFormat:@"%ld", self.book.quotes.count]];
         
         [self.collectionView reloadData];
+        
+        [self.view updateConstraints];
     }
 }
 
@@ -195,25 +201,49 @@
 
 // edit bookshelf
 - (IBAction)EditBookShelfBtnAction:(id)sender {
-    AddBookViewController *addVC = [[AddBookViewController alloc] init];
-    addVC.book = self.book;
-    addVC.isModifyMode = YES;
-    [addVC setAddBookCompositionHandler:nil addBookCreateCompleted:nil addBookModifyCompleted:^(NSDictionary *bookDic){
-        self.book.title = [bookDic objectForKey:@"bTitle"];
-        self.book.author = [bookDic objectForKey:@"bAuthor"];
-        self.book.publisher = [bookDic objectForKey:@"bPublisher"];
-        self.book.publishDate = [bookDic objectForKey:@"bPubDate"];
-        self.book.startDate = [bookDic objectForKey:@"bStartDate"];
-        self.book.completeDate = [bookDic objectForKey:@"bCompleteDate"];
-        self.book.rate = [[bookDic objectForKey:@"bRate"] floatValue];
-        //            self.book.quoteImg = bookImage;
-        [self dataInitialize];
-        
-        [self modifyBook:self.book bookDic:bookDic indexPath:self.indexPath completed:^(BOOL isResult) {
+    
+    if (self.book.isSearchMode) {
+        AddBookViewController *addVC = [[AddBookViewController alloc] init];
+        addVC.book = self.book;
+        addVC.isModifyMode = YES;
+        [addVC setAddBookCompositionHandler:nil addBookCreateCompleted:nil addBookModifyCompleted:^(NSDictionary *bookDic){
+            self.book.title = [bookDic objectForKey:@"bTitle"];
+            self.book.author = [bookDic objectForKey:@"bAuthor"];
+            self.book.publisher = [bookDic objectForKey:@"bPublisher"];
+            self.book.publishDate = [bookDic objectForKey:@"bPubDate"];
+            self.book.startDate = [bookDic objectForKey:@"bStartDate"];
+            self.book.completeDate = [bookDic objectForKey:@"bCompleteDate"];
+            self.book.rate = [[bookDic objectForKey:@"bRate"] floatValue];
             
+            [self dataInitialize];
+            
+            [self modifyBook:self.book bookDic:bookDic indexPath:self.indexPath completed:^(BOOL isResult) {
+                
+            }];
         }];
-    }];
-    [self pushController:addVC animated:YES];
+        [self pushController:addVC animated:YES];
+    }
+    else {
+        WriteBookViewController *writeVC = [[WriteBookViewController alloc] init];
+        writeVC.book = self.book;
+        writeVC.isModifyMode = YES;
+        [writeVC setWriteBookCompositionHandler:self.book writeBookCreateCompleted:nil writeBookModifyCompleted:^(NSDictionary *bookDic) {
+            self.book.title = [bookDic objectForKey:@"bTitle"];
+            self.book.author = [bookDic objectForKey:@"bAuthor"];
+            self.book.publisher = [bookDic objectForKey:@"bPublisher"];
+            self.book.publishDate = [bookDic objectForKey:@"bPubDate"];
+            self.book.startDate = [bookDic objectForKey:@"bStartDate"];
+            self.book.completeDate = [bookDic objectForKey:@"bCompleteDate"];
+            self.book.rate = [[bookDic objectForKey:@"bRate"] floatValue];
+            //            self.book.quoteImg = bookImage;
+            [self dataInitialize];
+            
+            [self modifyBook:self.book bookDic:bookDic indexPath:self.indexPath completed:^(BOOL isResult) {
+                
+            }];
+        }];
+        [self pushController:writeVC animated:YES];
+    }
 }
 
 // delete bookshelf
@@ -245,6 +275,7 @@
 - (void)bookmarkConfigure:(Book *)book ocrText:(NSString *)ocrText;
 {
     AddBookmarkViewController *addVC = [[AddBookmarkViewController alloc] init];
+    addVC.isModifyMode = NO;
     if (ocrText && ocrText.length > 0) {
         addVC.strOcrText = ocrText;
     }
@@ -634,7 +665,7 @@
         NSSortDescriptor *desc = [NSSortDescriptor sortDescriptorWithKey:@"index" ascending:YES];
         quoteArr = [self.book.quotes sortedArrayUsingDescriptors:[NSArray arrayWithObject:desc]];
 
-        [self.bmCountLabel setText:[NSString stringWithFormat:@"%i", quoteArr.count]];
+        [self.bmCountLabel setText:[NSString stringWithFormat:@"%d", quoteArr.count]];
         [self.collectionView reloadData];
     }
 }

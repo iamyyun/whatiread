@@ -63,6 +63,8 @@
 		6BCBA1A620C527930056BAFB /* BookmarkViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BCBA1A420C527930056BAFB /* BookmarkViewController.m */; };
 		6BCBA1B020C52E8A0056BAFB /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6BCBA1AE20C52E8A0056BAFB /* Localizable.strings */; };
 		6BCBA1B220C533590056BAFB /* BookmarkViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6BCBA1B420C533590056BAFB /* BookmarkViewController.xib */; };
+		AE5F724F2114AD01004B355F /* BookmarkDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE5F724D2114AD01004B355F /* BookmarkDetailViewController.m */; };
+		AE5F72502114AD01004B355F /* BookmarkDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = AE5F724E2114AD01004B355F /* BookmarkDetailViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -183,6 +185,9 @@
 		6BCBA1AF20C52E8A0056BAFB /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
 		6BCBA1B120C52EB40056BAFB /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Localizable.strings; sourceTree = "<group>"; };
 		6BCBA1B520C5336D0056BAFB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/BookmarkViewController.xib; sourceTree = "<group>"; };
+		AE5F724C2114AD01004B355F /* BookmarkDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BookmarkDetailViewController.h; sourceTree = "<group>"; };
+		AE5F724D2114AD01004B355F /* BookmarkDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BookmarkDetailViewController.m; sourceTree = "<group>"; };
+		AE5F724E2114AD01004B355F /* BookmarkDetailViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BookmarkDetailViewController.xib; sourceTree = "<group>"; };
 		FD63E1A167500F8859D854BD /* Pods-whatiread.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-whatiread.release.xcconfig"; path = "Pods/Target Support Files/Pods-whatiread/Pods-whatiread.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -422,6 +427,9 @@
 				6B3F80A0210846BB00F283F7 /* AddBookmarkViewController.h */,
 				6B3F80A1210846BB00F283F7 /* AddBookmarkViewController.m */,
 				6B3F80A2210846BB00F283F7 /* AddBookmarkViewController.xib */,
+				AE5F724C2114AD01004B355F /* BookmarkDetailViewController.h */,
+				AE5F724D2114AD01004B355F /* BookmarkDetailViewController.m */,
+				AE5F724E2114AD01004B355F /* BookmarkDetailViewController.xib */,
 			);
 			path = Bookmark;
 			sourceTree = "<group>";
@@ -584,6 +592,7 @@
 				6BCBA1B020C52E8A0056BAFB /* Localizable.strings in Resources */,
 				6BBF48F6210AAE1400313CD5 /* tessdata in Resources */,
 				6B6E047020F88659009D19BB /* BookDetailCollectionViewCell.xib in Resources */,
+				AE5F72502114AD01004B355F /* BookmarkDetailViewController.xib in Resources */,
 				6B6E046B20F88641009D19BB /* BookShelfCollectionViewCell.xib in Resources */,
 				6B030EAC20BE374D0060E8AD /* Main.storyboard in Resources */,
 				6B8EF32421058DB9001EFDCD /* BookSearchCollectionViewCell.xib in Resources */,
@@ -700,6 +709,7 @@
 				6B53388020C8C46700D85CD0 /* UIColor+ColorString.m in Sources */,
 				6BCBA1A620C527930056BAFB /* BookmarkViewController.m in Sources */,
 				6B970D392113E754008536C1 /* JVFloatLabeledTextField.m in Sources */,
+				AE5F724F2114AD01004B355F /* BookmarkDetailViewController.m in Sources */,
 				6B8EF31621055984001EFDCD /* Reachability.m in Sources */,
 				6B5338AB20C9004F00D85CD0 /* REFrostedViewController.m in Sources */,
 				6B8EF319210559B2001EFDCD /* AdminConnectionManager.m in Sources */,

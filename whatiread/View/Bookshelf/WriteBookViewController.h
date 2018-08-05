@@ -6,7 +6,7 @@
 //  Copyright © 2018년 Yunju Yang. All rights reserved.
 //
 
-#import "CommonViewController.h"
+#import <UIKit/UIKit.h>
 #import "JVFloatLabeledTextField.h"
 #import "RateView.h"
 

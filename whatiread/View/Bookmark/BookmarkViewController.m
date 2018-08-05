@@ -9,6 +9,7 @@
 #import "BookmarkViewController.h"
 #import "BookmarkCollectionViewCell.h"
 #import "BookMarkHeaderCollectionReusableView.h"
+#import "BookmarkDetailViewController.h"
 #import <GKActionSheetPicker/GKActionSheetPicker.h>
 
 #define MILLI_SECONDS           1000.f
@@ -309,7 +310,11 @@
     
     NSIndexPath *fetchIndexPath = [NSIndexPath indexPathForItem:indexPath.section inSection:0];
     Book *book = [self.fetchedResultsController objectAtIndexPath:fetchIndexPath];
-//    [self bookConfigure:book indexPath:fetchIndexPath isModifyMode:YES];
+
+    BookmarkDetailViewController *detailVC = [[BookmarkDetailViewController alloc] init];
+    detailVC.book = book;
+    detailVC.indexPath = indexPath;
+    [self pushController:detailVC animated:YES];
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath

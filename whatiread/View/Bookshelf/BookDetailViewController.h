@@ -36,6 +36,8 @@
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (weak, nonatomic) IBOutlet UIView *emptyView;
 
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *titleLabelHeightConst;
+
 - (IBAction)addBookmarkBtnAction:(id)sender;
 - (IBAction)EditBookShelfBtnAction:(id)sender;
 - (IBAction)deleteBookShelfBtnAction:(id)sender;

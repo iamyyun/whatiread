@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "RateView.h"
+#import "JVFloatLabeledTextField.h"
 
 typedef void (^AddBookCreateCompleted)(NSDictionary *bookDic);
 typedef void (^AddBookModifyCompleted)(NSDictionary *bookDic);
@@ -21,14 +22,17 @@ typedef void (^AddBookModifyCompleted)(NSDictionary *bookDic);
 
 @property (nonatomic, assign) BOOL isModifyMode;    // create / modify
 
-@property (weak, nonatomic) IBOutlet UITextField *titleLabel;
-@property (weak, nonatomic) IBOutlet UITextField *authorLabel;
-@property (weak, nonatomic) IBOutlet UITextField *publisherLabel;
-@property (weak, nonatomic) IBOutlet UITextField *pubDateTextField;
-@property (weak, nonatomic) IBOutlet UITextField *startDateTextField;
-@property (weak, nonatomic) IBOutlet UITextField *compDateTextField;
+@property (weak, nonatomic) IBOutlet UILabel *titleLabel;
+@property (weak, nonatomic) IBOutlet UILabel *authorLabel;
+@property (weak, nonatomic) IBOutlet UILabel *publisherLabel;
+@property (weak, nonatomic) IBOutlet UILabel *pubDateTextField;
+@property (weak, nonatomic) IBOutlet JVFloatLabeledTextField *startDateTextField;
+@property (weak, nonatomic) IBOutlet JVFloatLabeledTextField *compDateTextField;
 @property (weak, nonatomic) IBOutlet RateView *rateView;
+@property (weak, nonatomic) IBOutlet UILabel *rateLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *coverImgView;
+
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *titleLabelHeightConst;
 
 - (void)setAddBookCompositionHandler:(NSDictionary *)bDic addBookCreateCompleted:(AddBookCreateCompleted)addBookCreateCompleted addBookModifyCompleted:(AddBookModifyCompleted)addBookModifyCompleted;
 

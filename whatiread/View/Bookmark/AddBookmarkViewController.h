@@ -15,6 +15,9 @@ typedef void (^BookmarkCreateCompleted)(NSString *strQuote);
 
 @property (nonatomic, copy) BookmarkCreateCompleted bookmarkCreateCompleted;
 @property (nonatomic, strong) Book *book;
+@property (nonatomic, strong) NSIndexPath *indexPath;
+
+@property (assign) BOOL isModifyMode;
 
 @property (nonatomic, strong) NSString *strOcrText;
 

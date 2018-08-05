@@ -141,11 +141,22 @@
                 [alert addAction:okAction];
                 [self presentController:alert animated:YES];
             } else {
-                if (self.bookSelectCompleted) {
-                    NSDictionary *dic = [chaDic objectForKey:@"item"];
-                    self.bookSelectCompleted(dic);
-                    [self dismissViewControllerAnimated:YES completion:nil];
-                }
+                
+                NSDictionary *dic = [chaDic objectForKey:@"item"];
+                NSString *strTitle = [dic objectForKey:@"title"];
+                
+                UIAlertController *alert = [UIAlertController alertControllerWithTitle:[NSString stringWithFormat:@"[%@] 을(를) 나의 책장에 추가 하시겠습니까?", [self makeMetaToString:strTitle]] message:nil preferredStyle:UIAlertControllerStyleAlert];
+                UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"") style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+                }];
+                UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Confirm", @"") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+                    if (self.bookSelectCompleted) {
+                        self.bookSelectCompleted(dic);
+                        [self dismissViewControllerAnimated:YES completion:nil];
+                    }
+                }];
+                [alert addAction:cancelAction];
+                [alert addAction:okAction];
+                [self presentController:alert animated:YES];
             }
             [IndicatorUtil stopProcessIndicator];
         }

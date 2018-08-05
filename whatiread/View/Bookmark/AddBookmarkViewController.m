@@ -27,6 +27,15 @@
     [self.textView setContentInset:UIEdgeInsetsMake(5, 5, 5, 5)];
     
     if (self.book) {
+        if (self.isModifyMode) {
+            if (self.book.quotes.count > 0) {
+                NSSortDescriptor *desc = [NSSortDescriptor sortDescriptorWithKey:@"index" ascending:YES];
+                NSArray *quoteArr = [self.book.quotes sortedArrayUsingDescriptors:[NSArray arrayWithObject:desc]];
+                Quote *quote = quoteArr[self.indexPath.item];
+                [self.textView setText:quote.data];
+            }
+        }
+        
         [self.titleLabel setText:self.book.title];
     }
     
@@ -56,6 +65,10 @@
 }
 
 #pragma mark - Navigation Action
+- (void)leftBarBtnClick:(id)sender {
+    [self popController:YES];
+}
+
 - (void)rightBarBtnClick:(id)sender {
     if (self.textView.text.length <= 0) {
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"책갈피를 입력해주세요." message:nil preferredStyle:UIAlertControllerStyleAlert];

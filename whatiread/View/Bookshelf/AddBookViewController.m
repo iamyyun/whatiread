@@ -44,8 +44,9 @@
     [self.rateView setStarFillColor:[UIColor colorWithHexString:@"F0C330"]];
     [self.rateView setStarNormalColor:[UIColor lightGrayColor]];
     [self.rateView setCanRate:YES];
-    [self.rateView setStarSize:20.f];
+    [self.rateView setStarSize:30.f];
     [self.rateView setStep:0.5f];
+    [self.rateView setDelegate:self];
     
     if (self.isModifyMode) {
         if (self.book) {
@@ -62,7 +63,10 @@
             NSDateFormatter *format = [[NSDateFormatter alloc] init];
             [format setDateFormat:@"yyyy.MM.dd"];
             
-            [self.titleLabel setText:self.book.title];
+            NSString *strTitle = self.book.title;
+            CGFloat height = [strTitle boundingRectWithSize:CGSizeMake(self.titleLabel.frame.size.width, 1000) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:19.0f]} context:nil].size.height;
+            self.titleLabelHeightConst.constant = height;
+            [self.titleLabel setText:strTitle];
             [self.authorLabel setText:self.book.author];
             [self.publisherLabel setText:self.book.publisher];
             [self.pubDateTextField setText:[format stringFromDate:publishDate]];
@@ -71,7 +75,13 @@
             [self.rateView setRating:self.book.rate];
             
             // set NavigationBar
-            [self setNaviBarType:BAR_ADD title:self.book.title image:nil];
+            [self setNaviBarType:BAR_ADD title:@"책 수정" image:nil];
+            
+            if ([self isCheckField]) {
+                [self.navigationItem.rightBarButtonItem setEnabled:YES];
+            } else {
+                [self.navigationItem.rightBarButtonItem setEnabled:NO];
+            }
         }
     } else {
         if (self.bookDic) {
@@ -83,7 +93,10 @@
             NSString *strPubDate = [self makeDateString:[self.bookDic objectForKey:@"pubdate"]];
             publishDate = [format dateFromString:strPubDate];
             
-            [self.titleLabel setText:[self makeMetaToString:[self.bookDic objectForKey:@"title"]]];
+            NSString *strTitle = [self makeMetaToString:[self.bookDic objectForKey:@"title"]];
+            CGFloat height = [strTitle boundingRectWithSize:CGSizeMake(self.titleLabel.frame.size.width, 1000) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:19.0f]} context:nil].size.height;
+            self.titleLabelHeightConst.constant = height;
+            [self.titleLabel setText:strTitle];
             [self.authorLabel setText:[self makeMetaToString:[self.bookDic objectForKey:@"author"]]];
             [self.publisherLabel setText:[self.bookDic objectForKey:@"publisher"]];
             [self.pubDateTextField setText:strPubDate];
@@ -97,12 +110,10 @@
             [self.pubDateTextField setUserInteractionEnabled:NO];
             
             // set NavigationBar
-            [self setNaviBarType:BAR_ADD title:[self makeMetaToString:[self.bookDic objectForKey:@"title"]] image:nil];
+            [self setNaviBarType:BAR_ADD title:@"책 등록" image:nil];
+            
+            [self.navigationItem.rightBarButtonItem setEnabled:NO];
         }
-        
-//        [self.titleLabel setFloatingLabelFont:@"책 제목"];
-        
-//        self.navigationItem.rightBarButtonItem.enabled = NO;
     }
     
     // Add Observer
@@ -114,6 +125,18 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+// check all necessary field
+- (BOOL)isCheckField {
+    NSString *strCompDate = self.compDateTextField.text;
+    float strRate = self.rateView.rating;
+    
+    if (strCompDate.length > 0 && strRate > 0.0f) {
+        return YES;
+    } else {
+        return NO;
+    }
 }
 
 - (NSString *)makeMetaToString:(NSString *)strMeta {
@@ -162,13 +185,35 @@
 
 #pragma mark - Navigation Bar Action
 - (void)leftBarBtnClick:(id)sender {
-    [self popController:YES];
+    if (self.isModifyMode) {
+        [self popController:YES];
+    } else {
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Close", @"") message:@"작성중인 글이 있습니다." preferredStyle:UIAlertControllerStyleActionSheet];
+        
+        NSString *strFirst = @"계속 쓰기";
+        NSString *strSecond = @"삭제하고 나가기";
+        NSString *strThird = @"저장하고 나가기";
+        UIAlertAction *firstAction = [UIAlertAction actionWithTitle:strFirst style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+            
+        }];
+        UIAlertAction *secondAction = [UIAlertAction actionWithTitle:strSecond style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+            [self popController:YES];
+        }];
+        UIAlertAction *thirdAction = [UIAlertAction actionWithTitle:strThird style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+            [self rightBarBtnClick:nil];
+        }];
+        
+        [alert addAction:firstAction];
+        [alert addAction:secondAction];
+        [alert addAction:thirdAction];
+        [self presentController:alert animated:YES];
+    }
 }
 
 - (void)rightBarBtnClick:(id)sender
 {
-    if (self.titleLabel.text.length <= 0) {
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Please write title.", @"") message:nil preferredStyle:UIAlertControllerStyleAlert];
+    if (self.rateView.rating == 0) {
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"평점을 매겨주세요." message:nil preferredStyle:UIAlertControllerStyleAlert];
         UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Confirm", @"") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {}];
         [alert addAction:okAction];
         [self presentController:alert animated:YES];
@@ -216,10 +261,7 @@
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
     NSString *strTitle = @"";
-    if (textField == self.pubDateTextField) {
-        strTitle = @"출판일";
-    }
-    else if (textField == self.startDateTextField) {
+    if (textField == self.startDateTextField) {
         strTitle = @"시작일";
     }
     else if (textField == self.compDateTextField) {
@@ -227,19 +269,7 @@
     }
     
     LSLDatePickerDialog *dpDialog = [[LSLDatePickerDialog alloc] init];
-    if (textField == self.pubDateTextField) {
-        [dpDialog showWithTitle:@"출판일" doneButtonTitle:@"확인" cancelButtonTitle:@"취소" defaultDate:[NSDate date] datePickerMode:UIDatePickerModeDate callback:^(NSDate *date) {
-            if (date) {
-                publishDate = date;
-                NSDateFormatter *format = [[NSDateFormatter alloc] init];
-                [format setDateFormat:@"yyyy.MM.dd"];
-                NSString *strDate = [format stringFromDate:date];
-                textField.text = strDate;
-            }
-        }];
-        return NO;
-    }
-    else if (textField == self.startDateTextField) {
+    if (textField == self.startDateTextField) {
         [dpDialog showWithTitle:@"시작일" doneButtonTitle:@"확인" cancelButtonTitle:@"취소" defaultDate:[NSDate date] datePickerMode:UIDatePickerModeDate callback:^(NSDate *date) {
             if (date) {
                 startDate = date;
@@ -265,6 +295,21 @@
     }
     
     return YES;
+}
+
+#pragma mark - RateView Delegate
+- (void)rateView:(RateView *)rateView didUpdateRating:(float)rating {
+    [self performSelector:@selector(setRate) withObject:nil afterDelay:0.1];
+}
+
+- (void)setRate {
+    [self.rateLabel setText:[NSString stringWithFormat:@"%g", self.rateView.rating]];
+    
+    if ([self isCheckField]) {
+        [self.navigationItem.rightBarButtonItem setEnabled:YES];
+    } else {
+        [self.navigationItem.rightBarButtonItem setEnabled:NO];
+    }
 }
 
 #pragma mark - keyboard actions
