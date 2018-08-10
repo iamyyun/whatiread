@@ -87,6 +87,8 @@
     self.fetchedResultsController = coreData.fetchedResultsController;
     self.fetchedResultsController.delegate = self;
     self.managedObjectContext = coreData.managedObjectContext;
+    
+    [self.collectionView reloadData];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -169,6 +171,33 @@
     [self.collectionView reloadData];
 }
 
+#pragma mark - Bookmark Configure
+// delete Bookmark
+- (void)deleteBookmark:(Book *)book indexPath:(NSIndexPath *)indexPath {
+    NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
+    NSFetchRequest <Quote *> *fetchRequest = Quote.fetchRequest;
+    
+    [context performBlock:^{
+        
+        NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"index" ascending:YES];
+        NSArray *quoteArr = [book.quotes sortedArrayUsingDescriptors:[NSArray arrayWithObject:sortDescriptor]];
+        Quote *quote = quoteArr[indexPath.item];
+        
+        NSError * error;
+        
+        NSArray * resultArray = [context executeFetchRequest:fetchRequest error:&error];
+        
+        if([resultArray count]) {
+            [book removeQuotesObject:quote];
+            
+            [context save:&error];
+            
+            if (!error) {
+                [self popController:YES];
+            }
+        }
+    }];
+}
 
 #pragma mark - UISearchBarDelegate
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
@@ -204,7 +233,8 @@
     
     NSFetchRequest *request = [self.fetchedResultsController fetchRequest];
     NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"title" ascending:YES];
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"title contains[cd] %@ OR quotes.data contains [cd] %@", searchBar.text, searchBar.text];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"quotes.strData contains[cd] %@", searchBar.text];
+//    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"title contains[cd] %@ OR quotes.data contains [cd] %@", searchBar.text, searchBar.text];
 //    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"title contains[cd] %@ OR quotes contains[cd] %@", searchBar.text, searchBar.text];
     [request setPredicate:predicate];
     [request setSortDescriptors:@[sortDescriptor]];
@@ -238,24 +268,17 @@
         
         if (quoteArr && quoteArr.count > 0) {
             Quote *quote = quoteArr[indexPath.item];
-            NSString *strQuote = quote.data;
-            UIImage *quoteImg = [UIImage imageWithData:quote.image];
+            NSAttributedString *attrQuote = (NSAttributedString *)quote.data;
             
-            if (strQuote && strQuote.length > 0) {
-                NSMutableParagraphStyle *paragraph = [[NSMutableParagraphStyle alloc] init];
-                paragraph.lineBreakMode = NSLineBreakByWordWrapping;
-                CGFloat height = [strQuote boundingRectWithSize:CGSizeMake(cell.quoteLabel.frame.size.width, 1000) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:16.0f], NSParagraphStyleAttributeName:paragraph} context:nil].size.height;
-                [cell.quoteLabel setHidden:NO];
-                [cell.quoteImgView setHidden:YES];
-                [cell.quoteLabel setText:strQuote];
-                cell.quoteLabelHeightConst.constant = height;
-            }
-            else if (quoteImg) {
-                [cell.quoteImgView setHidden:NO];
-                [cell.quoteLabel setHidden:YES];
-                quoteImg = [self resizeImageWithWidth:quoteImg targetWidth:cell.quoteImgView.frame.size.width];
-                [cell.quoteImgView setImage:quoteImg];
-                cell.quoteImgViewHeightConst.constant = quoteImg.size.height;
+            if (attrQuote && attrQuote.length > 0) {
+                CGFloat height = [attrQuote boundingRectWithSize:CGSizeMake(cell.quoteTextView.frame.size.width, 1000) options:(NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading) context:nil].size.height+1;
+                
+                [cell.quoteTextView setAttributedText:attrQuote];
+                cell.quoteTextViewHeightConst.constant = height;
+                cell.quoteTextView.contentSize = CGSizeMake(cell.quoteTextView.frame.size.width, height);
+                [cell.quoteTextView setContentInset:UIEdgeInsetsZero];
+                cell.quoteTextView.textContainerInset = UIEdgeInsetsZero;
+                cell.quoteTextView.textContainer.lineFragmentPadding = 0;
             }
         }
     }
@@ -314,6 +337,9 @@
     BookmarkDetailViewController *detailVC = [[BookmarkDetailViewController alloc] init];
     detailVC.book = book;
     detailVC.indexPath = indexPath;
+    [detailVC setBookmarkDetailCompositionHandler:book bookmarkDeleteCompleted:^(NSIndexPath *indexPath) {
+        [self deleteBookmark:book indexPath:indexPath];
+    }];
     [self pushController:detailVC animated:YES];
 }
 
@@ -329,22 +355,15 @@
 
     if (quoteArr && quoteArr.count > 0) {
         Quote *quote = quoteArr[indexPath.item];
-        NSString *strQuote = quote.data;
-        UIImage *quoteImg = [UIImage imageWithData:quote.image];
+        NSAttributedString *attrQuote = (NSAttributedString *)quote.data;
         
-        if (strQuote && strQuote.length > 0) {
-            NSMutableParagraphStyle *paragraph = [[NSMutableParagraphStyle alloc] init];
-            paragraph.lineBreakMode = NSLineBreakByWordWrapping;
-            height = [strQuote boundingRectWithSize:CGSizeMake(width - 61, 1000) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:16.0f], NSParagraphStyleAttributeName:paragraph} context:nil].size.height;
-        }
-        else if (quoteImg) {
-            quoteImg = [self resizeImageWithWidth:quoteImg targetWidth:width - 61];
-            height = quoteImg.size.height;
+        if (attrQuote && attrQuote.length > 0) {
+            height = [attrQuote boundingRectWithSize:CGSizeMake(width-61, 1000) options:(NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading) context:nil].size.height+1;
         }
         
     }
     
-    return CGSizeMake(self.collectionView.frame.size.width, (height+20));
+    return CGSizeMake(width, (height+20));
 }
 
 #pragma mark - Fetched results controller

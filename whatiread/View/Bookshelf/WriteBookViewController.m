@@ -15,6 +15,8 @@
     NSDate *publishDate;
     NSDate *startDate;
     NSDate *compDate;
+    
+    BOOL isEdited;
 }
 
 @end
@@ -26,6 +28,8 @@
     // Do any additional setup after loading the view from its nib.
     
     [self setNaviBarType:BAR_ADD title:@"책 등록" image:nil];
+    
+    isEdited = NO;
     
     startDate = [NSDate date];
     compDate = [NSDate date];
@@ -113,10 +117,8 @@
 
 #pragma mark - Navigation Bar Action
 - (void)leftBarBtnClick:(id)sender {
-    if (self.isModifyMode) {
-        [self popController:YES];
-    }
-    else {
+    
+    if (isEdited) {
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Close", @"") message:@"작성중인 글이 있습니다." preferredStyle:UIAlertControllerStyleActionSheet];
         
         NSString *strFirst = @"계속 쓰기";
@@ -136,7 +138,34 @@
         [alert addAction:secondAction];
         [alert addAction:thirdAction];
         [self presentController:alert animated:YES];
+    } else {
+        [self popController:YES];
     }
+    
+//    if (self.isModifyMode) {
+//        [self popController:YES];
+//    }
+//    else {
+//        UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Close", @"") message:@"작성중인 글이 있습니다." preferredStyle:UIAlertControllerStyleActionSheet];
+//
+//        NSString *strFirst = @"계속 쓰기";
+//        NSString *strSecond = @"삭제하고 나가기";
+//        NSString *strThird = @"저장하고 나가기";
+//        UIAlertAction *firstAction = [UIAlertAction actionWithTitle:strFirst style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+//
+//        }];
+//        UIAlertAction *secondAction = [UIAlertAction actionWithTitle:strSecond style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+//            [self popController:YES];
+//        }];
+//        UIAlertAction *thirdAction = [UIAlertAction actionWithTitle:strThird style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+//            [self rightBarBtnClick:nil];
+//        }];
+//
+//        [alert addAction:firstAction];
+//        [alert addAction:secondAction];
+//        [alert addAction:thirdAction];
+//        [self presentController:alert animated:YES];
+//    }
 }
 
 - (void)rightBarBtnClick:(id)sender
@@ -246,6 +275,7 @@
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
+    isEdited = YES;
     if ([self isCheckField]) {
         [self.navigationItem.rightBarButtonItem setEnabled:YES];
     } else {
@@ -260,6 +290,12 @@
 
 - (void)setRate {
     [self.rateLabel setText:[NSString stringWithFormat:@"%g", self.rateView.rating]];
+    
+    if ([self isCheckField]) {
+        [self.navigationItem.rightBarButtonItem setEnabled:YES];
+    } else {
+        [self.navigationItem.rightBarButtonItem setEnabled:NO];
+    }
 }
 
 #pragma mark - keyboard actions

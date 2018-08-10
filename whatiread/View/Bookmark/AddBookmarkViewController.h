@@ -9,11 +9,13 @@
 #import <UIKit/UIKit.h>
 #import "whatiread+CoreDataModel.h"
 
-typedef void (^BookmarkCreateCompleted)(NSString *strQuote);
+typedef void (^BookmarkCreateCompleted)(NSAttributedString *attrQuote);
+typedef void (^BookmarkModifyCompleted)(NSAttributedString *attrQuote, NSIndexPath *indexPath);
 
 @interface AddBookmarkViewController : CommonViewController
 
 @property (nonatomic, copy) BookmarkCreateCompleted bookmarkCreateCompleted;
+@property (nonatomic, copy) BookmarkModifyCompleted bookmarkModifyCompleted;
 @property (nonatomic, strong) Book *book;
 @property (nonatomic, strong) NSIndexPath *indexPath;
 
@@ -22,8 +24,14 @@ typedef void (^BookmarkCreateCompleted)(NSString *strQuote);
 @property (nonatomic, strong) NSString *strOcrText;
 
 @property (weak, nonatomic) IBOutlet UITextView *textView;
-@property (weak, nonatomic) IBOutlet UILabel *titleLabel;
+@property (weak, nonatomic) IBOutlet UIButton *textInputBtn;
+@property (weak, nonatomic) IBOutlet UIButton *photoInputBtn;
 
-- (void)setBookmarkCompositionHandler:(Book *)book bookmarkCreateCompleted:(BookmarkCreateCompleted)bookmarkCreateCompleted;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *textViewBottomMarginConst;
+
+- (IBAction)textInputBtnAction:(id)sender;
+- (IBAction)photoInputBtnAction:(id)sender;
+
+- (void)setBookmarkCompositionHandler:(Book *)book bookmarkCreateCompleted:(BookmarkCreateCompleted)bookmarkCreateCompleted bookmarkModifyCompleted:(BookmarkModifyCompleted)bookmarkModifyCompleted;
 
 @end

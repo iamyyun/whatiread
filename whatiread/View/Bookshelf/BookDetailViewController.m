@@ -12,6 +12,7 @@
 #import "AddBookViewController.h"
 #import "WriteBookViewController.h"
 #import "AddBookmarkViewController.h"
+#import "BookmarkDetailViewController.h"
 #import "TOCropViewController.h"
 #import <Photos/Photos.h>
 #import <TesseractOCR/TesseractOCR.h>
@@ -74,6 +75,8 @@
     self.fetchedResultsController = coreData.fetchedResultsController;
     self.fetchedResultsController.delegate = self;
     self.managedObjectContext = coreData.managedObjectContext;
+    
+    [self.collectionView reloadData];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -133,70 +136,73 @@
 #pragma mark - Actions
 // add bookmark
 - (IBAction)addBookmarkBtnAction:(id)sender {
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
     
-    NSString *strFirst = @"직접 입력";
-    NSString *strSecond = @"사진 보관함";
-    NSString *strThird = @"사진 찍기";
-    NSString *strFourth = @"텍스트 추출";
-    UIAlertAction *firstAction = [UIAlertAction actionWithTitle:strFirst style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-        [self bookmarkConfigure:self.book ocrText:nil];
-    }];
-    UIAlertAction *secondAction = [UIAlertAction actionWithTitle:strSecond style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-//        [self bookConfigure:nil indexPath:nil isModifyMode:NO];
-        UIImagePickerController *picker = [[UIImagePickerController alloc] init];
-        picker.delegate = self;
-        picker.allowsEditing = NO;
-        picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-        isOcrActive = NO;
-        
-        [self presentController:picker animated:YES];
-    }];
-    UIAlertAction *thirdAction = [UIAlertAction actionWithTitle:strThird style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-        UIImagePickerController *picker = [[UIImagePickerController alloc] init];
-        picker.delegate = self;
-        picker.allowsEditing = NO;
-        picker.sourceType = UIImagePickerControllerSourceTypeCamera;
-        isOcrActive = NO;
-
-        [self presentController:picker animated:YES];
-    }];
-    UIAlertAction *fourthAction = [UIAlertAction actionWithTitle:strFourth style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-        isOcrActive = YES;
-
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"텍스트 추출" message:@"텍스트 추출을 진행할 파일의 출처를 선택해 주세요." preferredStyle:UIAlertControllerStyleAlert];
-
-        NSString *strCamera = @"Camera";
-        NSString *strAlbum = @"Album";
-        UIAlertAction *cameraAction = [UIAlertAction actionWithTitle:strCamera style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-            UIImagePickerController *picker = [[UIImagePickerController alloc] init];
-            picker.delegate = self;
-            picker.allowsEditing = NO;
-            picker.sourceType = UIImagePickerControllerSourceTypeCamera;
-
-            [self presentController:picker animated:YES];
-        }];
-        UIAlertAction *albumAction = [UIAlertAction actionWithTitle:strAlbum style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-            UIImagePickerController *picker = [[UIImagePickerController alloc] init];
-            picker.delegate = self;
-            picker.allowsEditing = NO;
-            picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-
-            [self presentController:picker animated:YES];
-        }];
-
-        [alert addAction:cameraAction];
-        [alert addAction:albumAction];
-        [self presentController:alert animated:YES];
-    }];
-    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"") style:UIAlertActionStyleCancel handler:^(UIAlertAction *action){}];
+     [self bookmarkConfigure:self.book ocrText:nil];
     
-    [alert addAction:firstAction];
-    [alert addAction:secondAction];
-    [alert addAction:thirdAction];
-    [alert addAction:fourthAction];
-    [alert addAction:cancelAction];
-    [self presentController:alert animated:YES];
+//    UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+//
+//    NSString *strFirst = @"직접 입력";
+//    NSString *strSecond = @"사진 보관함";
+//    NSString *strThird = @"사진 찍기";
+//    NSString *strFourth = @"텍스트 추출";
+//    UIAlertAction *firstAction = [UIAlertAction actionWithTitle:strFirst style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+//        [self bookmarkConfigure:self.book ocrText:nil];
+//    }];
+//    UIAlertAction *secondAction = [UIAlertAction actionWithTitle:strSecond style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+////        [self bookConfigure:nil indexPath:nil isModifyMode:NO];
+//        UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+//        picker.delegate = self;
+//        picker.allowsEditing = NO;
+//        picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+//        isOcrActive = NO;
+//
+//        [self presentController:picker animated:YES];
+//    }];
+//    UIAlertAction *thirdAction = [UIAlertAction actionWithTitle:strThird style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+//        UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+//        picker.delegate = self;
+//        picker.allowsEditing = NO;
+//        picker.sourceType = UIImagePickerControllerSourceTypeCamera;
+//        isOcrActive = NO;
+//
+//        [self presentController:picker animated:YES];
+//    }];
+//    UIAlertAction *fourthAction = [UIAlertAction actionWithTitle:strFourth style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+//        isOcrActive = YES;
+//
+//        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"텍스트 추출" message:@"텍스트 추출을 진행할 파일의 출처를 선택해 주세요." preferredStyle:UIAlertControllerStyleAlert];
+//
+//        NSString *strCamera = @"Camera";
+//        NSString *strAlbum = @"Album";
+//        UIAlertAction *cameraAction = [UIAlertAction actionWithTitle:strCamera style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+//            UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+//            picker.delegate = self;
+//            picker.allowsEditing = NO;
+//            picker.sourceType = UIImagePickerControllerSourceTypeCamera;
+//
+//            [self presentController:picker animated:YES];
+//        }];
+//        UIAlertAction *albumAction = [UIAlertAction actionWithTitle:strAlbum style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+//            UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+//            picker.delegate = self;
+//            picker.allowsEditing = NO;
+//            picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+//
+//            [self presentController:picker animated:YES];
+//        }];
+//
+//        [alert addAction:cameraAction];
+//        [alert addAction:albumAction];
+//        [self presentController:alert animated:YES];
+//    }];
+//    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"") style:UIAlertActionStyleCancel handler:^(UIAlertAction *action){}];
+//
+//    [alert addAction:firstAction];
+//    [alert addAction:secondAction];
+//    [alert addAction:thirdAction];
+//    [alert addAction:fourthAction];
+//    [alert addAction:cancelAction];
+//    [self presentController:alert animated:YES];
 }
 
 // edit bookshelf
@@ -279,16 +285,16 @@
     if (ocrText && ocrText.length > 0) {
         addVC.strOcrText = ocrText;
     }
-    [addVC setBookmarkCompositionHandler:self.book bookmarkCreateCompleted:^(NSString *strQuote) {
+    [addVC setBookmarkCompositionHandler:self.book bookmarkCreateCompleted:^(NSAttributedString *attrQuote) {
         NSMutableDictionary *dic = [NSMutableDictionary dictionary];
-        [dic setObject:strQuote forKey:@"mQuote"];
+        [dic setObject:attrQuote forKey:@"mQuote"];
         
         [self createBookmark:self.book qDic:dic completed:^(BOOL isResult) {
             
         }];
         
-        NSLog(@"YJ << quote : %@", strQuote);
-    }];
+        NSLog(@"YJ << quote : %@", attrQuote);
+    } bookmarkModifyCompleted:nil];
     [self pushController:addVC animated:YES];
 }
 
@@ -299,11 +305,13 @@
     NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
     
     NSData *imgData = UIImagePNGRepresentation([qDic objectForKey:@"mImage"]);
+    NSAttributedString *attrStr = [qDic objectForKey:@"mQuote"];
     
     Quote *quote = [[Quote alloc] initWithContext:context];
     quote.index = quoteCount;
     quote.date = [NSDate date];
-    quote.data = [qDic objectForKey:@"mQuote"];
+    quote.data = attrStr;
+    quote.strData = attrStr.string;
     quote.image = imgData;
     
     [book addQuotesObject:quote];
@@ -323,7 +331,34 @@
     [self.collectionView reloadData];
 }
 
-// modify bookmark
+// delete Bookmark
+- (void)deleteBookmark:(Book *)book indexPath:(NSIndexPath *)indexPath {
+    NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
+    NSFetchRequest <Quote *> *fetchRequest = Quote.fetchRequest;
+    
+    [context performBlock:^{
+        
+        NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"index" ascending:YES];
+        NSArray *quoteArr = [book.quotes sortedArrayUsingDescriptors:[NSArray arrayWithObject:sortDescriptor]];
+        Quote *quote = quoteArr[indexPath.item];
+        
+        NSError * error;
+        
+        NSArray * resultArray = [context executeFetchRequest:fetchRequest error:&error];
+        
+        if([resultArray count]) {
+            [book removeQuotesObject:quote];
+            
+            [context save:&error];
+            
+            if (!error) {
+                [self popController:YES];
+            }
+        }
+    }];
+}
+
+// modify book
 - (void)modifyBook:(Book *)book bookDic:(NSDictionary *)bookDic indexPath:(NSIndexPath *)indexPath completed:(void (^)(BOOL isResult))completed {
     NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
     NSFetchRequest <Book *> *fetchRequest = Book.fetchRequest;
@@ -575,25 +610,18 @@
     
     if(quoteArr && quoteArr.count > 0) {
         Quote *quote = quoteArr[indexPath.item];
-        NSString *strQuote = quote.data;
-        UIImage *quoteImg = [UIImage imageWithData:quote.image];
+        NSAttributedString *attrQuote = (NSAttributedString *)quote.data;
         
-        if (strQuote && strQuote.length > 0) {
-            NSMutableParagraphStyle *paragraph = [[NSMutableParagraphStyle alloc] init];
-            paragraph.lineBreakMode = NSLineBreakByWordWrapping;
-            CGFloat height = [strQuote boundingRectWithSize:CGSizeMake(cell.quoteLabel.frame.size.width, 1000) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:16.0f], NSParagraphStyleAttributeName:paragraph} context:nil].size.height;
+        if (attrQuote && attrQuote.length > 0) {
             
-            [cell.quoteLabel setHidden:NO];
-            [cell.quoteImgView setHidden:YES];
-            [cell.quoteLabel setText:strQuote];
-            cell.quoteLabelHeightConst.constant = height;
-        }
-        else if (quoteImg) {
-            quoteImg = [self resizeImageWithWidth:quoteImg targetWidth:cell.quoteImgView.frame.size.width];
-            [cell.quoteImgView setHidden:NO];
-            [cell.quoteLabel setHidden:YES];
-            [cell.quoteImgView setImage:quoteImg];
-            cell.quoteImgViewHeightConst.constant = quoteImg.size.height;
+            CGFloat height = [attrQuote boundingRectWithSize:CGSizeMake(cell.quoteTextView.frame.size.width, 1000) options:(NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading) context:nil].size.height;
+            
+            [cell.quoteTextView setAttributedText:attrQuote];
+            cell.quoteTextViewHeightConst.constant = height;
+            cell.quoteTextView.contentSize = CGSizeMake(cell.quoteTextView.frame.size.width, height);
+            [cell.quoteTextView setContentInset:UIEdgeInsetsZero];
+            cell.quoteTextView.textContainerInset = UIEdgeInsetsZero;
+            cell.quoteTextView.textContainer.lineFragmentPadding = 0;
         }
 
         [cell.bMarkCountLabel setText:[NSString stringWithFormat:@"%ld", indexPath.item+1]];
@@ -618,18 +646,24 @@
     return YES;
 }
 
-//- (BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath
-//{
-//    return YES;
-//}
-//
-//- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath;
-//{
-//    NSLog(@"YJ << select collectionview cell");
-//
-////    Book *book = [self.fetchedResultsController objectAtIndexPath:indexPath];
-//    //    [self bookConfigure:book indexPath:indexPath isModifyMode:YES];
-//}
+- (BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    return YES;
+}
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath;
+{
+    NSIndexPath *fetchIndexPath = [NSIndexPath indexPathForItem:indexPath.section inSection:0];
+    Book *book = [self.fetchedResultsController objectAtIndexPath:fetchIndexPath];
+    
+    BookmarkDetailViewController *detailVC = [[BookmarkDetailViewController alloc] init];
+    detailVC.book = book;
+    detailVC.indexPath = indexPath;
+    [detailVC setBookmarkDetailCompositionHandler:book bookmarkDeleteCompleted:^(NSIndexPath *indexPath) {
+        [self deleteBookmark:book indexPath:indexPath];
+    }];
+    [self pushController:detailVC animated:YES];
+}
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -639,19 +673,12 @@
     if (quoteArr && quoteArr.count > 0) {
         
         Quote *quote = quoteArr[indexPath.item];
-        NSString *strQuote = quote.data;
-        UIImage *quoteImg = [UIImage imageWithData:quote.image];
+        NSAttributedString *attrQuote = (NSAttributedString *)quote.data;
         
-        if (strQuote && strQuote.length > 0) {
-            NSMutableParagraphStyle *paragraph = [[NSMutableParagraphStyle alloc] init];
-            paragraph.lineBreakMode = NSLineBreakByWordWrapping;
-            CGFloat height = [strQuote boundingRectWithSize:CGSizeMake(width-30, 1000) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:16.0f], NSParagraphStyleAttributeName:paragraph} context:nil].size.height;
+        if (attrQuote && attrQuote.length > 0) {
+            
+            CGFloat height = [attrQuote boundingRectWithSize:CGSizeMake(width-30, 1000) options:(NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading) context:nil].size.height;
             cellSize = CGSizeMake(width, (30.f + 11.f + height));
-        }
-        else if (quoteImg) {
-//            cellSize = CGSizeMake(width, 100);
-            quoteImg = [self resizeImageWithWidth:quoteImg targetWidth:width-30];
-            cellSize = CGSizeMake(width, (30.f + 11.f + quoteImg.size.height));
         }
     }
     return cellSize;

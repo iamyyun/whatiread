@@ -12,7 +12,6 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="BookmarkViewController">
             <connections>
-                <outlet property="addBtn" destination="tAk-Le-THS" id="O8g-bB-XXY"/>
                 <outlet property="bCountLabel" destination="mSa-cq-2Hg" id="BRR-DY-y8v"/>
                 <outlet property="bmCountLabel" destination="hoC-he-5Ic" id="v2p-Sa-5Yo"/>
                 <outlet property="collectionView" destination="eT8-Bx-Axc" id="4ch-Ta-Pfk"/>
@@ -42,21 +41,8 @@
                         <outlet property="delegate" destination="-1" id="thl-YI-nur"/>
                     </connections>
                 </searchBar>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tAk-Le-THS">
-                    <rect key="frame" x="15" y="80" width="345" height="60"/>
-                    <color key="backgroundColor" red="0.92143100499999997" green="0.92145264149999995" blue="0.92144101860000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="60" id="0hq-w2-5fE"/>
-                    </constraints>
-                    <state key="normal" title="Add Bookmark">
-                        <color key="titleColor" red="0.57414853570000002" green="0.57416242360000003" blue="0.57415497299999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    </state>
-                    <connections>
-                        <action selector="addBtnAction:" destination="-1" eventType="touchUpInside" id="RDH-QV-wPx"/>
-                    </connections>
-                </button>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jr1-HV-15k">
-                    <rect key="frame" x="15" y="145" width="344" height="35"/>
+                    <rect key="frame" x="15" y="70" width="344" height="35"/>
                     <subviews>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_small_filter" translatesAutoresizingMaskIntoConstraints="NO" id="73t-Je-ARP">
                             <rect key="frame" x="0.0" y="7" width="20" height="20"/>
@@ -122,7 +108,7 @@
                     </constraints>
                 </view>
                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsVerticalScrollIndicator="NO" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="eT8-Bx-Axc">
-                    <rect key="frame" x="0.0" y="180" width="375" height="487"/>
+                    <rect key="frame" x="0.0" y="105" width="375" height="562"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="SzQ-wV-FM5">
                         <size key="itemSize" width="50" height="50"/>
@@ -136,10 +122,10 @@
                     </connections>
                 </collectionView>
                 <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Jze-6w-EwW">
-                    <rect key="frame" x="16" y="180" width="343" height="487"/>
+                    <rect key="frame" x="16" y="105" width="343" height="562"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="There is no data." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="avz-y0-XIc">
-                            <rect key="frame" x="108" y="233.5" width="128" height="21"/>
+                            <rect key="frame" x="108" y="271" width="128" height="21"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
@@ -155,17 +141,14 @@
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="Iku-tx-PAz" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="20" id="8eD-Iq-dda"/>
-                <constraint firstItem="jr1-HV-15k" firstAttribute="top" secondItem="tAk-Le-THS" secondAttribute="bottom" constant="5" id="AGh-Sb-Xrr"/>
-                <constraint firstItem="tAk-Le-THS" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="15" id="AHm-IT-Ss8"/>
                 <constraint firstItem="Jze-6w-EwW" firstAttribute="top" secondItem="jr1-HV-15k" secondAttribute="bottom" id="DVL-04-MZH"/>
                 <constraint firstAttribute="trailing" secondItem="Jze-6w-EwW" secondAttribute="trailing" constant="16" id="GPz-AZ-0QP"/>
-                <constraint firstItem="tAk-Le-THS" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="80" id="Ik3-q9-L0q"/>
                 <constraint firstItem="eT8-Bx-Axc" firstAttribute="top" secondItem="jr1-HV-15k" secondAttribute="bottom" id="QG1-Uq-Bya"/>
                 <constraint firstItem="Jze-6w-EwW" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="16" id="SDq-HK-R5r"/>
                 <constraint firstItem="eT8-Bx-Axc" firstAttribute="bottom" secondItem="i5M-Pr-FkT" secondAttribute="bottom" id="SKc-n2-tK1"/>
                 <constraint firstItem="Iku-tx-PAz" firstAttribute="trailing" secondItem="fNt-QC-HpO" secondAttribute="trailing" id="at5-l4-GsW"/>
                 <constraint firstItem="jr1-HV-15k" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="15" id="cfi-qM-bxq"/>
-                <constraint firstAttribute="trailing" secondItem="tAk-Le-THS" secondAttribute="trailing" constant="15" id="hNE-Ur-NqC"/>
+                <constraint firstItem="jr1-HV-15k" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="70" id="ecW-oI-nZm"/>
                 <constraint firstAttribute="trailing" secondItem="eT8-Bx-Axc" secondAttribute="trailing" id="hhj-Sa-jG3"/>
                 <constraint firstAttribute="trailing" secondItem="jr1-HV-15k" secondAttribute="trailing" constant="16" id="mJy-Uh-c6u"/>
                 <constraint firstItem="Iku-tx-PAz" firstAttribute="leading" secondItem="fNt-QC-HpO" secondAttribute="leading" id="mXu-sc-l1q"/>

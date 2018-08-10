@@ -7,22 +7,26 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <CoreData/CoreData.h>
+#import "whatiread+CoreDataModel.h"
+#import "CoreDataAccess.h"
 
-@interface BookmarkDetailViewController : CommonViewController
+typedef void (^BookmarkDeleteCompleted)(NSIndexPath *indexPath);
 
-@property (assign) BOOL isFromBookshelf;
+@interface BookmarkDetailViewController : CommonViewController <NSFetchedResultsControllerDelegate>
+
+@property (strong, nonatomic) NSFetchedResultsController <Book *> *fetchedResultsController;
+@property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
+
+@property (nonatomic, copy) BookmarkDeleteCompleted bookmarkDeleteCompleted;
+
 @property (nonatomic, strong) Book *book;
 @property (nonatomic, strong) NSIndexPath *indexPath;
 
 @property (weak, nonatomic) IBOutlet UITextView *textView;
-@property (weak, nonatomic) IBOutlet UIButton *bookBtn;
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *authorLabel;
-@property (weak, nonatomic) IBOutlet UIImageView *arrowImgView;
 
-- (IBAction)bookBtnAction:(id)sender;
-
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *titleLabelTrailingMarginConst;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *authorLabelTrailingMarginConst;
+- (void)setBookmarkDetailCompositionHandler:(Book *)book bookmarkDeleteCompleted:(BookmarkDeleteCompleted)bookmarkDeleteCompleted;
 
 @end

@@ -89,6 +89,25 @@
     self.fetchedResultsController.delegate = self;
     self.managedObjectContext = coreData.managedObjectContext;
     
+    id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][0];
+    NSInteger bookCount = [sectionInfo numberOfObjects];
+    NSInteger bmCount = 0;
+    if (bookCount > 0) {
+        for (int i = 0; i < bookCount; i++) {
+            NSIndexPath *indexPath = [NSIndexPath indexPathForItem:i inSection:0];
+            Book *book = [self.fetchedResultsController objectAtIndexPath:indexPath];
+            bmCount += book.quotes.count;
+        }
+        [self.collectionView setHidden:NO];
+        [self.emptyView setHidden:YES];
+    } else {
+        [self.collectionView setHidden:YES];
+        [self.emptyView setHidden:NO];
+    }
+    
+    [self.bCountLabel setText:[NSString stringWithFormat:@"%ld", bookCount]];
+    [self.bmCountLabel setText:[NSString stringWithFormat:@"%ld", bmCount]];
+    
     [self.collectionView reloadData];
 }
 

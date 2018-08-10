@@ -32,15 +32,6 @@
                             <constraint firstAttribute="width" constant="20" id="U1y-rG-bei"/>
                         </constraints>
                     </imageView>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="TopLeft" verticalHuggingPriority="251" text="" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MYP-Rg-nvH">
-                        <rect key="frame" x="46" y="10" width="314" height="80"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="80" id="CYB-gy-hJC"/>
-                        </constraints>
-                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                        <color key="textColor" white="0.31231774224175346" alpha="1" colorSpace="calibratedWhite"/>
-                        <nil key="highlightedColor"/>
-                    </label>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sXk-j9-8mW">
                         <rect key="frame" x="10" y="99" width="355" height="1"/>
                         <color key="backgroundColor" white="0.76540798611111116" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -48,38 +39,38 @@
                             <constraint firstAttribute="height" constant="1" id="6C4-Z3-jpS"/>
                         </constraints>
                     </view>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="bgr-xg-V3y">
+                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" editable="NO" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eJ9-TX-esa">
                         <rect key="frame" x="46" y="10" width="314" height="80"/>
+                        <color key="backgroundColor" white="1" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="80" id="4s7-8H-ws1"/>
+                            <constraint firstAttribute="height" constant="80" id="9dk-Lw-J3u"/>
                         </constraints>
-                    </imageView>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                        <connections>
+                            <outlet property="delegate" destination="-1" id="BrQ-Ji-zl2"/>
+                        </connections>
+                    </textView>
                 </subviews>
             </view>
             <constraints>
+                <constraint firstAttribute="trailing" secondItem="eJ9-TX-esa" secondAttribute="trailing" constant="15" id="65d-yf-1fx"/>
+                <constraint firstItem="eJ9-TX-esa" firstAttribute="leading" secondItem="yuR-Nd-oec" secondAttribute="trailing" constant="5" id="72P-Or-Vq1"/>
+                <constraint firstAttribute="bottom" secondItem="eJ9-TX-esa" secondAttribute="bottom" constant="10" id="90j-T7-WOP"/>
                 <constraint firstItem="Tw3-TA-qiV" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="10" id="AxA-0N-v0S"/>
-                <constraint firstItem="bgr-xg-V3y" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="10" id="Ew9-tx-pRB"/>
-                <constraint firstItem="bgr-xg-V3y" firstAttribute="leading" secondItem="yuR-Nd-oec" secondAttribute="trailing" constant="5" id="GX0-Bu-OKY"/>
+                <constraint firstItem="eJ9-TX-esa" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="10" id="ItO-nS-EZu"/>
                 <constraint firstItem="yuR-Nd-oec" firstAttribute="leading" secondItem="Tw3-TA-qiV" secondAttribute="trailing" constant="1" id="Jp3-N6-aD0"/>
-                <constraint firstItem="MYP-Rg-nvH" firstAttribute="leading" secondItem="yuR-Nd-oec" secondAttribute="trailing" constant="5" id="Lfp-Nt-pGf"/>
                 <constraint firstItem="yuR-Nd-oec" firstAttribute="centerY" secondItem="Tw3-TA-qiV" secondAttribute="centerY" id="OA2-ec-qji"/>
                 <constraint firstItem="sXk-j9-8mW" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="10" id="ZX2-76-tNW"/>
-                <constraint firstAttribute="trailing" secondItem="bgr-xg-V3y" secondAttribute="trailing" constant="15" id="alP-mz-4PT"/>
-                <constraint firstItem="MYP-Rg-nvH" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="10" id="d4d-OT-V1Q"/>
-                <constraint firstAttribute="trailing" secondItem="MYP-Rg-nvH" secondAttribute="trailing" constant="15" id="dRS-p4-IA0"/>
                 <constraint firstItem="Tw3-TA-qiV" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="10" id="njP-dh-Qoh"/>
                 <constraint firstAttribute="bottom" secondItem="sXk-j9-8mW" secondAttribute="bottom" id="nkk-R9-Vzv"/>
-                <constraint firstAttribute="bottom" secondItem="bgr-xg-V3y" secondAttribute="bottom" constant="10" id="rMJ-Pf-Qoh"/>
                 <constraint firstAttribute="trailing" secondItem="sXk-j9-8mW" secondAttribute="trailing" constant="10" id="vKn-do-oaQ"/>
-                <constraint firstAttribute="bottom" secondItem="MYP-Rg-nvH" secondAttribute="bottom" constant="10" id="zO7-zP-cVk"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="SEy-5g-ep8"/>
             <connections>
                 <outlet property="indexLabel" destination="Tw3-TA-qiV" id="xo5-rn-ldv"/>
-                <outlet property="quoteImgView" destination="bgr-xg-V3y" id="Shr-a7-VPl"/>
-                <outlet property="quoteImgViewHeightConst" destination="4s7-8H-ws1" id="LsD-3P-ceO"/>
-                <outlet property="quoteLabel" destination="MYP-Rg-nvH" id="kZS-oA-BzY"/>
-                <outlet property="quoteLabelHeightConst" destination="CYB-gy-hJC" id="K0j-jq-9ka"/>
+                <outlet property="quoteTextView" destination="eJ9-TX-esa" id="De7-BQ-QiX"/>
+                <outlet property="quoteTextViewHeightConst" destination="9dk-Lw-J3u" id="Sul-8c-b3x"/>
             </connections>
             <point key="canvasLocation" x="33.5" y="54"/>
         </collectionViewCell>

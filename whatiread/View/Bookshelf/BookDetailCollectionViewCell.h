@@ -11,10 +11,8 @@
 @interface BookDetailCollectionViewCell : UICollectionViewCell
 
 @property (weak, nonatomic) IBOutlet UILabel *bMarkCountLabel;
-@property (weak, nonatomic) IBOutlet UILabel *quoteLabel;
-@property (weak, nonatomic) IBOutlet UIImageView *quoteImgView;
+@property (weak, nonatomic) IBOutlet UITextView *quoteTextView;
 
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *quoteLabelHeightConst;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *quoteImgViewHeightConst;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *quoteTextViewHeightConst;
 
 @end

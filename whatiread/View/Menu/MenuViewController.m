@@ -30,9 +30,9 @@
     [menuList addObject:@{@"title":@"Bookmark",
                           @"image":@"icon_menu_bookmark"
                           }];
-    [menuList addObject:@{@"title":@"Settings",
-                          @"image":@"icon_menu_setting"
-                          }];
+//    [menuList addObject:@{@"title":@"Settings",
+//                          @"image":@"icon_menu_setting"
+//                          }];
     
     [self drawViews];
 }
