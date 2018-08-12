@@ -131,6 +131,7 @@
     [self.navigationController setNavigationBarHidden:YES animated:YES];
     
     [self.view addGestureRecognizer:bgTap];
+    
 }
 
 #pragma mark - actions

@@ -249,33 +249,36 @@
     
     if (isOcrActive) {
         
-        G8Tesseract *tesseract = [[G8Tesseract alloc] initWithLanguage:@"kor+eng"];
-        tesseract.delegate = self;
-        //        tesseract.charWhitelist = @"0123456789";
-        tesseract.image = [image g8_blackAndWhite];
-        //        tessract.maximumRecognitionTime = 2.0;
-        [tesseract recognize];
+        __block NSString *strOcr = @"";
         
-        NSLog(@"tesseract recognized text : %@", [tesseract recognizedText]);
-        NSString *strOcr = [tesseract recognizedText];
-        //        if ([tesseract recognizedText] && [tesseract recognizedText].length > 0) {
-        //            [IndicatorUtil stopProcessIndicator];
-        //        }
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"텍스트 추출" message:strOcr preferredStyle:UIAlertControllerStyleAlert];
+        [IndicatorUtil startProcessIndicator];
+        G8RecognitionOperation *operation = [[G8RecognitionOperation alloc] initWithLanguage:@"kor+eng"];
+        operation.tesseract.image = [image g8_blackAndWhite];
+        operation.recognitionCompleteBlock = ^(G8Tesseract *recognizedTesseract) {
+            // Retrieve the recognized text upon completion
+            
+            strOcr = [recognizedTesseract recognizedText];
+            [IndicatorUtil stopProcessIndicator];
+            
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"텍스트 추출" message:strOcr preferredStyle:UIAlertControllerStyleAlert];
+            
+            NSString *strConfirm = NSLocalizedString(@"Confirm", @"");
+            NSString *strCancel = NSLocalizedString(@"Cancel", @"");
+            UIAlertAction *confirmAction = [UIAlertAction actionWithTitle:strConfirm style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+                NSAttributedString *attrStr = [[NSAttributedString alloc] initWithString:strOcr];
+                [self.textView.textStorage insertAttributedString:attrStr atIndex:self.textView.selectedRange.location];
+            }];
+            UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:strCancel style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+                [self dismissController:alert animated:YES];
+            }];
+            
+            [alert addAction:cancelAction];
+            [alert addAction:confirmAction];
+            [self presentController:alert animated:YES];
+        };
         
-        NSString *strConfirm = NSLocalizedString(@"Confirm", @"");
-        NSString *strCancel = NSLocalizedString(@"Cancel", @"");
-        UIAlertAction *confirmAction = [UIAlertAction actionWithTitle:strConfirm style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-            NSAttributedString *attrStr = [[NSAttributedString alloc] initWithString:strOcr];
-            [self.textView.textStorage insertAttributedString:attrStr atIndex:self.textView.selectedRange.location];
-        }];
-        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:strCancel style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-            [self dismissController:alert animated:YES];
-        }];
-        
-        [alert addAction:cancelAction];
-        [alert addAction:confirmAction];
-        [self presentController:alert animated:YES];
+        NSOperationQueue *queue = [[NSOperationQueue alloc] init];
+        [queue addOperation:operation];
         
     } else {
         NSTextAttachment *textAttachment = [[NSTextAttachment alloc] init];

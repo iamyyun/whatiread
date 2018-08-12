@@ -13,16 +13,11 @@
 #import "WriteBookViewController.h"
 #import "AddBookmarkViewController.h"
 #import "BookmarkDetailViewController.h"
-#import "TOCropViewController.h"
-#import <Photos/Photos.h>
-#import <TesseractOCR/TesseractOCR.h>
 
-@interface BookDetailViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate, TOCropViewControllerDelegate, G8TesseractDelegate> {
+@interface BookDetailViewController () <UICollectionViewDelegate, UICollectionViewDataSource> {
     NSArray *quoteArr;
     
     CoreDataAccess *coreData;
-    
-    BOOL isOcrActive;
 }
 
 @end
@@ -138,71 +133,6 @@
 - (IBAction)addBookmarkBtnAction:(id)sender {
     
      [self bookmarkConfigure:self.book ocrText:nil];
-    
-//    UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-//
-//    NSString *strFirst = @"직접 입력";
-//    NSString *strSecond = @"사진 보관함";
-//    NSString *strThird = @"사진 찍기";
-//    NSString *strFourth = @"텍스트 추출";
-//    UIAlertAction *firstAction = [UIAlertAction actionWithTitle:strFirst style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-//        [self bookmarkConfigure:self.book ocrText:nil];
-//    }];
-//    UIAlertAction *secondAction = [UIAlertAction actionWithTitle:strSecond style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-////        [self bookConfigure:nil indexPath:nil isModifyMode:NO];
-//        UIImagePickerController *picker = [[UIImagePickerController alloc] init];
-//        picker.delegate = self;
-//        picker.allowsEditing = NO;
-//        picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-//        isOcrActive = NO;
-//
-//        [self presentController:picker animated:YES];
-//    }];
-//    UIAlertAction *thirdAction = [UIAlertAction actionWithTitle:strThird style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-//        UIImagePickerController *picker = [[UIImagePickerController alloc] init];
-//        picker.delegate = self;
-//        picker.allowsEditing = NO;
-//        picker.sourceType = UIImagePickerControllerSourceTypeCamera;
-//        isOcrActive = NO;
-//
-//        [self presentController:picker animated:YES];
-//    }];
-//    UIAlertAction *fourthAction = [UIAlertAction actionWithTitle:strFourth style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-//        isOcrActive = YES;
-//
-//        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"텍스트 추출" message:@"텍스트 추출을 진행할 파일의 출처를 선택해 주세요." preferredStyle:UIAlertControllerStyleAlert];
-//
-//        NSString *strCamera = @"Camera";
-//        NSString *strAlbum = @"Album";
-//        UIAlertAction *cameraAction = [UIAlertAction actionWithTitle:strCamera style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-//            UIImagePickerController *picker = [[UIImagePickerController alloc] init];
-//            picker.delegate = self;
-//            picker.allowsEditing = NO;
-//            picker.sourceType = UIImagePickerControllerSourceTypeCamera;
-//
-//            [self presentController:picker animated:YES];
-//        }];
-//        UIAlertAction *albumAction = [UIAlertAction actionWithTitle:strAlbum style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-//            UIImagePickerController *picker = [[UIImagePickerController alloc] init];
-//            picker.delegate = self;
-//            picker.allowsEditing = NO;
-//            picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-//
-//            [self presentController:picker animated:YES];
-//        }];
-//
-//        [alert addAction:cameraAction];
-//        [alert addAction:albumAction];
-//        [self presentController:alert animated:YES];
-//    }];
-//    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"") style:UIAlertActionStyleCancel handler:^(UIAlertAction *action){}];
-//
-//    [alert addAction:firstAction];
-//    [alert addAction:secondAction];
-//    [alert addAction:thirdAction];
-//    [alert addAction:fourthAction];
-//    [alert addAction:cancelAction];
-//    [self presentController:alert animated:YES];
 }
 
 // edit bookshelf
@@ -472,132 +402,6 @@
             }
         }
     }];
-}
-
-#pragma mark - UIImagePickerViewController Delegate
-- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info {
-    UIImage *chosenImg = info[UIImagePickerControllerOriginalImage];
-    [self dismissController:picker animated:NO];
-    
-    TOCropViewController *cropViewController = [[TOCropViewController alloc] initWithImage:chosenImg];
-    cropViewController.delegate = self;
-    [self presentController:cropViewController animated:YES];
-}
-
-- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
-    [self dismissController:picker animated:YES];
-}
-
-#pragma mark - TOCropViewController Delegate
-- (void)cropViewController:(TOCropViewController *)cropViewController didFinishCancelled:(BOOL)cancelled {
-    [self dismissController:cropViewController animated:YES];
-}
-
-- (void)cropViewController:(TOCropViewController *)cropViewController didCropToImage:(UIImage *)image withRect:(CGRect)cropRect angle:(NSInteger)angle
-{
-    UIImage *resultImage = image;
-    [self dismissController:cropViewController animated:YES];
-    
-    [self savePhoto:resultImage];
-    
-    if (isOcrActive) {
-        
-        G8Tesseract *tesseract = [[G8Tesseract alloc] initWithLanguage:@"kor+eng"];
-        tesseract.delegate = self;
-        //        tesseract.charWhitelist = @"0123456789";
-        tesseract.image = [image g8_blackAndWhite];
-        //        tessract.maximumRecognitionTime = 2.0;
-        [tesseract recognize];
-        
-        NSLog(@"tesseract recognized text : %@", [tesseract recognizedText]);
-        NSString *strOcr = [tesseract recognizedText];
-//        if ([tesseract recognizedText] && [tesseract recognizedText].length > 0) {
-//            [IndicatorUtil stopProcessIndicator];
-//        }
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"텍스트 추출" message:strOcr preferredStyle:UIAlertControllerStyleAlert];
-        
-        NSString *strConfirm = NSLocalizedString(@"Confirm", @"");
-        NSString *strCancel = NSLocalizedString(@"Cancel", @"");
-        UIAlertAction *confirmAction = [UIAlertAction actionWithTitle:strConfirm style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-            [self bookmarkConfigure:self.book ocrText:strOcr];
-        }];
-        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:strCancel style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-            [self dismissController:alert animated:YES];
-        }];
-        
-        [alert addAction:cancelAction];
-        [alert addAction:confirmAction];
-        [self presentController:alert animated:YES];
-        
-    } else {
-        NSMutableDictionary *dic = [NSMutableDictionary dictionary];
-        //    [dic setObject:strQuote forKey:@"mQuote"];
-        [dic setObject:image forKey:@"mImage"];
-        
-        [self createBookmark:self.book qDic:dic completed:^(BOOL isResult) {
-            
-        }];
-    }
-}
-
-- (void)savePhoto:(UIImage *)image {
-    PHAuthorizationStatus stauts = [PHPhotoLibrary authorizationStatus];
-    
-    if(stauts == PHAuthorizationStatusDenied) {
-        return;
-    }
-    
-    
-    [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
-        
-        PHAssetCollectionChangeRequest *collectionRequest = nil;;
-        
-        PHFetchResult * myFirstFetchResult = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeAlbum subtype:PHAssetCollectionSubtypeAny options:nil];
-        
-        PHAssetCollection *collection = nil;
-        for(int i = 0 ; i < myFirstFetchResult.count ;i++ ){
-            PHAssetCollection * assetCollection  =   [myFirstFetchResult objectAtIndex:i];
-            
-            NSString * albumName = assetCollection.localizedTitle;
-            NSString * albumIdentifier = assetCollection.localIdentifier;
-            if([albumName isEqualToString:@"whatIread"]){
-                collection = assetCollection;
-                break;
-            }
-            NSLog(@"%@",albumName);
-            NSLog(@"%@",albumIdentifier);
-            
-        }
-        
-        if(collection){
-            collectionRequest = [PHAssetCollectionChangeRequest changeRequestForAssetCollection:collection];
-        }else{
-            collectionRequest = [PHAssetCollectionChangeRequest creationRequestForAssetCollectionWithTitle:@"whatIread"];
-        }
-        
-        NSMutableArray *assets = [[NSMutableArray array]init];
-        
-        
-        PHAssetChangeRequest *imageCreationRequest = [PHAssetChangeRequest creationRequestForAssetFromImage:image];
-        [assets addObject:imageCreationRequest.placeholderForCreatedAsset];
-        
-        
-        [collectionRequest addAssets:assets];
-        
-    }completionHandler:^(BOOL success, NSError *error){
-        
-    }];
-    //    [self dismissViewControllerAnimated:YES completion:nil];
-}
-
-#pragma mark - G8Tesseract Delegate
-- (void)progressImageRecognitionForTesseract:(G8Tesseract *)tesseract {
-     NSLog(@"tesseract progress: %lu", (unsigned long)tesseract.progress);
-    NSNumber *prog = [NSNumber numberWithUnsignedInteger:tesseract.progress];
-}
-
-- (BOOL)shouldCancelImageRecognitionForTesseract:(G8Tesseract *)tesseract {
-    return NO;
 }
 
 #pragma mark - UICollectionViewDataSource
