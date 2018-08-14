@@ -138,7 +138,7 @@
                         <constraint firstItem="avz-y0-XIc" firstAttribute="centerX" secondItem="Jze-6w-EwW" secondAttribute="centerX" id="ccN-9y-9xw"/>
                     </constraints>
                 </view>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iN8-aR-QL3">
+                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iN8-aR-QL3">
                     <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                     <color key="backgroundColor" white="0.0" alpha="0.40000000000000002" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </view>

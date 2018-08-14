@@ -456,10 +456,12 @@
 
 - (NSInteger)collectionView:(nonnull UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
     id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][0];
-    if ([sectionInfo numberOfObjects] > 0) {
-        [self.dimBgView setHidden:YES];
-    } else {
-        [self.dimBgView setHidden:NO];
+    if (isSearchBarActive) {
+        if ([sectionInfo numberOfObjects] > 0) {
+            [self.dimBgView setHidden:YES];
+        } else {
+            [self.dimBgView setHidden:NO];
+        }
     }
     return [sectionInfo numberOfObjects];
 }
