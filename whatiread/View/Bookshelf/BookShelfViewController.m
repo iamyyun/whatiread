@@ -126,6 +126,7 @@
 #pragma mark - navigation action
 - (void)rightBarBtnClick:(id)sender
 {
+    [self.dimBgView setHidden:NO];
     [self.searchBar setHidden:NO];
     [self.searchBar becomeFirstResponder];
     [self.navigationController setNavigationBarHidden:YES animated:YES];
@@ -455,7 +456,11 @@
 
 - (NSInteger)collectionView:(nonnull UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
     id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][0];
-    NSLog(@"YJ << section %ld - item %ld", section, [sectionInfo numberOfObjects]);
+    if ([sectionInfo numberOfObjects] > 0) {
+        [self.dimBgView setHidden:YES];
+    } else {
+        [self.dimBgView setHidden:NO];
+    }
     return [sectionInfo numberOfObjects];
 }
 

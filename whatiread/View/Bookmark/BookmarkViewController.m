@@ -119,6 +119,7 @@
 #pragma mark - navigation action
 - (void)rightBarBtnClick:(id)sender
 {
+    [self.dimBgView setHidden:NO];
     [self.searchBar setHidden:NO];
     [self.searchBar becomeFirstResponder];
     [self.navigationController setNavigationBarHidden:YES animated:YES];
@@ -232,7 +233,7 @@
     self.fetchedResultsController.delegate = self;
     
     NSFetchRequest *request = [self.fetchedResultsController fetchRequest];
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"title" ascending:YES];
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"title" ascending:NO];
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"quotes.strData contains[cd] %@", searchBar.text];
 //    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"title contains[cd] %@ OR quotes.data contains [cd] %@", searchBar.text, searchBar.text];
 //    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"title contains[cd] %@ OR quotes contains[cd] %@", searchBar.text, searchBar.text];
@@ -257,21 +258,45 @@
         cell = [[[NSBundle mainBundle] loadNibNamed:cellIdentifier owner:self options:nil] lastObject];
     }
     
-    NSLog(@"YJ << cellforitem section : %ld, item : %ld", indexPath.section, indexPath.item);
     NSIndexPath *fetchIndexPath = [NSIndexPath indexPathForItem:indexPath.section inSection:0];
-    NSLog(@"YJ << fetched section : %ld, item : %ld", fetchIndexPath.section, fetchIndexPath.item);
     Book *book = [self.fetchedResultsController objectAtIndexPath:fetchIndexPath];
     
     if (book) {
+        
         NSSortDescriptor *desc = [NSSortDescriptor sortDescriptorWithKey:@"index" ascending:YES];
         NSArray *quoteArr = [book.quotes sortedArrayUsingDescriptors:[NSArray arrayWithObject:desc]];
+        
+        if (isSearchBarActive) {
+            NSMutableArray *modiArr = [NSMutableArray array];
+            for (int i = 0; i < book.quotes.count; i++) {
+                Quote *quote = quoteArr[i];
+                if ([quote.strData containsString:self.searchBar.text]) {
+                    [modiArr addObject:quote];
+                }
+            }
+            quoteArr = [modiArr copy];
+        }
         
         if (quoteArr && quoteArr.count > 0) {
             Quote *quote = quoteArr[indexPath.item];
             NSAttributedString *attrQuote = (NSAttributedString *)quote.data;
             
             if (attrQuote && attrQuote.length > 0) {
-                CGFloat height = [attrQuote boundingRectWithSize:CGSizeMake(cell.quoteTextView.frame.size.width, 1000) options:(NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading) context:nil].size.height+1;
+                __block CGFloat height = [attrQuote boundingRectWithSize:CGSizeMake(cell.quoteTextView.frame.size.width, 1000) options:(NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading) context:nil].size.height+1;
+                
+                [attrQuote enumerateAttribute:NSAttachmentAttributeName inRange:NSMakeRange(0, attrQuote.length) options:0 usingBlock:^(id value, NSRange range, BOOL *stop) {
+                    if (![value isKindOfClass:[NSTextAttachment class]]) {
+                        return;
+                    }
+                    NSTextAttachment *attachment = (NSTextAttachment*)value;
+                    CGFloat origHeight = attachment.image.size.height;
+                    CGFloat reHeight = (attachment.image.size.width / cell.quoteTextView.frame.size.width) * origHeight;
+                    attachment.bounds = CGRectMake(0, 0, cell.quoteTextView.frame.size.width, reHeight);
+                    
+                    if (reHeight > origHeight) {
+                        height += (reHeight - origHeight);
+                    }
+                }];
                 
                 [cell.quoteTextView setAttributedText:attrQuote];
                 cell.quoteTextViewHeightConst.constant = height;
@@ -279,6 +304,8 @@
                 [cell.quoteTextView setContentInset:UIEdgeInsetsZero];
                 cell.quoteTextView.textContainerInset = UIEdgeInsetsZero;
                 cell.quoteTextView.textContainer.lineFragmentPadding = 0;
+                
+                [cell updateConstraints];
             }
         }
     }
@@ -303,17 +330,37 @@
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
     id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][0];
+    if ([sectionInfo numberOfObjects] > 0) {
+        [self.dimBgView setHidden:YES];
+    } else {
+        [self.dimBgView setHidden:NO];
+    }
+    NSLog(@"YJ << sections : %d", [sectionInfo numberOfObjects]);
     return [sectionInfo numberOfObjects];
 }
 
 - (NSInteger)collectionView:(nonnull UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
     
+    NSInteger count = 0;
     NSIndexPath *indexPath = [NSIndexPath indexPathForItem:section inSection:0];
     Book *book = [self.fetchedResultsController objectAtIndexPath:indexPath];
     
-//    NSSortDescriptor *desc = [NSSortDescriptor sortDescriptorWithKey:@"index" ascending:YES];
-//    NSArray *quoteArr = [book.quotes sortedArrayUsingDescriptors:[NSArray arrayWithObject:desc]];
-    return book.quotes.count;
+    NSLog(@"YJ << quotes count : %d", book.quotes.count);
+    
+    if (isSearchBarActive) {
+        NSSortDescriptor *desc = [NSSortDescriptor sortDescriptorWithKey:@"index" ascending:YES];
+        NSArray *quoteArr = [book.quotes sortedArrayUsingDescriptors:[NSArray arrayWithObject:desc]];
+        for (int i = 0; i < book.quotes.count; i++) {
+            Quote *quote = quoteArr[i];
+            if ([quote.strData containsString:self.searchBar.text]) {
+                count += 1;
+            }
+        }
+    }
+    else {
+        count = book.quotes.count;
+    }
+    return count;
 }
 
 #pragma mark - UICollectionViewDelegate
@@ -346,7 +393,7 @@
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     CGFloat width = self.collectionView.frame.size.width;
-    CGFloat height = 100.f;
+    __block CGFloat height = 100.f;
     NSIndexPath *fetchIndexPath = [NSIndexPath indexPathForItem:indexPath.section inSection:0];
     Book *book = [self.fetchedResultsController objectAtIndexPath:fetchIndexPath];
     
@@ -359,6 +406,20 @@
         
         if (attrQuote && attrQuote.length > 0) {
             height = [attrQuote boundingRectWithSize:CGSizeMake(width-61, 1000) options:(NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading) context:nil].size.height+1;
+            
+            [attrQuote enumerateAttribute:NSAttachmentAttributeName inRange:NSMakeRange(0, attrQuote.length) options:0 usingBlock:^(id value, NSRange range, BOOL *stop) {
+                if (![value isKindOfClass:[NSTextAttachment class]]) {
+                    return;
+                }
+                
+                NSTextAttachment *attachment = (NSTextAttachment*)value;
+                CGFloat origHeight = attachment.image.size.height;
+                CGFloat reHeight = (attachment.image.size.width / (width-61)) * origHeight;
+                
+                if (reHeight > origHeight) {
+                    height += (reHeight - origHeight);
+                }
+            }];
         }
         
     }

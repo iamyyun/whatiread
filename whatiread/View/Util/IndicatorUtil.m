@@ -163,8 +163,8 @@
     
     [self.uvWaitView setBackgroundColor:[UIColor colorWithRed:0.f green:0.f blue:0.f alpha:0.8]];
     
-    int iWidth = 96.f;
-    int iHeight = 96.f;
+    int iWidth = 80.f;
+    int iHeight = 80.f;
     //뱅글뱅글 이미지 사이즈 반값
     int iImageGap = (int)(iWidth/2);
     CGPoint centerRect = CGPointMake(self.uvWaitView.bounds.size.width/2, self.uvWaitView.bounds.size.height/2);
@@ -182,8 +182,8 @@
     [self.loadingImageView startAnimating];
     
     
-    iWidth = 126;
-    iHeight = 126;
+    iWidth = 80;
+    iHeight = 80;
     iImageGap = (int)(iWidth/2);
     iPosX = (centerRect.x - iImageGap);
     

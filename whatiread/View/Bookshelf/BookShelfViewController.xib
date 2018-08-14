@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13174"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -16,6 +16,7 @@
                 <outlet property="bCountLabel" destination="7y4-cc-aqW" id="9GA-Ra-po6"/>
                 <outlet property="bmCountLabel" destination="cea-Ie-vy1" id="DVN-6h-Vic"/>
                 <outlet property="collectionView" destination="huL-oV-xsP" id="D1a-fa-cHz"/>
+                <outlet property="dimBgView" destination="ROG-9H-40T" id="uz4-OC-MzM"/>
                 <outlet property="emptyView" destination="nzL-Db-mUP" id="z9J-s9-GXN"/>
                 <outlet property="searchBar" destination="omG-B3-uzG" id="se8-Ej-ibd"/>
                 <outlet property="sortBtn" destination="Pa0-wK-J3b" id="no6-Db-PG3"/>
@@ -151,17 +152,25 @@
                         <constraint firstItem="o2K-ss-RMC" firstAttribute="centerY" secondItem="nzL-Db-mUP" secondAttribute="centerY" id="I9l-Ut-Pwe"/>
                     </constraints>
                 </view>
+                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ROG-9H-40T">
+                    <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.40000000000000002" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </view>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="nzL-Db-mUP" firstAttribute="bottom" secondItem="tbl-hd-6bw" secondAttribute="bottom" id="4YN-eF-um2"/>
+                <constraint firstItem="ROG-9H-40T" firstAttribute="leading" secondItem="dUm-ec-Ni5" secondAttribute="leading" id="6ic-wI-3UU"/>
                 <constraint firstItem="Q7U-k4-8uA" firstAttribute="leading" secondItem="tbl-hd-6bw" secondAttribute="leading" constant="15" id="85K-38-xIR"/>
                 <constraint firstItem="g22-Z1-6pa" firstAttribute="top" secondItem="Q7U-k4-8uA" secondAttribute="bottom" constant="5" id="G9a-LR-y8j"/>
+                <constraint firstItem="ROG-9H-40T" firstAttribute="bottom" secondItem="dUm-ec-Ni5" secondAttribute="bottom" id="IAa-c1-LLm"/>
                 <constraint firstItem="g22-Z1-6pa" firstAttribute="leading" secondItem="tbl-hd-6bw" secondAttribute="leading" constant="15" id="MmN-Bd-NAl"/>
                 <constraint firstAttribute="trailing" secondItem="g22-Z1-6pa" secondAttribute="trailing" constant="16" id="RJR-jT-qZm"/>
+                <constraint firstItem="ROG-9H-40T" firstAttribute="trailing" secondItem="dUm-ec-Ni5" secondAttribute="trailing" id="Tjn-XY-Ndv"/>
                 <constraint firstItem="omG-B3-uzG" firstAttribute="leading" secondItem="dUm-ec-Ni5" secondAttribute="leading" id="UEi-Q2-hLn"/>
                 <constraint firstItem="huL-oV-xsP" firstAttribute="top" secondItem="g22-Z1-6pa" secondAttribute="bottom" id="UU4-ft-VAz"/>
                 <constraint firstItem="nzL-Db-mUP" firstAttribute="top" secondItem="g22-Z1-6pa" secondAttribute="bottom" id="Xid-E8-5yf"/>
+                <constraint firstItem="ROG-9H-40T" firstAttribute="top" secondItem="omG-B3-uzG" secondAttribute="bottom" id="btz-hN-EMI"/>
                 <constraint firstItem="huL-oV-xsP" firstAttribute="leading" secondItem="tbl-hd-6bw" secondAttribute="leading" id="djD-dM-IpF"/>
                 <constraint firstAttribute="trailing" secondItem="Q7U-k4-8uA" secondAttribute="trailing" constant="15" id="emh-eh-Jke"/>
                 <constraint firstItem="nzL-Db-mUP" firstAttribute="leading" secondItem="tbl-hd-6bw" secondAttribute="leading" constant="16" id="iYO-1w-0bt"/>

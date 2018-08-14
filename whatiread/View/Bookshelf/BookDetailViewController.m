@@ -417,8 +417,22 @@
         NSAttributedString *attrQuote = (NSAttributedString *)quote.data;
         
         if (attrQuote && attrQuote.length > 0) {
+        
+           __block CGFloat height = [attrQuote boundingRectWithSize:CGSizeMake(cell.quoteTextView.frame.size.width, 1000) options:(NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading) context:nil].size.height;
             
-            CGFloat height = [attrQuote boundingRectWithSize:CGSizeMake(cell.quoteTextView.frame.size.width, 1000) options:(NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading) context:nil].size.height;
+            [attrQuote enumerateAttribute:NSAttachmentAttributeName inRange:NSMakeRange(0, attrQuote.length) options:0 usingBlock:^(id value, NSRange range, BOOL *stop) {
+                if (![value isKindOfClass:[NSTextAttachment class]]) {
+                    return;
+                }
+                NSTextAttachment *attachment = (NSTextAttachment*)value;
+                CGFloat origHeight = attachment.image.size.height;
+                CGFloat reHeight = (attachment.image.size.width / cell.quoteTextView.frame.size.width) * origHeight;
+                attachment.bounds = CGRectMake(0, 0, cell.quoteTextView.frame.size.width, reHeight);
+                
+                if (reHeight > origHeight) {
+                    height += (reHeight - origHeight);
+                }
+            }];
             
             [cell.quoteTextView setAttributedText:attrQuote];
             cell.quoteTextViewHeightConst.constant = height;
@@ -426,6 +440,7 @@
             [cell.quoteTextView setContentInset:UIEdgeInsetsZero];
             cell.quoteTextView.textContainerInset = UIEdgeInsetsZero;
             cell.quoteTextView.textContainer.lineFragmentPadding = 0;
+            
         }
 
         [cell.bMarkCountLabel setText:[NSString stringWithFormat:@"%ld", indexPath.item+1]];
@@ -481,7 +496,22 @@
         
         if (attrQuote && attrQuote.length > 0) {
             
-            CGFloat height = [attrQuote boundingRectWithSize:CGSizeMake(width-30, 1000) options:(NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading) context:nil].size.height;
+            __block CGFloat height = [attrQuote boundingRectWithSize:CGSizeMake(width-30, 1000) options:(NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading) context:nil].size.height;
+            
+            [attrQuote enumerateAttribute:NSAttachmentAttributeName inRange:NSMakeRange(0, attrQuote.length) options:0 usingBlock:^(id value, NSRange range, BOOL *stop) {
+                if (![value isKindOfClass:[NSTextAttachment class]]) {
+                    return;
+                }
+    
+                NSTextAttachment *attachment = (NSTextAttachment*)value;
+                CGFloat origHeight = attachment.image.size.height;
+                CGFloat reHeight = (attachment.image.size.width / (width-30)) * origHeight;
+                
+                if (reHeight > origHeight) {
+                    height += (reHeight - origHeight);
+                }
+            }];
+            
             cellSize = CGSizeMake(width, (30.f + 11.f + height));
         }
     }

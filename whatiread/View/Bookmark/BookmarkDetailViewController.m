@@ -37,10 +37,10 @@
             Quote *quote = quoteArr[self.indexPath.item];
             NSAttributedString *attrQuote = (NSAttributedString *)quote.data;
             
-            [self.textView setAttributedText:attrQuote];
             [self.textView setContentInset:UIEdgeInsetsZero];
             self.textView.textContainerInset = UIEdgeInsetsMake(5, 5, 5, 5);
             self.textView.textContainer.lineFragmentPadding = 0;
+            [self.textView setAttributedText:attrQuote];
         }
     }
 }

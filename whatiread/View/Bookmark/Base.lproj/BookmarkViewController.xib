@@ -15,6 +15,7 @@
                 <outlet property="bCountLabel" destination="mSa-cq-2Hg" id="BRR-DY-y8v"/>
                 <outlet property="bmCountLabel" destination="hoC-he-5Ic" id="v2p-Sa-5Yo"/>
                 <outlet property="collectionView" destination="eT8-Bx-Axc" id="4ch-Ta-Pfk"/>
+                <outlet property="dimBgView" destination="iN8-aR-QL3" id="uBX-zc-4EK"/>
                 <outlet property="emptyView" destination="Jze-6w-EwW" id="O1a-OM-0w9"/>
                 <outlet property="searchBar" destination="Iku-tx-PAz" id="dQB-AM-hbz"/>
                 <outlet property="sortBtn" destination="Ovh-9I-EaG" id="vdY-dy-OMi"/>
@@ -137,15 +138,22 @@
                         <constraint firstItem="avz-y0-XIc" firstAttribute="centerX" secondItem="Jze-6w-EwW" secondAttribute="centerX" id="ccN-9y-9xw"/>
                     </constraints>
                 </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iN8-aR-QL3">
+                    <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.40000000000000002" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </view>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="Iku-tx-PAz" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="20" id="8eD-Iq-dda"/>
                 <constraint firstItem="Jze-6w-EwW" firstAttribute="top" secondItem="jr1-HV-15k" secondAttribute="bottom" id="DVL-04-MZH"/>
+                <constraint firstItem="iN8-aR-QL3" firstAttribute="trailing" secondItem="fNt-QC-HpO" secondAttribute="trailing" id="FsE-as-A4A"/>
                 <constraint firstAttribute="trailing" secondItem="Jze-6w-EwW" secondAttribute="trailing" constant="16" id="GPz-AZ-0QP"/>
+                <constraint firstItem="iN8-aR-QL3" firstAttribute="bottom" secondItem="fNt-QC-HpO" secondAttribute="bottom" id="MOJ-KP-m3V"/>
                 <constraint firstItem="eT8-Bx-Axc" firstAttribute="top" secondItem="jr1-HV-15k" secondAttribute="bottom" id="QG1-Uq-Bya"/>
                 <constraint firstItem="Jze-6w-EwW" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="16" id="SDq-HK-R5r"/>
                 <constraint firstItem="eT8-Bx-Axc" firstAttribute="bottom" secondItem="i5M-Pr-FkT" secondAttribute="bottom" id="SKc-n2-tK1"/>
+                <constraint firstItem="iN8-aR-QL3" firstAttribute="top" secondItem="Iku-tx-PAz" secondAttribute="bottom" id="TBs-Yd-u9d"/>
                 <constraint firstItem="Iku-tx-PAz" firstAttribute="trailing" secondItem="fNt-QC-HpO" secondAttribute="trailing" id="at5-l4-GsW"/>
                 <constraint firstItem="jr1-HV-15k" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="15" id="cfi-qM-bxq"/>
                 <constraint firstItem="jr1-HV-15k" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="70" id="ecW-oI-nZm"/>
@@ -153,6 +161,7 @@
                 <constraint firstAttribute="trailing" secondItem="jr1-HV-15k" secondAttribute="trailing" constant="16" id="mJy-Uh-c6u"/>
                 <constraint firstItem="Iku-tx-PAz" firstAttribute="leading" secondItem="fNt-QC-HpO" secondAttribute="leading" id="mXu-sc-l1q"/>
                 <constraint firstItem="eT8-Bx-Axc" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="vag-cO-7qg"/>
+                <constraint firstItem="iN8-aR-QL3" firstAttribute="leading" secondItem="fNt-QC-HpO" secondAttribute="leading" id="wRH-vy-gAm"/>
                 <constraint firstItem="Jze-6w-EwW" firstAttribute="bottom" secondItem="i5M-Pr-FkT" secondAttribute="bottom" id="yyo-Jm-R1v"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="fNt-QC-HpO"/>

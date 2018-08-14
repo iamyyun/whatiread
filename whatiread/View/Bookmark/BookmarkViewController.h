@@ -24,6 +24,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *bCountLabel;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (weak, nonatomic) IBOutlet UIView *emptyView;
+@property (weak, nonatomic) IBOutlet UIView *dimBgView;
 
 - (IBAction)addBtnAction:(id)sender;
 - (IBAction)sortBtnAction:(id)sender;
