@@ -19,3 +19,10 @@
 // current version
 #define CUR_VERSION     [NSString stringWithFormat:@"%@", [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]]
 
+// UserDefault Key
+#define SWITCH_STATUS   @"SWITCH_STATUS"
+
+// UserDefault Value
+#define SWITCH_ON       @"SWITCH_ON"
+#define SWITCH_OFF      @"SWITCH_OFF"
+

@@ -98,7 +98,10 @@
         [self.startDateLabel setText:[format stringFromDate:self.book.startDate]];
         [self.compDateLabel setText:[format stringFromDate:self.book.completeDate]];
         [self.rateView setRating:self.book.rate];
-        [self.coverImgView setImage:image];
+        
+        if (image) {
+            [self.coverImgView setImage:image];
+        }
         
         [self.bmCountLabel setText:[NSString stringWithFormat:@"%ld", self.book.quotes.count]];
         
@@ -398,7 +401,8 @@
             [context save:&error];
             
             if (!error) {
-                [self popController:YES];
+//                [self popController:YES];
+//                [self performSelector:@selector(leftBarBtnClick:) withObject:nil afterDelay:0.5];
             }
         }
     }];
@@ -472,14 +476,12 @@
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath;
 {
-    NSIndexPath *fetchIndexPath = [NSIndexPath indexPathForItem:indexPath.section inSection:0];
-    Book *book = [self.fetchedResultsController objectAtIndexPath:fetchIndexPath];
-    
     BookmarkDetailViewController *detailVC = [[BookmarkDetailViewController alloc] init];
-    detailVC.book = book;
+    NSLog(@"YJ << book quotes : %d", self.book.quotes.count);
+    detailVC.book = self.book;
     detailVC.indexPath = indexPath;
-    [detailVC setBookmarkDetailCompositionHandler:book bookmarkDeleteCompleted:^(NSIndexPath *indexPath) {
-        [self deleteBookmark:book indexPath:indexPath];
+    [detailVC setBookmarkDetailCompositionHandler:self.book bookmarkDeleteCompleted:^(NSIndexPath *indexPath) {
+        [self deleteBookmark:self.book indexPath:indexPath];
     }];
     [self pushController:detailVC animated:YES];
 }
@@ -518,25 +520,13 @@
     return cellSize;
 }
 
-#pragma mark - BookShelfViewController Delegate
-- (void)modifyBookCallback:(Book *)book
-{
-    if (book) {
-        self.book = book;
-        NSSortDescriptor *desc = [NSSortDescriptor sortDescriptorWithKey:@"index" ascending:YES];
-        quoteArr = [self.book.quotes sortedArrayUsingDescriptors:[NSArray arrayWithObject:desc]];
-
-        [self.bmCountLabel setText:[NSString stringWithFormat:@"%d", quoteArr.count]];
-        [self.collectionView reloadData];
-    }
-}
-
 #pragma mark - FetchedResultsController Delegate
 - (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
-    
+    NSLog(@"YJ << controllerWillChangeContent - BookDetailViewController");
 }
 
 - (void)controller:(NSFetchedResultsController *)controller didChangeSection:(id<NSFetchedResultsSectionInfo>)sectionInfo atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type {
+    NSLog(@"YJ << didChangeSection - BookDetailViewController");
     switch(type) {
         case NSFetchedResultsChangeInsert:
             [self.collectionView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex]];
@@ -551,6 +541,7 @@
 
 - (void) controller:(NSFetchedResultsController *)controller didChangeObject:(nonnull id)anObject atIndexPath:(nullable NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(nullable NSIndexPath *)newIndexPath {
     
+    NSLog(@"YJ << didChangeObject - BookDetailViewController");
     NSLog(@"YJ << section : %ld", newIndexPath.section);
     NSLog(@"YJ << item : %ld", newIndexPath.item);
     
@@ -563,6 +554,8 @@
 }
 
 - (void) controllerDidChangeContent:(NSFetchedResultsController *)controller {
+    
+    NSLog(@"YJ << controllerDidChangeContent - BookDetailViewController");
     
     NSSortDescriptor *desc = [NSSortDescriptor sortDescriptorWithKey:@"index" ascending:YES];
     quoteArr = [self.book.quotes sortedArrayUsingDescriptors:[NSArray arrayWithObject:desc]];

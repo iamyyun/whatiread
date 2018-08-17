@@ -44,6 +44,7 @@
     [self.textView setContentInset:UIEdgeInsetsZero];
     self.textView.textContainerInset = UIEdgeInsetsMake(5, 5, 5, 5);
     self.textView.textContainer.lineFragmentPadding = 0;
+    [self.textView setFont:[UIFont systemFontOfSize:14.f]];
     
 //    [self.textView becomeFirstResponder];
     self.automaticallyAdjustsScrollViewInsets = NO;
@@ -67,6 +68,12 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillShowNote:) name:UIKeyboardWillShowNotification object:self.view.window];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillHideNote:) name:UIKeyboardWillHideNotification object:self.view.window];
     bgTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(writeFinished)];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    [self.textView setFont:[UIFont systemFontOfSize:14.f]];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -245,17 +252,25 @@
     UIImage *resultImage = image;
     [self dismissController:cropViewController animated:YES];
     
-    [self savePhoto:resultImage];
+    NSString *strStat = [[NSUserDefaults standardUserDefaults] objectForKey:SWITCH_STATUS];
+    if (!strStat || strStat.length <= 0) {
+        strStat = SWITCH_ON;
+        [[NSUserDefaults standardUserDefaults] setObject:SWITCH_ON forKey:SWITCH_STATUS];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }
+    if ([strStat isEqualToString:SWITCH_ON]) {
+        [self savePhoto:resultImage];
+    }
     
     if (isOcrActive) {
         
         __block NSString *strOcr = @"";
         
         [IndicatorUtil startProcessIndicator];
+        
         G8RecognitionOperation *operation = [[G8RecognitionOperation alloc] initWithLanguage:@"kor+eng"];
         operation.tesseract.image = [image g8_blackAndWhite];
         operation.recognitionCompleteBlock = ^(G8Tesseract *recognizedTesseract) {
-            // Retrieve the recognized text upon completion
             
             strOcr = [recognizedTesseract recognizedText];
             [IndicatorUtil stopProcessIndicator];
@@ -267,6 +282,7 @@
             UIAlertAction *confirmAction = [UIAlertAction actionWithTitle:strConfirm style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
                 NSAttributedString *attrStr = [[NSAttributedString alloc] initWithString:strOcr];
                 [self.textView.textStorage insertAttributedString:attrStr atIndex:self.textView.selectedRange.location];
+                [self.textView setFont:[UIFont systemFontOfSize:14.f]];
             }];
             UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:strCancel style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
                 [self dismissController:alert animated:YES];
@@ -292,6 +308,7 @@
         textAttachment.image = [UIImage imageWithCGImage:textAttachment.image.CGImage scale:scaleFactor orientation:UIImageOrientationUp];
         NSAttributedString *attrStringWithImage = [NSAttributedString attributedStringWithAttachment:textAttachment];
         [self.textView.textStorage insertAttributedString:attrStringWithImage atIndex:self.textView.selectedRange.location];
+        [self.textView setFont:[UIFont systemFontOfSize:14.f]];
         
 //        NSMutableDictionary *dic = [NSMutableDictionary dictionary];
 //        //    [dic setObject:strQuote forKey:@"mQuote"];

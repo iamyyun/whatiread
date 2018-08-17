@@ -17,8 +17,6 @@
 		6B030EC120BE374D0060E8AD /* whatireadTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B030EC020BE374D0060E8AD /* whatireadTests.m */; };
 		6B030ECC20BE374D0060E8AD /* whatireadUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B030ECB20BE374D0060E8AD /* whatireadUITests.m */; };
 		6B030EE520BE3DB90060E8AD /* CoreDataAccess.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B030EE420BE3DB90060E8AD /* CoreDataAccess.m */; };
-		6B030EE920BE44B00060E8AD /* TestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B030EE720BE44B00060E8AD /* TestViewController.m */; };
-		6B030EEA20BE44B00060E8AD /* TestViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6B030EE820BE44B00060E8AD /* TestViewController.xib */; };
 		6B2AF62C20FD80AC0091AE3D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6B2AF62B20FD80AC0091AE3D /* Assets.xcassets */; };
 		6B30CDF32106A51400EDF627 /* IndicatorUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B30CDF22106A51400EDF627 /* IndicatorUtil.m */; };
 		6B3F80A3210846BB00F283F7 /* AddBookmarkViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B3F80A1210846BB00F283F7 /* AddBookmarkViewController.m */; };
@@ -52,6 +50,8 @@
 		6B8EF32321058DB9001EFDCD /* BookSearchCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B8EF32121058DB9001EFDCD /* BookSearchCollectionViewCell.m */; };
 		6B8EF32421058DB9001EFDCD /* BookSearchCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6B8EF32221058DB9001EFDCD /* BookSearchCollectionViewCell.xib */; };
 		6B8EF3272105A595001EFDCD /* XMLDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B8EF3252105A595001EFDCD /* XMLDictionary.m */; };
+		6B911FEF212665B20038DAD8 /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B911FED212665B20038DAD8 /* SettingViewController.m */; };
+		6B911FF0212665B20038DAD8 /* SettingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6B911FEE212665B20038DAD8 /* SettingViewController.xib */; };
 		6B970D382113E754008536C1 /* JVFloatLabeledTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B970D322113E752008536C1 /* JVFloatLabeledTextView.m */; };
 		6B970D392113E754008536C1 /* JVFloatLabeledTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B970D342113E753008536C1 /* JVFloatLabeledTextField.m */; };
 		6B970D3A2113E754008536C1 /* NSString+TextDirectionality.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B970D362113E753008536C1 /* NSString+TextDirectionality.m */; };
@@ -107,9 +107,6 @@
 		6B030EDC20BE38EC0060E8AD /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
 		6B030EE320BE3DB90060E8AD /* CoreDataAccess.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CoreDataAccess.h; sourceTree = "<group>"; };
 		6B030EE420BE3DB90060E8AD /* CoreDataAccess.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CoreDataAccess.m; sourceTree = "<group>"; };
-		6B030EE620BE44B00060E8AD /* TestViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TestViewController.h; sourceTree = "<group>"; };
-		6B030EE720BE44B00060E8AD /* TestViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TestViewController.m; sourceTree = "<group>"; };
-		6B030EE820BE44B00060E8AD /* TestViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TestViewController.xib; sourceTree = "<group>"; };
 		6B2AF62B20FD80AC0091AE3D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		6B30CDF12106A51400EDF627 /* IndicatorUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IndicatorUtil.h; sourceTree = "<group>"; };
 		6B30CDF22106A51400EDF627 /* IndicatorUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IndicatorUtil.m; sourceTree = "<group>"; };
@@ -165,6 +162,9 @@
 		6B8EF32221058DB9001EFDCD /* BookSearchCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BookSearchCollectionViewCell.xib; sourceTree = "<group>"; };
 		6B8EF3252105A595001EFDCD /* XMLDictionary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XMLDictionary.m; sourceTree = "<group>"; };
 		6B8EF3262105A595001EFDCD /* XMLDictionary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMLDictionary.h; sourceTree = "<group>"; };
+		6B911FEC212665B20038DAD8 /* SettingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SettingViewController.h; sourceTree = "<group>"; };
+		6B911FED212665B20038DAD8 /* SettingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SettingViewController.m; sourceTree = "<group>"; };
+		6B911FEE212665B20038DAD8 /* SettingViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingViewController.xib; sourceTree = "<group>"; };
 		6B970D322113E752008536C1 /* JVFloatLabeledTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JVFloatLabeledTextView.m; sourceTree = "<group>"; };
 		6B970D332113E753008536C1 /* NSString+TextDirectionality.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+TextDirectionality.h"; sourceTree = "<group>"; };
 		6B970D342113E753008536C1 /* JVFloatLabeledTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JVFloatLabeledTextField.m; sourceTree = "<group>"; };
@@ -283,6 +283,7 @@
 		6B030ED920BE37F00060E8AD /* View */ = {
 			isa = PBXGroup;
 			children = (
+				6B911FEB212665970038DAD8 /* Setting */,
 				6B30CDF02106A50400EDF627 /* Util */,
 				6B8EF31A210562A1001EFDCD /* Search */,
 				6B53389A20C8F17900D85CD0 /* Menu */,
@@ -290,9 +291,6 @@
 				6BCBA1A120C5273F0056BAFB /* Bookmark */,
 				6B030EA720BE374D0060E8AD /* CommonViewController.h */,
 				6B030EA820BE374D0060E8AD /* CommonViewController.m */,
-				6B030EE620BE44B00060E8AD /* TestViewController.h */,
-				6B030EE720BE44B00060E8AD /* TestViewController.m */,
-				6B030EE820BE44B00060E8AD /* TestViewController.xib */,
 				6BCBA19920C522C40056BAFB /* IntroViewController.h */,
 				6BCBA19A20C522C40056BAFB /* IntroViewController.m */,
 				6BCBA19B20C522C40056BAFB /* IntroViewController.xib */,
@@ -397,6 +395,16 @@
 				6B8EF32221058DB9001EFDCD /* BookSearchCollectionViewCell.xib */,
 			);
 			path = Search;
+			sourceTree = "<group>";
+		};
+		6B911FEB212665970038DAD8 /* Setting */ = {
+			isa = PBXGroup;
+			children = (
+				6B911FEC212665B20038DAD8 /* SettingViewController.h */,
+				6B911FED212665B20038DAD8 /* SettingViewController.m */,
+				6B911FEE212665B20038DAD8 /* SettingViewController.xib */,
+			);
+			path = Setting;
 			sourceTree = "<group>";
 		};
 		6B970D312113E73F008536C1 /* JVFloatLabeledTextField */ = {
@@ -584,12 +592,12 @@
 				6B6E046620F8840E009D19BB /* BookShelfViewController.xib in Resources */,
 				6B030EB420BE374D0060E8AD /* LaunchScreen.storyboard in Resources */,
 				6B5338B920C9110D00D85CD0 /* BookmarkCollectionViewCell.xib in Resources */,
-				6B030EEA20BE44B00060E8AD /* TestViewController.xib in Resources */,
 				6BCBA1B220C533590056BAFB /* BookmarkViewController.xib in Resources */,
 				6B2AF62C20FD80AC0091AE3D /* Assets.xcassets in Resources */,
 				6B3F80A4210846BB00F283F7 /* AddBookmarkViewController.xib in Resources */,
 				6B8EF31F210562C4001EFDCD /* BookSearchViewController.xib in Resources */,
 				6BCBA1B020C52E8A0056BAFB /* Localizable.strings in Resources */,
+				6B911FF0212665B20038DAD8 /* SettingViewController.xib in Resources */,
 				6BBF48F6210AAE1400313CD5 /* tessdata in Resources */,
 				6B6E047020F88659009D19BB /* BookDetailCollectionViewCell.xib in Resources */,
 				AE5F72502114AD01004B355F /* BookmarkDetailViewController.xib in Resources */,
@@ -686,7 +694,6 @@
 				6B970D3A2113E754008536C1 /* NSString+TextDirectionality.m in Sources */,
 				6B30CDF32106A51400EDF627 /* IndicatorUtil.m in Sources */,
 				6B8EF3272105A595001EFDCD /* XMLDictionary.m in Sources */,
-				6B030EE920BE44B00060E8AD /* TestViewController.m in Sources */,
 				6B5338AE20C9004F00D85CD0 /* REFrostedContainerViewController.m in Sources */,
 				6B7DDFAC20FEC6B8003A954B /* AddBookViewController.m in Sources */,
 				6B7DDFBB20FF0FBD003A954B /* BookMarkHeaderCollectionReusableView.m in Sources */,
@@ -703,6 +710,7 @@
 				6B970D382113E754008536C1 /* JVFloatLabeledTextView.m in Sources */,
 				6B970D3E2113E934008536C1 /* WriteBookViewController.m in Sources */,
 				6B6E046F20F88659009D19BB /* BookDetailCollectionViewCell.m in Sources */,
+				6B911FEF212665B20038DAD8 /* SettingViewController.m in Sources */,
 				6B030EB720BE374D0060E8AD /* main.m in Sources */,
 				6B5338AF20C9004F00D85CD0 /* UIImage+REFrostedViewController.m in Sources */,
 				6B030EA620BE374D0060E8AD /* AppDelegate.m in Sources */,

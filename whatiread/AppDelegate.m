@@ -21,7 +21,6 @@
     
     // make Main viewcontroller
     self.rootViewController = [[BookShelfViewController alloc] init];
-//    self.rootViewController = [[TestViewController alloc] init];
     
     // making navigationcontroller and setting root viewcontroller
     self.navigationController = [[UINavigationController alloc] initWithRootViewController:self.rootViewController];

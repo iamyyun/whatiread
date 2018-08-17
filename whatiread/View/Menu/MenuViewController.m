@@ -9,6 +9,7 @@
 #import "MenuViewController.h"
 #import "BookmarkViewController.h"
 #import "BookShelfViewController.h"
+#import "SettingViewController.h"
 
 @interface MenuViewController () {
     NSMutableArray *menuList;
@@ -30,9 +31,9 @@
     [menuList addObject:@{@"title":@"Bookmark",
                           @"image":@"icon_menu_bookmark"
                           }];
-//    [menuList addObject:@{@"title":@"Settings",
-//                          @"image":@"icon_menu_setting"
-//                          }];
+    [menuList addObject:@{@"title":@"Settings",
+                          @"image":@"icon_menu_setting"
+                          }];
     
     [self drawViews];
 }
@@ -93,7 +94,10 @@
         }
     }
     else if (menuIndex == MENU_SETTINGS) {
-        
+        if (![SHAREDAPPDELEGATE.navigationController.topViewController isKindOfClass:[SettingViewController class]]) {
+            SettingViewController *setVC = [[SettingViewController alloc] init];
+            [self pushNoHistory:setVC animated:YES];
+        }
     }
     [SHAREDAPPDELEGATE.frostedViewController hideMenuViewController];
 }

@@ -369,6 +369,7 @@
     self.managedObjectContext = coreData.managedObjectContext;
     
     [self.view endEditing:YES];
+    [self.dimBgView setHidden:YES];
     [self.searchBar setHidden:YES];
     [self.searchBar setText:@""];
     [self.navigationController setNavigationBarHidden:NO animated:YES];
@@ -516,9 +517,12 @@
 #pragma mark - Fetched results controller
 - (void) controllerWillChangeContent:(NSFetchedResultsController *)controller {
     //    [self.collectionView performBatchUpdates:^{} completion:^(BOOL finished){}];
+    NSLog(@"YJ << controllerWillChangeContent - BookShelfViewController");
 }
 
 - (void) controller:(NSFetchedResultsController *)controller didChangeSection:(nonnull id<NSFetchedResultsSectionInfo>)sectionInfo atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type {
+    
+    NSLog(@"YJ << didChangeSection - BookShelfViewController");
     switch(type) {
         case NSFetchedResultsChangeInsert:
             [self.collectionView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex]];
@@ -533,6 +537,7 @@
 
 - (void) controller:(NSFetchedResultsController *)controller didChangeObject:(nonnull id)anObject atIndexPath:(nullable NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(nullable NSIndexPath *)newIndexPath {
     
+    NSLog(@"YJ << didChangeObject - BookShelfViewController");
     NSLog(@"YJ << section : %ld", newIndexPath.section);
     NSLog(@"YJ << item : %ld", newIndexPath.item);
     
@@ -560,6 +565,8 @@
 }
 
 - (void) controllerDidChangeContent:(NSFetchedResultsController *)controller {
+    
+    NSLog(@"YJ << controllerDidChangeContent - BookShelfViewController");
     id <NSFetchedResultsSectionInfo> sectionInfo = [controller sections][0];
     NSInteger bookCount = [sectionInfo numberOfObjects];
     NSInteger bmCount = 0;

@@ -184,10 +184,11 @@
 
 #pragma mark - FetchedResultsController Delegate
 - (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
-    
+    NSLog(@"YJ << controllerWillChangeContent - BookmarkDetailViewController");
 }
 
 - (void)controller:(NSFetchedResultsController *)controller didChangeSection:(id<NSFetchedResultsSectionInfo>)sectionInfo atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type {
+    NSLog(@"YJ << didChangeSection - BookmarkDetailViewController");
     switch(type) {
         case NSFetchedResultsChangeInsert:
 //            [self.collectionView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex]];
@@ -202,6 +203,7 @@
 
 - (void) controller:(NSFetchedResultsController *)controller didChangeObject:(nonnull id)anObject atIndexPath:(nullable NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(nullable NSIndexPath *)newIndexPath {
     
+    NSLog(@"YJ << didChangeObject - BookmarkDetailViewController");
     NSLog(@"YJ << section : %ld", newIndexPath.section);
     NSLog(@"YJ << item : %ld", newIndexPath.item);
     
@@ -214,6 +216,8 @@
 }
 
 - (void) controllerDidChangeContent:(NSFetchedResultsController *)controller {
+    
+    NSLog(@"YJ << controllerDidChangeContent - BookmarkDetailViewController");
     
 //    NSSortDescriptor *desc = [NSSortDescriptor sortDescriptorWithKey:@"index" ascending:YES];
 //    quoteArr = [self.book.quotes sortedArrayUsingDescriptors:[NSArray arrayWithObject:desc]];

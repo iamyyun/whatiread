@@ -93,21 +93,14 @@
         self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:leftBtn];
         
         if (title && title.length > 0) {
-//            self.navigationItem.title = NSLocalizedString(title, @"");
-//            UIView *centerView = [[UIView alloc] initWithFrame:CGRectZero];
-//            [centerView setBackgroundColor:[UIColor whiteColor]];
-//
+
             NSString *strTitle = NSLocalizedString(title, @"");
-//            CGFloat width = [strTitle boundingRectWithSize:CGSizeMake(1000, 44) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:18.0f]} context:nil].size.width;
-            titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width - 64, 44)];
+            titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 44)];
             [titleLabel setText:strTitle];
             [titleLabel setTextColor:[UIColor darkGrayColor]];
             [titleLabel setFont:[UIFont systemFontOfSize:17.f]];
             [titleLabel setAdjustsFontSizeToFitWidth:YES];
             [titleLabel setTextAlignment:NSTextAlignmentCenter];
-//            [centerView addSubview:titleLabel];
-            
-//            [centerView setFrame:CGRectMake(0, 0, 44+width, 44)];
             self.navigationItem.titleView = titleLabel;
         }
     }
@@ -118,26 +111,18 @@
             [centerView setBackgroundColor:[UIColor whiteColor]];
             
             NSString *strTitle = NSLocalizedString(title, @"");
-//            CGFloat width = [strTitle boundingRectWithSize:CGSizeMake(1000, 44) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:18.0f]} context:nil].size.width;
+            
             titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width - 64, 44)];
             [titleLabel setText:strTitle];
             [titleLabel setTextColor:[UIColor darkGrayColor]];
             [titleLabel setFont:[UIFont systemFontOfSize:17.f]];
             [titleLabel setAdjustsFontSizeToFitWidth:YES];
             [titleLabel setTextAlignment:NSTextAlignmentCenter];
-//            [centerView addSubview:titleLabel];
             
-//            [centerView setFrame:CGRectMake(0, 0, 44+width, 44)];
             self.navigationItem.titleView = titleLabel;
         }
         
         // leftBarButton
-//        leftBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-//        [leftBtn setImage:[UIImage imageNamed:@"btn_back"] forState:UIControlStateNormal];
-//        [leftBtn setTag:BTN_TYPE_BACK];
-//        [leftBtn addTarget:self action:@selector(leftBarBtnClick:) forControlEvents:UIControlEventTouchUpInside];
-//        [leftBtn setFrame:CGRectMake(0, 5, 34, 34)];
-//        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:leftBtn];
         NSString *leftBtnTitle = NSLocalizedString(@"Cancel", @"");
         self.navigationItem.leftBarButtonItems = nil;
         self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:leftBtnTitle style:UIBarButtonItemStylePlain target:self action:@selector(leftBarBtnClick:)];
@@ -154,16 +139,13 @@
             [centerView setBackgroundColor:[UIColor whiteColor]];
             
             NSString *strTitle = NSLocalizedString(title, @"");
-//            CGFloat width = [strTitle boundingRectWithSize:CGSizeMake(1000, 44) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:18.0f]} context:nil].size.width;
-            titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width - 64, 44)];
+            titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 44)];
             [titleLabel setText:strTitle];
             [titleLabel setTextColor:[UIColor darkGrayColor]];
             [titleLabel setFont:[UIFont systemFontOfSize:17.f]];
             [titleLabel setAdjustsFontSizeToFitWidth:YES];
             [titleLabel setTextAlignment:NSTextAlignmentCenter];
-//            [centerView addSubview:titleLabel];
             
-//            [centerView setFrame:CGRectMake(0, 0, 44+width, 44)];
             self.navigationItem.titleView = titleLabel;
         }
         

@@ -214,6 +214,7 @@
     self.managedObjectContext = coreData.managedObjectContext;
 
     [self.view endEditing:YES];
+    [self.dimBgView setHidden:YES];
     [self.searchBar setHidden:YES];
     [self.searchBar setText:@""];
     [self.navigationController setNavigationBarHidden:NO animated:YES];
@@ -290,12 +291,23 @@
                     }
                     NSTextAttachment *attachment = (NSTextAttachment*)value;
                     CGFloat origHeight = attachment.image.size.height;
-                    CGFloat reHeight = (attachment.image.size.width / cell.quoteTextView.frame.size.width) * origHeight;
+                    
+                    NSLog(@"YJ << cell width : %f", cell.quoteTextView.frame.size.width);
+                    NSLog(@"YJ << cell height : %f", height);
+                    NSLog(@"YJ << image width : %f", attachment.image.size.width);
+                    NSLog(@"YJ << image height : %f", origHeight);
+                    
+//                    CGFloat reHeight = (attachment.image.size.width / cell.quoteTextView.frame.size.width) * origHeight;
+                    CGFloat reHeight = (cell.quoteTextView.frame.size.width / attachment.image.size.width) * origHeight;
                     attachment.bounds = CGRectMake(0, 0, cell.quoteTextView.frame.size.width, reHeight);
+                    NSLog(@"YJ << reHight : %f", reHeight);
                     
                     if (reHeight > origHeight) {
                         height += (reHeight - origHeight);
+                    } else if (reHeight < origHeight) {
+                        height -= (origHeight - reHeight);
                     }
+                    NSLog(@"YJ << final height : %f", height);
                 }];
                 
                 [cell.quoteTextView setAttributedText:attrQuote];
@@ -417,11 +429,15 @@
                 
                 NSTextAttachment *attachment = (NSTextAttachment*)value;
                 CGFloat origHeight = attachment.image.size.height;
-                CGFloat reHeight = (attachment.image.size.width / (width-61)) * origHeight;
+//                CGFloat reHeight = (attachment.image.size.width / (width-61)) * origHeight;
+                CGFloat reHeight = ((width-61) / attachment.image.size.width) * origHeight;
                 
                 if (reHeight > origHeight) {
                     height += (reHeight - origHeight);
+                } else if (reHeight < origHeight) {
+                    height -= (origHeight - reHeight);
                 }
+                NSLog(@"YJ << size of final height : %f", height);
             }];
         }
         
@@ -432,6 +448,7 @@
 
 #pragma mark - Fetched results controller
 - (void) controllerWillChangeContent:(NSFetchedResultsController *)controller {
+    NSLog(@"YJ << controllerWillChangeContent - BookmarkViewController");
 }
 
 //- (void) controller:(NSFetchedResultsController *)controller didChangeSection:(nonnull id<NSFetchedResultsSectionInfo>)sectionInfo atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type {
@@ -448,6 +465,8 @@
 //}
 
 - (void) controller:(NSFetchedResultsController *)controller didChangeObject:(nonnull id)anObject atIndexPath:(nullable NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(nullable NSIndexPath *)newIndexPath {
+    
+    NSLog(@"YJ << didChangeObject - BookmarkViewController");
     self.fetchedResultsController = nil;
     self.managedObjectContext = nil;
     
@@ -476,6 +495,8 @@
 }
 
 - (void) controllerDidChangeContent:(NSFetchedResultsController *)controller {
+    
+    NSLog(@"YJ << controllerDidChangeContent - BookmarkViewController");
     id <NSFetchedResultsSectionInfo> sectionInfo = [controller sections][0];
     NSInteger bookCount = [sectionInfo numberOfObjects];
     NSInteger bmCount = 0;
