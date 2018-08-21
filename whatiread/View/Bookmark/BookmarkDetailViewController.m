@@ -25,7 +25,9 @@
     
     coreData = [CoreDataAccess sharedInstance];
     self.fetchedResultsController = coreData.fetchedResultsController;
+    self.quoteFetchedResultsController = coreData.quoteFetchedResultsController;
     self.fetchedResultsController.delegate = self;
+    self.quoteFetchedResultsController.delegate = self;
     self.managedObjectContext = coreData.managedObjectContext;
     
     if (self.book) {
@@ -50,10 +52,13 @@
     
     self.managedObjectContext = nil;
     self.fetchedResultsController = nil;
+    self.quoteFetchedResultsController = nil;
     
     [coreData coreDataInitialize];
     self.fetchedResultsController = coreData.fetchedResultsController;
     self.fetchedResultsController.delegate = self;
+    self.quoteFetchedResultsController = coreData.quoteFetchedResultsController;
+    self.quoteFetchedResultsController.delegate = self;
     self.managedObjectContext = coreData.managedObjectContext;
 }
 
@@ -84,6 +89,7 @@
             NSString *strSecond = NSLocalizedString(@"Cancel", @"");
             UIAlertAction *firstAction = [UIAlertAction actionWithTitle:strFirst style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
                 if (self.bookmarkDeleteCompleted) {
+                    [self popController:YES];
                     self.bookmarkDeleteCompleted(self.indexPath);
                 }
             }];
@@ -126,7 +132,8 @@
 // modify bookmark
 - (void)modifyBookmark:(Book *)book qDic:(NSDictionary *)qDic indexPath:(NSIndexPath *)indexPath completed:(void (^)(BOOL isResult))completed {
     
-    NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
+//    NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
+    NSManagedObjectContext *context = [self.quoteFetchedResultsController managedObjectContext];
     NSFetchRequest <Quote *> *fetchRequest = Quote.fetchRequest;
     
     NSDate *now = [[NSDate alloc] init];
@@ -184,11 +191,23 @@
 
 #pragma mark - FetchedResultsController Delegate
 - (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
-    NSLog(@"YJ << controllerWillChangeContent - BookmarkDetailViewController");
+    
+    if (controller == self.fetchedResultsController) {
+        NSLog(@"YJ << NSFetchedResultsController - controllerWillChangeContent - BookmarkDetailViewController");
+    } else if (controller == self.quoteFetchedResultsController) {
+        NSLog(@"YJ << NSFetchedResultsController - controllerWillChangeContent - BookmarkDetailViewController");
+    }
 }
 
 - (void)controller:(NSFetchedResultsController *)controller didChangeSection:(id<NSFetchedResultsSectionInfo>)sectionInfo atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type {
-    NSLog(@"YJ << didChangeSection - BookmarkDetailViewController");
+    
+    if (controller == self.fetchedResultsController) {
+        NSLog(@"YJ << NSFetchedResultsController - didChangeSection - BookmarkDetailViewController");
+    } else if (controller == self.quoteFetchedResultsController) {
+        NSLog(@"YJ << NSFetchedResultsController - didChangeSection - BookmarkDetailViewController");
+    }
+    
+    
     switch(type) {
         case NSFetchedResultsChangeInsert:
 //            [self.collectionView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex]];
@@ -203,21 +222,36 @@
 
 - (void) controller:(NSFetchedResultsController *)controller didChangeObject:(nonnull id)anObject atIndexPath:(nullable NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(nullable NSIndexPath *)newIndexPath {
     
-    NSLog(@"YJ << didChangeObject - BookmarkDetailViewController");
+    if (controller == self.fetchedResultsController) {
+        NSLog(@"YJ << NSFetchedResultsController - didChangeObject - BookmarkDetailViewController");
+    } else if (controller == self.quoteFetchedResultsController) {
+        NSLog(@"YJ << NSFetchedResultsController - didChangeObject - BookmarkDetailViewController");
+    }
+    
+    
     NSLog(@"YJ << section : %ld", newIndexPath.section);
     NSLog(@"YJ << item : %ld", newIndexPath.item);
     
     self.fetchedResultsController = nil;
+    self.quoteFetchedResultsController = nil;
     self.managedObjectContext = nil;
     
     self.fetchedResultsController = coreData.fetchedResultsController;
     self.fetchedResultsController.delegate = self;
+    self.quoteFetchedResultsController = coreData.quoteFetchedResultsController;
+    self.quoteFetchedResultsController.delegate = self;
     self.managedObjectContext = coreData.managedObjectContext;
 }
 
 - (void) controllerDidChangeContent:(NSFetchedResultsController *)controller {
     
-    NSLog(@"YJ << controllerDidChangeContent - BookmarkDetailViewController");
+    if (controller == self.fetchedResultsController) {
+        NSLog(@"YJ << NSFetchedResultsController - controllerDidChangeContent - BookmarkDetailViewController");
+    } else if (controller == self.quoteFetchedResultsController) {
+        NSLog(@"YJ << NSFetchedResultsController - controllerDidChangeContent - BookmarkDetailViewController");
+    }
+    
+    
     
 //    NSSortDescriptor *desc = [NSSortDescriptor sortDescriptorWithKey:@"index" ascending:YES];
 //    quoteArr = [self.book.quotes sortedArrayUsingDescriptors:[NSArray arrayWithObject:desc]];

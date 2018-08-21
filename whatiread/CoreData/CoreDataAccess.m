@@ -123,9 +123,42 @@ static CoreDataAccess *coreData = nil;
     return _fetchedResultsController;
 }
 
+- (NSFetchedResultsController <Quote *> *)quoteFetchedResultsController {
+    if(_quoteFetchedResultsController != nil) {
+        return _quoteFetchedResultsController;
+    }
+    
+    if(_managedObjectContext == nil) {
+        _managedObjectContext = SHAREDAPPDELEGATE.persistentContainer.viewContext;
+    }
+    
+    NSFetchRequest <Quote *> * fetchRequest = Quote.fetchRequest;
+    
+    [fetchRequest setFetchBatchSize:30];
+    
+    NSSortDescriptor * sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"index" ascending:YES];
+    [fetchRequest setSortDescriptors:@[sortDescriptor]];
+    [fetchRequest setReturnsObjectsAsFaults:NO];
+    
+    NSFetchedResultsController <Quote *> *aFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:_managedObjectContext sectionNameKeyPath:nil cacheName:@"MainQuoteListMainBookList"];
+    aFetchedResultsController.delegate = self;
+    
+    NSError * error = nil;
+    
+    if(![aFetchedResultsController performFetch:&error]) {
+        abort();
+    }
+    
+    _quoteFetchedResultsController = aFetchedResultsController;
+    _quoteFetchedResultsController.delegate = self;
+    
+    return _quoteFetchedResultsController;
+}
+
 - (void) coreDataInitialize
 {
     self.fetchedResultsController = nil;
+    self.quoteFetchedResultsController = nil;
     self.managedObjectContext = nil;
 }
 

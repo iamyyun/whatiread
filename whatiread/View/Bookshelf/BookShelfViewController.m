@@ -60,6 +60,7 @@
         [self.collectionView setHidden:YES];
         [self.emptyView setHidden:NO];
     }
+
     
     [self.bCountLabel setText:[NSString stringWithFormat:@"%ld", bookCount]];
     [self.bmCountLabel setText:[NSString stringWithFormat:@"%ld", bmCount]];
@@ -110,7 +111,6 @@
     
     [self.collectionView reloadData];
 }
-
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -303,7 +303,6 @@
         self.fetchedResultsController = coreData.fetchedResultsController;
         self.fetchedResultsController.delegate = self;
         self.managedObjectContext = coreData.managedObjectContext;
-        
         [self.view endEditing:YES];
         [self.searchBar setHidden:YES];
         [self.searchBar setText:@""];
@@ -342,7 +341,26 @@
     book.isSearchMode = isSearchMode;
 //    book.quoteImg = imageData;
     
+    
     NSError * error = nil;
+//    [self.privateContext performBlock:^{
+//        NSError * error = nil;
+//        if (![self.privateContext save:&error]) {
+//            if (completed) {
+//                completed(NO);
+//            }
+//        } else {
+//            completed(YES);
+//        }
+//        [self.managedObjectContext performBlockAndWait:^{
+//            NSError *error = nil;
+//            if (![self.managedObjectContext save:&error]) {
+//                if (completed) {
+//                    completed(NO);
+//                }
+//            }
+//        }];
+//    }];
     
     if(![self.managedObjectContext save:&error]) {
         NSLog(@"Unresolved error = %@, %@", error, error.userInfo);
@@ -516,83 +534,109 @@
 
 #pragma mark - Fetched results controller
 - (void) controllerWillChangeContent:(NSFetchedResultsController *)controller {
-    //    [self.collectionView performBatchUpdates:^{} completion:^(BOOL finished){}];
-    NSLog(@"YJ << controllerWillChangeContent - BookShelfViewController");
+    
+    if (controller == self.fetchedResultsController) {
+        NSLog(@"YJ << NSFetchedResultsController - controllerWillChangeContent - BookShelfViewController");
+        
+        self.updateBlock = [NSBlockOperation new];
+        
+    }
 }
 
 - (void) controller:(NSFetchedResultsController *)controller didChangeSection:(nonnull id<NSFetchedResultsSectionInfo>)sectionInfo atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type {
     
-    NSLog(@"YJ << didChangeSection - BookShelfViewController");
-    switch(type) {
-        case NSFetchedResultsChangeInsert:
-            [self.collectionView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex]];
-            break;
-        case NSFetchedResultsChangeDelete:
-            [self.collectionView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex]];
-            break;
-        default:
-            return;
+    if (controller == self.fetchedResultsController) {
+        NSLog(@"YJ << NSFetchedResultsController - didChangeSection - BookShelfViewController");
+        switch(type) {
+            case NSFetchedResultsChangeInsert:
+                [self.collectionView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex]];
+                break;
+            case NSFetchedResultsChangeDelete:
+                [self.collectionView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex]];
+                break;
+            default:
+                return;
+        }
     }
 }
 
 - (void) controller:(NSFetchedResultsController *)controller didChangeObject:(nonnull id)anObject atIndexPath:(nullable NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(nullable NSIndexPath *)newIndexPath {
     
-    NSLog(@"YJ << didChangeObject - BookShelfViewController");
-    NSLog(@"YJ << section : %ld", newIndexPath.section);
-    NSLog(@"YJ << item : %ld", newIndexPath.item);
-    
-    self.fetchedResultsController = nil;
-    self.managedObjectContext = nil;
-    
-    self.fetchedResultsController = coreData.fetchedResultsController;
-    self.fetchedResultsController.delegate = self;
-    self.managedObjectContext = coreData.managedObjectContext;
-    
-//    switch(type) {
-//        case NSFetchedResultsChangeInsert:
-//            [self.collectionView insertItemsAtIndexPaths:@[newIndexPath]];
-//            break;
-//        case NSFetchedResultsChangeDelete:
-//            [self.collectionView deleteItemsAtIndexPaths:@[indexPath]];
-//            break;
-//        case NSFetchedResultsChangeUpdate:
-//            [self.collectionView reloadItemsAtIndexPaths:@[newIndexPath]];
-//            break;
-//        case NSFetchedResultsChangeMove:
-//            [self.collectionView moveItemAtIndexPath:indexPath toIndexPath:newIndexPath];
-//            break;
-//    }
+    if (controller == self.fetchedResultsController) {
+        NSLog(@"YJ << NSFetchedResultsController - didChangeObject - BookShelfViewController");
+        NSLog(@"YJ << section : %ld", newIndexPath.section);
+        NSLog(@"YJ << item : %ld", newIndexPath.item);
+        
+        __weak UICollectionView *collectionView = self.collectionView;
+        
+        switch(type) {
+            case NSFetchedResultsChangeInsert: {
+                [self.updateBlock addExecutionBlock:^{
+//                     [collectionView insertItemsAtIndexPaths:@[newIndexPath]];
+                    [collectionView reloadItemsAtIndexPaths:@[newIndexPath]];
+                }];
+                break;
+            }
+            case NSFetchedResultsChangeDelete: {
+                [self.updateBlock addExecutionBlock:^{
+                    [collectionView deleteItemsAtIndexPaths:@[indexPath]];
+                }];
+                break;
+            }
+            case NSFetchedResultsChangeUpdate: {
+                [self.updateBlock addExecutionBlock:^{
+                    [collectionView reloadItemsAtIndexPaths:@[newIndexPath]];
+                }];
+                break;
+            }
+            case NSFetchedResultsChangeMove: {
+                [self.updateBlock addExecutionBlock:^{
+                    [collectionView moveItemAtIndexPath:indexPath toIndexPath:newIndexPath];
+                }];
+                break;
+            }
+        }
+    }
 }
 
 - (void) controllerDidChangeContent:(NSFetchedResultsController *)controller {
     
-    NSLog(@"YJ << controllerDidChangeContent - BookShelfViewController");
-    id <NSFetchedResultsSectionInfo> sectionInfo = [controller sections][0];
-    NSInteger bookCount = [sectionInfo numberOfObjects];
-    NSInteger bmCount = 0;
-    if (bookCount > 0) {
-        for (int i = 0; i < bookCount; i++) {
-            NSIndexPath *indexPath = [NSIndexPath indexPathForItem:i inSection:0];
-            Book *book = [self.fetchedResultsController objectAtIndexPath:indexPath];
-            bmCount += book.quotes.count;
+    if (controller == self.fetchedResultsController) {
+        NSLog(@"YJ << NSFetchedResultsController - controllerDidChangeContent - BookShelfViewController");
+        
+        id <NSFetchedResultsSectionInfo> sectionInfo = [controller sections][0];
+        NSInteger bookCount = [sectionInfo numberOfObjects];
+        NSInteger bmCount = 0;
+        if (bookCount > 0) {
+            for (int i = 0; i < bookCount; i++) {
+                NSIndexPath *indexPath = [NSIndexPath indexPathForItem:i inSection:0];
+                Book *book = [self.fetchedResultsController objectAtIndexPath:indexPath];
+                bmCount += book.quotes.count;
+            }
+            [self.collectionView setHidden:NO];
+            [self.emptyView setHidden:YES];
+        } else {
+            [self.collectionView setHidden:YES];
+            [self.emptyView setHidden:NO];
         }
-        [self.collectionView setHidden:NO];
-        [self.emptyView setHidden:YES];
-    } else {
-        [self.collectionView setHidden:YES];
-        [self.emptyView setHidden:NO];
+        
+        [self.bCountLabel setText:[NSString stringWithFormat:@"%ld", bookCount]];
+        [self.bmCountLabel setText:[NSString stringWithFormat:@"%ld", bmCount]];
+        
+        [self.collectionView reloadData];
+        
+        [self.collectionView performBatchUpdates:^{
+            [[NSOperationQueue currentQueue] addOperation:self.updateBlock];
+            //            [self.updateBlock start];
+        } completion:^(BOOL finished) {
+            [self.collectionView reloadData];
+        }];
     }
-    
-    [self.bCountLabel setText:[NSString stringWithFormat:@"%ld", bookCount]];
-    [self.bmCountLabel setText:[NSString stringWithFormat:@"%ld", bmCount]];
-    
-    [self.collectionView reloadData];
 }
 
 #pragma mark - keyboard actions
 - (void)handleKeyboardWillShowNote:(NSNotification *)notification
 {
-    
     NSLog(@"YJ << keyboard show");
     [self.view addGestureRecognizer:bgTap];
     

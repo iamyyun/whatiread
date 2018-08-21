@@ -84,13 +84,14 @@
     if (menuIndex == MENU_BOOKMARK) {
         if (![SHAREDAPPDELEGATE.navigationController.topViewController isKindOfClass:[BookmarkViewController class]]) {
             BookmarkViewController *bmVC = [[BookmarkViewController alloc] init];
-            [self pushNoHistory:bmVC animated:YES];
+            [self pushNoHistory:bmVC animated:NO];
         }
     }
     else if (menuIndex == MENU_BOOKSHELF) {
         if (![SHAREDAPPDELEGATE.navigationController.topViewController isKindOfClass:[BookShelfViewController class]]) {
-            BookShelfViewController *bsVC = [[BookShelfViewController alloc] init];
-            [self pushNoHistory:bsVC animated:YES];
+//            BookShelfViewController *bsVC = [[BookShelfViewController alloc] init];
+//            [self pushNoHistory:bsVC animated:YES];
+            [self popToRootController:NO];
         }
     }
     else if (menuIndex == MENU_SETTINGS) {

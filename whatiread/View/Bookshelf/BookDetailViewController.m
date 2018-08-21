@@ -284,9 +284,9 @@
             
             [context save:&error];
             
-            if (!error) {
-                [self popController:YES];
-            }
+//            if (!error) {
+//                [self popController:YES];
+//            }
         }
     }];
 }
@@ -401,7 +401,7 @@
             [context save:&error];
             
             if (!error) {
-//                [self popController:YES];
+                [self popController:YES];
 //                [self performSelector:@selector(leftBarBtnClick:) withObject:nil afterDelay:0.5];
             }
         }
@@ -522,54 +522,104 @@
 
 #pragma mark - FetchedResultsController Delegate
 - (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
-    NSLog(@"YJ << controllerWillChangeContent - BookDetailViewController");
+    if (controller == self.fetchedResultsController) {
+        NSLog(@"YJ << NSFetchedResultsController - controllerWillChangeContent - BookDetailViewController");
+        
+        self.updateBlock = [NSBlockOperation new];
+    }
 }
 
 - (void)controller:(NSFetchedResultsController *)controller didChangeSection:(id<NSFetchedResultsSectionInfo>)sectionInfo atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type {
-    NSLog(@"YJ << didChangeSection - BookDetailViewController");
-    switch(type) {
-        case NSFetchedResultsChangeInsert:
-            [self.collectionView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex]];
-            break;
-        case NSFetchedResultsChangeDelete:
-            [self.collectionView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex]];
-            break;
-        default:
-            return;
+    if (controller == self.fetchedResultsController) {
+        NSLog(@"YJ << NSFetchedResultsController - didChangeSection - BookDetailViewController");
+        switch(type) {
+            case NSFetchedResultsChangeInsert:
+                [self.collectionView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex]];
+                break;
+            case NSFetchedResultsChangeDelete:
+                [self.collectionView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex]];
+                break;
+            default:
+                return;
+        }
     }
 }
 
 - (void) controller:(NSFetchedResultsController *)controller didChangeObject:(nonnull id)anObject atIndexPath:(nullable NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(nullable NSIndexPath *)newIndexPath {
     
-    NSLog(@"YJ << didChangeObject - BookDetailViewController");
-    NSLog(@"YJ << section : %ld", newIndexPath.section);
-    NSLog(@"YJ << item : %ld", newIndexPath.item);
-    
-    self.fetchedResultsController = nil;
-    self.managedObjectContext = nil;
-
-    self.fetchedResultsController = coreData.fetchedResultsController;
-    self.fetchedResultsController.delegate = self;
-    self.managedObjectContext = coreData.managedObjectContext;
+    if (controller == self.fetchedResultsController) {
+        NSLog(@"YJ << NSFetchedResultsController - didChangeObject - BookDetailViewController");
+        NSLog(@"YJ << section : %ld", indexPath.section);
+        NSLog(@"YJ << item : %ld", indexPath.item);
+        NSLog(@"YJ << new section : %ld", newIndexPath.section);
+        NSLog(@"YJ << new item : %ld", newIndexPath.item);
+        
+//        self.fetchedResultsController = nil;
+//        self.managedObjectContext = nil;
+//
+//        self.fetchedResultsController = coreData.fetchedResultsController;
+//        self.fetchedResultsController.delegate = self;
+//        self.managedObjectContext = coreData.managedObjectContext;
+        
+        __weak UICollectionView *collectionView = self.collectionView;
+        
+        switch(type) {
+            case NSFetchedResultsChangeInsert: {
+                [self.updateBlock addExecutionBlock:^{
+                    //                     [collectionView insertItemsAtIndexPaths:@[newIndexPath]];
+                    [collectionView reloadItemsAtIndexPaths:@[newIndexPath]];
+                }];
+                break;
+            }
+            case NSFetchedResultsChangeDelete: {
+                [self.updateBlock addExecutionBlock:^{
+                    [collectionView deleteItemsAtIndexPaths:@[indexPath]];
+//                    [collectionView reloadItemsAtIndexPaths:@[indexPath]];
+//                    [collectionView reloadSections:[NSIndexSet indexSetWithIndex:0]];
+                }];
+                break;
+            }
+            case NSFetchedResultsChangeUpdate: {
+                [self.updateBlock addExecutionBlock:^{
+                    [collectionView reloadItemsAtIndexPaths:@[newIndexPath]];
+                }];
+                break;
+            }
+            case NSFetchedResultsChangeMove: {
+                [self.updateBlock addExecutionBlock:^{
+//                    [collectionView moveItemAtIndexPath:indexPath toIndexPath:newIndexPath];
+                    [collectionView reloadItemsAtIndexPaths:@[indexPath]];
+                }];
+                break;
+            }
+        }
+    }
 }
 
 - (void) controllerDidChangeContent:(NSFetchedResultsController *)controller {
-    
-    NSLog(@"YJ << controllerDidChangeContent - BookDetailViewController");
-    
-    NSSortDescriptor *desc = [NSSortDescriptor sortDescriptorWithKey:@"index" ascending:YES];
-    quoteArr = [self.book.quotes sortedArrayUsingDescriptors:[NSArray arrayWithObject:desc]];
-    
-    if (quoteArr && quoteArr.count > 0) {
-        [self.collectionView setHidden:NO];
-        [self.emptyView setHidden:YES];
-    } else {
-        [self.collectionView setHidden:YES];
-        [self.emptyView setHidden:NO];
+    if (controller == self.fetchedResultsController) {
+        NSLog(@"YJ << NSFetchedResultsController - controllerDidChangeContent - BookDetailViewController");
+        
+        NSSortDescriptor *desc = [NSSortDescriptor sortDescriptorWithKey:@"index" ascending:YES];
+        quoteArr = [self.book.quotes sortedArrayUsingDescriptors:[NSArray arrayWithObject:desc]];
+        
+        if (quoteArr && quoteArr.count > 0) {
+            [self.collectionView setHidden:NO];
+            [self.emptyView setHidden:YES];
+        } else {
+            [self.collectionView setHidden:YES];
+            [self.emptyView setHidden:NO];
+        }
+        
+        [self.bmCountLabel setText:[NSString stringWithFormat:@"%ld", self.book.quotes.count]];
+        [self.collectionView reloadData];
+        
+        [self.collectionView performBatchUpdates:^{
+            [[NSOperationQueue currentQueue] addOperation:self.updateBlock];
+        } completion:^(BOOL finished) {
+            [self.collectionView reloadData];
+        }];
     }
-    
-    [self.bmCountLabel setText:[NSString stringWithFormat:@"%ld", self.book.quotes.count]];
-    [self.collectionView reloadData];
 }
 
 @end

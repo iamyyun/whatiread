@@ -38,6 +38,8 @@
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *titleLabelHeightConst;
 
+@property (nonatomic, strong) NSBlockOperation *updateBlock;
+
 - (IBAction)addBookmarkBtnAction:(id)sender;
 - (IBAction)EditBookShelfBtnAction:(id)sender;
 - (IBAction)deleteBookShelfBtnAction:(id)sender;

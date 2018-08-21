@@ -218,6 +218,10 @@
 //    SHAREDAPPDELEGATE.navigationController.interactivePopGestureRecognizer.enabled = YES;
 }
 
+- (void)popToRootController:(BOOL)animated {
+    [SHAREDAPPDELEGATE.navigationController popToRootViewControllerAnimated:animated];
+}
+
 - (void)pushController:(UIViewController *)vc animated:(BOOL)animated {
     [SHAREDAPPDELEGATE.navigationController pushViewController:vc animated:animated];
 //    SHAREDAPPDELEGATE.navigationController.interactivePopGestureRecognizer.enabled = NO;
@@ -230,7 +234,7 @@
 }
 
 - (void)pushNoHistory:(UIViewController *)vc animated:(BOOL)animated {
-    [SHAREDAPPDELEGATE.navigationController popToRootViewControllerAnimated:NO];
+    [SHAREDAPPDELEGATE.navigationController popToRootViewControllerAnimated:YES];
     [SHAREDAPPDELEGATE.navigationController pushViewController:vc animated:animated];
 //    SHAREDAPPDELEGATE.navigationController.interactivePopGestureRecognizer.enabled = NO;
 }

@@ -16,6 +16,7 @@ typedef void (^BookmarkDeleteCompleted)(NSIndexPath *indexPath);
 @interface BookmarkDetailViewController : CommonViewController <NSFetchedResultsControllerDelegate>
 
 @property (strong, nonatomic) NSFetchedResultsController <Book *> *fetchedResultsController;
+@property (strong, nonatomic) NSFetchedResultsController <Quote *> *quoteFetchedResultsController;
 @property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 
 @property (nonatomic, copy) BookmarkDeleteCompleted bookmarkDeleteCompleted;
@@ -26,6 +27,8 @@ typedef void (^BookmarkDeleteCompleted)(NSIndexPath *indexPath);
 @property (weak, nonatomic) IBOutlet UITextView *textView;
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *authorLabel;
+
+@property (nonatomic, strong) NSBlockOperation *updateBlock;
 
 - (void)setBookmarkDetailCompositionHandler:(Book *)book bookmarkDeleteCompleted:(BookmarkDeleteCompleted)bookmarkDeleteCompleted;
 

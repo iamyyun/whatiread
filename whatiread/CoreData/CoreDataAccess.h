@@ -18,6 +18,7 @@
 //@property (readonly, strong) NSPersistentContainer *persistentContainer;
 
 @property (strong, nonatomic) NSFetchedResultsController <Book *> * fetchedResultsController;
+@property (strong, nonatomic) NSFetchedResultsController <Quote *> *quoteFetchedResultsController;
 @property (strong, nonatomic) NSManagedObjectContext * managedObjectContext;
 
 - (void) coreDataInitialize;

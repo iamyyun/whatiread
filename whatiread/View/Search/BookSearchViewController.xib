@@ -14,6 +14,7 @@
             <connections>
                 <outlet property="closeBtn" destination="mDN-xE-dWu" id="i1o-aY-iEd"/>
                 <outlet property="collectionView" destination="ZXh-bq-5Ry" id="o8S-89-3Ah"/>
+                <outlet property="emptyView" destination="yi6-cR-aQt" id="338-6d-f1d"/>
                 <outlet property="flashBtn" destination="pjY-S3-42u" id="3sz-be-ZkS"/>
                 <outlet property="previewView" destination="8pN-YP-50Z" id="0Lt-9j-HaN"/>
                 <outlet property="scanCloseBtn" destination="Ms1-q2-1mS" id="BGI-W8-aNd"/>
@@ -96,6 +97,22 @@
                         <outlet property="delegate" destination="-1" id="sld-a1-BJs"/>
                     </connections>
                 </collectionView>
+                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yi6-cR-aQt">
+                    <rect key="frame" x="0.0" y="140" width="375" height="527"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="검색 결과가 없습니다." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OyT-qB-QFs">
+                            <rect key="frame" x="114.5" y="253" width="146" height="21"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="OyT-qB-QFs" firstAttribute="centerX" secondItem="yi6-cR-aQt" secondAttribute="centerX" id="2kJ-Ae-Peh"/>
+                        <constraint firstItem="OyT-qB-QFs" firstAttribute="centerY" secondItem="yi6-cR-aQt" secondAttribute="centerY" id="53W-B5-5Y4"/>
+                    </constraints>
+                </view>
                 <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="o4k-E4-I8G">
                     <rect key="frame" x="0.0" y="20" width="375" height="647"/>
                     <subviews>
@@ -189,12 +206,16 @@
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
+                <constraint firstItem="yi6-cR-aQt" firstAttribute="top" secondItem="fOG-ge-Z22" secondAttribute="bottom" id="33k-bQ-PU4"/>
+                <constraint firstItem="yi6-cR-aQt" firstAttribute="trailing" secondItem="Q5M-cg-NOt" secondAttribute="trailing" id="7TR-Am-IeP"/>
                 <constraint firstItem="Q5M-cg-NOt" firstAttribute="bottom" secondItem="o4k-E4-I8G" secondAttribute="bottom" id="8gV-uz-aaR"/>
                 <constraint firstItem="fOG-ge-Z22" firstAttribute="top" secondItem="nfJ-7d-SbK" secondAttribute="bottom" id="9rO-tC-THo"/>
                 <constraint firstItem="o4k-E4-I8G" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="AeZ-o0-S7C"/>
                 <constraint firstItem="nfJ-7d-SbK" firstAttribute="trailing" secondItem="Q5M-cg-NOt" secondAttribute="trailing" id="Cbv-jw-kgH"/>
+                <constraint firstItem="yi6-cR-aQt" firstAttribute="bottom" secondItem="Q5M-cg-NOt" secondAttribute="bottom" id="D9L-dp-cll"/>
                 <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="o4k-E4-I8G" secondAttribute="trailing" id="I9h-MP-Uxk"/>
                 <constraint firstItem="o4k-E4-I8G" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="top" id="RME-K0-xnl"/>
+                <constraint firstItem="yi6-cR-aQt" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="Tmq-t5-1jN"/>
                 <constraint firstItem="nfJ-7d-SbK" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="top" constant="20" id="WQw-2Z-AbG"/>
                 <constraint firstItem="fOG-ge-Z22" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="ajg-qj-yFf"/>
                 <constraint firstItem="ZXh-bq-5Ry" firstAttribute="top" secondItem="fOG-ge-Z22" secondAttribute="bottom" id="bOR-9y-rgk"/>

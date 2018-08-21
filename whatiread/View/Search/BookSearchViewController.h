@@ -17,6 +17,7 @@ typedef void (^BookSelectCompleted)(NSDictionary *bookDic);
 @property (weak, nonatomic) IBOutlet UIButton *closeBtn;
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
+@property (weak, nonatomic) IBOutlet UIView *emptyView;
 
 @property (weak, nonatomic) IBOutlet UIView *scanView;
 @property (weak, nonatomic) IBOutlet UIView *previewView;

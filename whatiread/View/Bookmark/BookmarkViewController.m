@@ -42,6 +42,8 @@
     coreData = [CoreDataAccess sharedInstance];
     self.fetchedResultsController = coreData.fetchedResultsController;
     self.fetchedResultsController.delegate = self;
+    self.quoteFetchedResultsController = coreData.quoteFetchedResultsController;
+    self.quoteFetchedResultsController.delegate = self;
     self.managedObjectContext = coreData.managedObjectContext;
     
     id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][0];
@@ -82,10 +84,13 @@
     
     self.managedObjectContext = nil;
     self.fetchedResultsController = nil;
+    self.quoteFetchedResultsController = nil;
     
     [coreData coreDataInitialize];
     self.fetchedResultsController = coreData.fetchedResultsController;
     self.fetchedResultsController.delegate = self;
+    self.quoteFetchedResultsController = coreData.fetchedResultsController;
+    self.quoteFetchedResultsController.delegate = self;
     self.managedObjectContext = coreData.managedObjectContext;
     
     [self.collectionView reloadData];
@@ -154,9 +159,12 @@
     }
     
     self.fetchedResultsController = nil;
+    self.quoteFetchedResultsController = nil;
     [coreData coreDataInitialize];
     self.fetchedResultsController = coreData.fetchedResultsController;
     self.fetchedResultsController.delegate = self;
+    self.quoteFetchedResultsController = coreData.quoteFetchedResultsController;
+    self.quoteFetchedResultsController.delegate = self;
     
     NSFetchRequest *request = [self.fetchedResultsController fetchRequest];
     NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:sortKey ascending:isAscending];
@@ -175,7 +183,8 @@
 #pragma mark - Bookmark Configure
 // delete Bookmark
 - (void)deleteBookmark:(Book *)book indexPath:(NSIndexPath *)indexPath {
-    NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
+//    NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
+    NSManagedObjectContext *context = [self.quoteFetchedResultsController managedObjectContext];
     NSFetchRequest <Quote *> *fetchRequest = Quote.fetchRequest;
     
     [context performBlock:^{
@@ -448,10 +457,22 @@
 
 #pragma mark - Fetched results controller
 - (void) controllerWillChangeContent:(NSFetchedResultsController *)controller {
-    NSLog(@"YJ << controllerWillChangeContent - BookmarkViewController");
+    
+    if (controller == self.fetchedResultsController) {
+        NSLog(@"YJ << NSFetchedResultsController - controllerWillChangeContent - BookmarkViewController");
+    } else if (controller == self.quoteFetchedResultsController) {
+        NSLog(@"YJ << NSFetchedResultsController - controllerWillChangeContent - BookmarkViewController");
+    }
 }
 
-//- (void) controller:(NSFetchedResultsController *)controller didChangeSection:(nonnull id<NSFetchedResultsSectionInfo>)sectionInfo atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type {
+- (void) controller:(NSFetchedResultsController *)controller didChangeSection:(nonnull id<NSFetchedResultsSectionInfo>)sectionInfo atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type {
+    
+    if (controller == self.fetchedResultsController) {
+        NSLog(@"YJ << NSFetchedResultsController - didChangeSection - BookmarkViewController");
+    } else if (controller == self.quoteFetchedResultsController) {
+        NSLog(@"YJ << NSFetchedResultsController - didChangeSection - BookmarkViewController");
+    }
+    
 //    switch(type) {
 //        case NSFetchedResultsChangeInsert:
 //            [self.collectionView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex]];
@@ -462,16 +483,25 @@
 //        default:
 //            return;
 //    }
-//}
+}
 
 - (void) controller:(NSFetchedResultsController *)controller didChangeObject:(nonnull id)anObject atIndexPath:(nullable NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(nullable NSIndexPath *)newIndexPath {
     
-    NSLog(@"YJ << didChangeObject - BookmarkViewController");
+    if (controller == self.fetchedResultsController) {
+        NSLog(@"YJ << NSFetchedResultsController - didChangeObject - BookmarkViewController");
+    } else if (controller == self.quoteFetchedResultsController) {
+        NSLog(@"YJ << NSFetchedResultsController - didChangeObject - BookmarkViewController");
+    }
+    
+    
     self.fetchedResultsController = nil;
+    self.quoteFetchedResultsController = nil;
     self.managedObjectContext = nil;
     
     self.fetchedResultsController = coreData.fetchedResultsController;
     self.fetchedResultsController.delegate = self;
+    self.quoteFetchedResultsController = coreData.quoteFetchedResultsController;
+    self.quoteFetchedResultsController.delegate = self;
     self.managedObjectContext = coreData.managedObjectContext;
     
 //    switch(type) {
@@ -496,7 +526,13 @@
 
 - (void) controllerDidChangeContent:(NSFetchedResultsController *)controller {
     
-    NSLog(@"YJ << controllerDidChangeContent - BookmarkViewController");
+    if (controller == self.fetchedResultsController) {
+        NSLog(@"YJ << NSFetchedResultsController - controllerDidChangeContent - BookmarkViewController");
+    } else if (controller == self.quoteFetchedResultsController) {
+        NSLog(@"YJ << NSFetchedResultsController - controllerDidChangeContent - BookmarkViewController");
+    }
+    
+    
     id <NSFetchedResultsSectionInfo> sectionInfo = [controller sections][0];
     NSInteger bookCount = [sectionInfo numberOfObjects];
     NSInteger bmCount = 0;

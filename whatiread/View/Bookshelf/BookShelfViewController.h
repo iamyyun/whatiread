@@ -27,6 +27,8 @@
 @property (weak, nonatomic) IBOutlet UIView *emptyView;
 @property (weak, nonatomic) IBOutlet UIView *dimBgView;
 
+@property (nonatomic, strong) NSBlockOperation *updateBlock;
+
 - (IBAction)addBtnAction:(id)sender;
 - (IBAction)sortBtnAction:(id)sender;
 

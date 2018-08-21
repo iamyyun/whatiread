@@ -41,6 +41,7 @@ typedef enum : NSInteger
 // controller navigate
 - (void)popController:(BOOL)animated;
 - (void)popController:(NSInteger)index animated:(BOOL)animated;
+- (void)popToRootController:(BOOL)animated;
 - (void)pushController:(UIViewController *)vc animated:(BOOL)animated;
 - (void)pushAndIgnoreHistory:(UIViewController *)vc animated:(BOOL)animated;
 - (void)pushNoHistory:(UIViewController *)vc animated:(BOOL)animated;

@@ -111,10 +111,24 @@
     [[AdminConnectionManager connManager] sendRequest:API_SEARCH_BOOK dataInfo:dataDic success:^(id responseData) {
         NSDictionary *chaDic = [responseData objectForKey:@"channel"];
         if (responseData && chaDic) {
-            searchArr = [chaDic objectForKey:@"item"];
+            NSInteger count = [[chaDic objectForKey:@"display"] integerValue];
+            if (count == 1) {
+                searchArr = @[[chaDic objectForKey:@"item"]];
+            } else {
+                searchArr = [chaDic objectForKey:@"item"];
+            }
+            
             searchIndex = [[chaDic objectForKey:@"start"] integerValue];
             totalCount = [[chaDic objectForKey:@"total"] integerValue];
             NSLog(@"YJ << book search data : %@", searchArr);
+            
+            if (!searchArr || searchArr.count <= 0) {
+                [self.collectionView setHidden:YES];
+                [self.emptyView setHidden:NO];
+            } else {
+                [self.collectionView setHidden:NO];
+                [self.emptyView setHidden:YES];
+            }
             [self.collectionView reloadData];
             [IndicatorUtil stopProcessIndicator];
         }
