@@ -191,12 +191,6 @@
 
 - (BOOL)isExistItem:(NSDictionary *)dic {
     
-    self.fetchedResultsController = nil;
-    
-    [coreData coreDataInitialize];
-    self.fetchedResultsController = coreData.fetchedResultsController;
-    self.fetchedResultsController.delegate = self;
-    
     NSFetchRequest *request = [[self fetchedResultsController] fetchRequest];
     NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"title" ascending:YES];
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"title contains[cd] %@ AND author contains[cd] %@ AND isSearchMode == YES", [self makeMetaToString:[dic objectForKey:@"title"]], [self makeMetaToString:[dic objectForKey:@"author"]]];
@@ -236,12 +230,6 @@
         sortKey = @"rate";
     }
     
-    self.fetchedResultsController = nil;
-    
-    [coreData coreDataInitialize];
-    self.fetchedResultsController = coreData.fetchedResultsController;
-    self.fetchedResultsController.delegate = self;
-    
     NSFetchRequest *request = [self.fetchedResultsController fetchRequest];
     NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:sortKey ascending:isAscending];
     [request setSortDescriptors:@[sortDescriptor]];
@@ -254,10 +242,6 @@
     }
 
     [self.collectionView reloadData];
-//    [self.collectionView performBatchUpdates:^{
-//        [self.collectionView reloadSections:[NSIndexSet indexSetWithIndex:0]];
-//    } completion:^(BOOL finished){
-//    }];
 }
 
 #pragma mark - BookConfigure
@@ -309,10 +293,6 @@
         [self.navigationController setNavigationBarHidden:NO animated:YES];
 
         [self.collectionView reloadData];
-//        [self.collectionView performBatchUpdates:^{
-//            [self.collectionView reloadSections:[NSIndexSet indexSetWithIndex:0]];
-//        } completion:^(BOOL finished){
-//        }];
     }
 }
 
@@ -343,24 +323,6 @@
     
     
     NSError * error = nil;
-//    [self.privateContext performBlock:^{
-//        NSError * error = nil;
-//        if (![self.privateContext save:&error]) {
-//            if (completed) {
-//                completed(NO);
-//            }
-//        } else {
-//            completed(YES);
-//        }
-//        [self.managedObjectContext performBlockAndWait:^{
-//            NSError *error = nil;
-//            if (![self.managedObjectContext save:&error]) {
-//                if (completed) {
-//                    completed(NO);
-//                }
-//            }
-//        }];
-//    }];
     
     if(![self.managedObjectContext save:&error]) {
         NSLog(@"Unresolved error = %@, %@", error, error.userInfo);
@@ -393,10 +355,6 @@
     [self.navigationController setNavigationBarHidden:NO animated:YES];
 
     [self.collectionView reloadData];
-//    [self.collectionView performBatchUpdates:^{
-//        [self.collectionView reloadSections:[NSIndexSet indexSetWithIndex:0]];
-//    } completion:^(BOOL finished){
-//    }];
 }
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
@@ -425,10 +383,6 @@
     }
 
     [self.collectionView reloadData];
-//    [self.collectionView performBatchUpdates:^{
-//        [self.collectionView reloadSections:[NSIndexSet indexSetWithIndex:0]];
-//    } completion:^(BOOL finished){
-//    }];
 }
 
 #pragma mark - UICollectionViewDataSource
@@ -500,31 +454,13 @@
 {
     NSLog(@"YJ << select collectionview cell");
     
+    isSearchBarActive = NO;
+    
     Book *book = [self.fetchedResultsController objectAtIndexPath:indexPath];
     BookDetailViewController *detailVC = [[BookDetailViewController alloc] init];
     detailVC.indexPath = indexPath;
     detailVC.book = book;
     [self pushController:detailVC animated:YES];
-    
-    if (isSearchBarActive) {
-        isSearchBarActive = NO;
-        
-        // refresh data
-        self.managedObjectContext = nil;
-        self.fetchedResultsController = nil;
-        
-        [coreData coreDataInitialize];
-        self.fetchedResultsController = coreData.fetchedResultsController;
-        self.fetchedResultsController.delegate = self;
-        self.managedObjectContext = coreData.managedObjectContext;
-        
-        [self.view endEditing:YES];
-        [self.searchBar setHidden:YES];
-        [self.searchBar setText:@""];
-        [self.navigationController setNavigationBarHidden:NO animated:YES];
-        
-        [self.collectionView reloadData];
-    }
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
@@ -539,7 +475,6 @@
         NSLog(@"YJ << NSFetchedResultsController - controllerWillChangeContent - BookShelfViewController");
         
         self.updateBlock = [NSBlockOperation new];
-        
     }
 }
 
@@ -547,12 +482,23 @@
     
     if (controller == self.fetchedResultsController) {
         NSLog(@"YJ << NSFetchedResultsController - didChangeSection - BookShelfViewController");
+        
+        __weak UICollectionView *collectionView = self.collectionView;
+        
         switch(type) {
-            case NSFetchedResultsChangeInsert:
-                [self.collectionView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex]];
+            case NSFetchedResultsChangeInsert: {
+                [self.updateBlock addExecutionBlock:^{
+//                    [self.collectionView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex]];
+                    [collectionView reloadSections:[NSIndexSet indexSetWithIndex:sectionIndex]];
+                }];
+            }
                 break;
-            case NSFetchedResultsChangeDelete:
-                [self.collectionView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex]];
+            case NSFetchedResultsChangeDelete: {
+                [self.updateBlock addExecutionBlock:^{
+//                    [self.collectionView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex]];
+                    [collectionView reloadSections:[NSIndexSet indexSetWithIndex:sectionIndex]];
+                }];
+            }
                 break;
             default:
                 return;
@@ -569,33 +515,40 @@
         
         __weak UICollectionView *collectionView = self.collectionView;
         
-        switch(type) {
-            case NSFetchedResultsChangeInsert: {
-                [self.updateBlock addExecutionBlock:^{
-//                     [collectionView insertItemsAtIndexPaths:@[newIndexPath]];
-                    [collectionView reloadItemsAtIndexPaths:@[newIndexPath]];
-                }];
-                break;
-            }
-            case NSFetchedResultsChangeDelete: {
-                [self.updateBlock addExecutionBlock:^{
-                    [collectionView deleteItemsAtIndexPaths:@[indexPath]];
-                }];
-                break;
-            }
-            case NSFetchedResultsChangeUpdate: {
-                [self.updateBlock addExecutionBlock:^{
-                    [collectionView reloadItemsAtIndexPaths:@[newIndexPath]];
-                }];
-                break;
-            }
-            case NSFetchedResultsChangeMove: {
-                [self.updateBlock addExecutionBlock:^{
-                    [collectionView moveItemAtIndexPath:indexPath toIndexPath:newIndexPath];
-                }];
-                break;
-            }
-        }
+        [self.updateBlock addExecutionBlock:^{
+            [collectionView reloadData];
+        }];
+        
+//        switch(type) {
+//            case NSFetchedResultsChangeInsert: {
+//                [self.updateBlock addExecutionBlock:^{
+////                     [collectionView insertItemsAtIndexPaths:@[newIndexPath]];
+//                    [collectionView reloadItemsAtIndexPaths:@[newIndexPath]];
+//                }];
+//                break;
+//            }
+//            case NSFetchedResultsChangeDelete: {
+//                [self.updateBlock addExecutionBlock:^{
+////                    [collectionView deleteItemsAtIndexPaths:@[indexPath]];
+//                    [collectionView reloadData];
+//                }];
+//                break;
+//            }
+//            case NSFetchedResultsChangeUpdate: {
+//                [self.updateBlock addExecutionBlock:^{
+//                    [collectionView reloadItemsAtIndexPaths:@[newIndexPath]];
+//                }];
+//                break;
+//            }
+//            case NSFetchedResultsChangeMove: {
+//                [self.updateBlock addExecutionBlock:^{
+////                    [collectionView moveItemAtIndexPath:indexPath toIndexPath:newIndexPath];
+////                    [collectionView reloadItemsAtIndexPaths:@[indexPath]];
+//                    [collectionView reloadData];
+//                }];
+//                break;
+//            }
+//        }
     }
 }
 
@@ -627,7 +580,6 @@
         
         [self.collectionView performBatchUpdates:^{
             [[NSOperationQueue currentQueue] addOperation:self.updateBlock];
-            //            [self.updateBlock start];
         } completion:^(BOOL finished) {
             [self.collectionView reloadData];
         }];

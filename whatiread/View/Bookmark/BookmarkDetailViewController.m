@@ -29,6 +29,7 @@
     self.fetchedResultsController.delegate = self;
     self.quoteFetchedResultsController.delegate = self;
     self.managedObjectContext = coreData.managedObjectContext;
+    self.quoteManagedObjectContext = coreData.quoteManagedObjectContext;
     
     if (self.book) {
         [self.titleLabel setText:self.book.title];
@@ -51,6 +52,7 @@
     [super viewWillAppear:animated];
     
     self.managedObjectContext = nil;
+    self.quoteManagedObjectContext = nil;
     self.fetchedResultsController = nil;
     self.quoteFetchedResultsController = nil;
     
@@ -60,6 +62,7 @@
     self.quoteFetchedResultsController = coreData.quoteFetchedResultsController;
     self.quoteFetchedResultsController.delegate = self;
     self.managedObjectContext = coreData.managedObjectContext;
+    self.quoteManagedObjectContext = coreData.quoteManagedObjectContext;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -132,20 +135,16 @@
 // modify bookmark
 - (void)modifyBookmark:(Book *)book qDic:(NSDictionary *)qDic indexPath:(NSIndexPath *)indexPath completed:(void (^)(BOOL isResult))completed {
     
-//    NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
-    NSManagedObjectContext *context = [self.quoteFetchedResultsController managedObjectContext];
     NSFetchRequest <Quote *> *fetchRequest = Quote.fetchRequest;
     
-    NSDate *now = [[NSDate alloc] init];
-    
-    [context performBlock:^{
+    [self.quoteManagedObjectContext performBlock:^{
         NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"index" ascending:YES];
         NSArray *quoteArr = [self.book.quotes sortedArrayUsingDescriptors:[NSArray arrayWithObject:sortDescriptor]];
         Quote *quote = quoteArr[self.indexPath.item];
         
         NSError * error;
         
-        NSArray * resultArray = [context executeFetchRequest:fetchRequest error:&error];
+        NSArray * resultArray = [self.quoteManagedObjectContext executeFetchRequest:fetchRequest error:&error];
         
         if([resultArray count]) {
             
@@ -168,7 +167,7 @@
                 quote.image = nil;
             }
             
-            [context save:&error];
+            [self.quoteManagedObjectContext save:&error];
             
             if (!error) {
                 if (completed) {
@@ -192,80 +191,61 @@
 #pragma mark - FetchedResultsController Delegate
 - (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
     
-    if (controller == self.fetchedResultsController) {
-        NSLog(@"YJ << NSFetchedResultsController - controllerWillChangeContent - BookmarkDetailViewController");
-    } else if (controller == self.quoteFetchedResultsController) {
+    if (controller == self.quoteFetchedResultsController) {
         NSLog(@"YJ << NSFetchedResultsController - controllerWillChangeContent - BookmarkDetailViewController");
     }
 }
 
 - (void)controller:(NSFetchedResultsController *)controller didChangeSection:(id<NSFetchedResultsSectionInfo>)sectionInfo atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type {
     
-    if (controller == self.fetchedResultsController) {
+    if (controller == self.quoteFetchedResultsController) {
         NSLog(@"YJ << NSFetchedResultsController - didChangeSection - BookmarkDetailViewController");
-    } else if (controller == self.quoteFetchedResultsController) {
-        NSLog(@"YJ << NSFetchedResultsController - didChangeSection - BookmarkDetailViewController");
-    }
-    
-    
-    switch(type) {
-        case NSFetchedResultsChangeInsert:
-//            [self.collectionView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex]];
-            break;
-        case NSFetchedResultsChangeDelete:
-//            [self.collectionView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex]];
-            break;
-        default:
-            return;
+        
+        switch(type) {
+            case NSFetchedResultsChangeInsert:
+                NSLog(@"YJ << quoteFetchedResultsController - NSFetchedResultChangeInsert");
+                break;
+            case NSFetchedResultsChangeDelete:
+                NSLog(@"YJ << quoteFetchedResultsController - NSFetchedResultsChangeDelete");
+                break;
+            default:
+                return;
+        }
     }
 }
 
 - (void) controller:(NSFetchedResultsController *)controller didChangeObject:(nonnull id)anObject atIndexPath:(nullable NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(nullable NSIndexPath *)newIndexPath {
     
-    if (controller == self.fetchedResultsController) {
+    if (controller == self.quoteFetchedResultsController) {
         NSLog(@"YJ << NSFetchedResultsController - didChangeObject - BookmarkDetailViewController");
-    } else if (controller == self.quoteFetchedResultsController) {
-        NSLog(@"YJ << NSFetchedResultsController - didChangeObject - BookmarkDetailViewController");
+        
+        switch(type) {
+            case NSFetchedResultsChangeInsert: {
+                break;
+            }
+            case NSFetchedResultsChangeDelete: {
+                break;
+            }
+            case NSFetchedResultsChangeUpdate: {
+                break;
+            }
+            case NSFetchedResultsChangeMove: {
+                break;
+            }
+        }
     }
     
     
     NSLog(@"YJ << section : %ld", newIndexPath.section);
     NSLog(@"YJ << item : %ld", newIndexPath.item);
     
-    self.fetchedResultsController = nil;
-    self.quoteFetchedResultsController = nil;
-    self.managedObjectContext = nil;
-    
-    self.fetchedResultsController = coreData.fetchedResultsController;
-    self.fetchedResultsController.delegate = self;
-    self.quoteFetchedResultsController = coreData.quoteFetchedResultsController;
-    self.quoteFetchedResultsController.delegate = self;
-    self.managedObjectContext = coreData.managedObjectContext;
 }
 
 - (void) controllerDidChangeContent:(NSFetchedResultsController *)controller {
     
-    if (controller == self.fetchedResultsController) {
-        NSLog(@"YJ << NSFetchedResultsController - controllerDidChangeContent - BookmarkDetailViewController");
-    } else if (controller == self.quoteFetchedResultsController) {
+    if (controller == self.quoteFetchedResultsController) {
         NSLog(@"YJ << NSFetchedResultsController - controllerDidChangeContent - BookmarkDetailViewController");
     }
-    
-    
-    
-//    NSSortDescriptor *desc = [NSSortDescriptor sortDescriptorWithKey:@"index" ascending:YES];
-//    quoteArr = [self.book.quotes sortedArrayUsingDescriptors:[NSArray arrayWithObject:desc]];
-//
-//    if (quoteArr && quoteArr.count > 0) {
-//        [self.collectionView setHidden:NO];
-//        [self.emptyView setHidden:YES];
-//    } else {
-//        [self.collectionView setHidden:YES];
-//        [self.emptyView setHidden:NO];
-//    }
-//
-//    [self.bmCountLabel setText:[NSString stringWithFormat:@"%ld", self.book.quotes.count]];
-//    [self.collectionView reloadData];
 }
 
 

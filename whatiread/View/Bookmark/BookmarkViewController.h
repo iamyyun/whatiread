@@ -13,9 +13,10 @@
 
 @interface BookmarkViewController : CommonViewController <NSFetchedResultsControllerDelegate>
 
-@property (strong, nonatomic) NSFetchedResultsController <Book *> *fetchedResultsController;
-@property (strong, nonatomic) NSFetchedResultsController <Quote *> *quoteFetchedResultsController;
-@property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
+@property (weak, nonatomic) NSFetchedResultsController <Book *> *fetchedResultsController;
+@property (weak, nonatomic) NSFetchedResultsController <Quote *> *quoteFetchedResultsController;
+@property (weak, nonatomic) NSManagedObjectContext *managedObjectContext;
+@property (weak, nonatomic) NSManagedObjectContext *quoteManagedObjectContext;
 
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
 @property (weak, nonatomic) IBOutlet UIButton *addBtn;
@@ -26,6 +27,8 @@
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (weak, nonatomic) IBOutlet UIView *emptyView;
 @property (weak, nonatomic) IBOutlet UIView *dimBgView;
+
+@property (nonatomic, strong) NSBlockOperation *updateBlock;
 
 - (IBAction)addBtnAction:(id)sender;
 - (IBAction)sortBtnAction:(id)sender;

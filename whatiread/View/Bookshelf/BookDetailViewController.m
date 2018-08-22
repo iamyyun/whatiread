@@ -235,12 +235,10 @@
 - (void)createBookmark:(Book *)book qDic:(NSDictionary *)qDic completed:(void (^)(BOOL isResult))completed {
     NSInteger quoteCount = book.quotes.count;
     
-    NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
-    
     NSData *imgData = UIImagePNGRepresentation([qDic objectForKey:@"mImage"]);
     NSAttributedString *attrStr = [qDic objectForKey:@"mQuote"];
     
-    Quote *quote = [[Quote alloc] initWithContext:context];
+    Quote *quote = [[Quote alloc] initWithContext:self.managedObjectContext];
     quote.index = quoteCount;
     quote.date = [NSDate date];
     quote.data = attrStr;
@@ -251,7 +249,7 @@
     
     NSError * error = nil;
     
-    if(![context save:&error]) {
+    if(![self.managedObjectContext save:&error]) {
         NSLog(@"Unresolved error = %@, %@", error, error.userInfo);
         if(completed) {
             completed(NO);
@@ -266,10 +264,9 @@
 
 // delete Bookmark
 - (void)deleteBookmark:(Book *)book indexPath:(NSIndexPath *)indexPath {
-    NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
     NSFetchRequest <Quote *> *fetchRequest = Quote.fetchRequest;
     
-    [context performBlock:^{
+    [self.managedObjectContext performBlock:^{
         
         NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"index" ascending:YES];
         NSArray *quoteArr = [book.quotes sortedArrayUsingDescriptors:[NSArray arrayWithObject:sortDescriptor]];
@@ -277,12 +274,12 @@
         
         NSError * error;
         
-        NSArray * resultArray = [context executeFetchRequest:fetchRequest error:&error];
+        NSArray * resultArray = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
         
         if([resultArray count]) {
             [book removeQuotesObject:quote];
             
-            [context save:&error];
+            [self.managedObjectContext save:&error];
             
 //            if (!error) {
 //                [self popController:YES];
@@ -293,19 +290,19 @@
 
 // modify book
 - (void)modifyBook:(Book *)book bookDic:(NSDictionary *)bookDic indexPath:(NSIndexPath *)indexPath completed:(void (^)(BOOL isResult))completed {
-    NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
+
     NSFetchRequest <Book *> *fetchRequest = Book.fetchRequest;
     
     NSDate *now = [[NSDate alloc] init];
     
-    [context performBlock:^{
+    [self.managedObjectContext performBlock:^{
         NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"completeDate" ascending:NO];
         [fetchRequest setSortDescriptors:@[sortDescriptor]];
         [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"completeDate = %@", book.completeDate]];
         
         NSError * error;
         
-        NSArray * resultArray = [context executeFetchRequest:fetchRequest error:&error];
+        NSArray * resultArray = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
         
         if([resultArray count]) {
             Book *book = [resultArray lastObject];
@@ -360,7 +357,7 @@
             
             book.modifyDate = now;
             
-            [context save:&error];
+            [self.managedObjectContext save:&error];
             
             if (!error) {
                 if (completed) {
@@ -384,21 +381,21 @@
 // delete Book
 - (void)deleteBook:(NSIndexPath *)indexPath {
     Book *book = [self.fetchedResultsController objectAtIndexPath:indexPath];
-    NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
+
     NSFetchRequest <Book *> *fetchRequest = Book.fetchRequest;
     
-    [context performBlock:^{
+    [self.managedObjectContext performBlock:^{
         NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"completeDate" ascending:NO];
         [fetchRequest setSortDescriptors:@[sortDescriptor]];
         [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"completeDate = %@", book.completeDate]];
         
         NSError * error;
         
-        NSArray * resultArray = [context executeFetchRequest:fetchRequest error:&error];
+        NSArray * resultArray = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
         
         if([resultArray count]) {
-            [context deleteObject:[resultArray lastObject]];
-            [context save:&error];
+            [self.managedObjectContext deleteObject:[resultArray lastObject]];
+            [self.managedObjectContext save:&error];
             
             if (!error) {
                 [self popController:YES];
@@ -530,6 +527,7 @@
 }
 
 - (void)controller:(NSFetchedResultsController *)controller didChangeSection:(id<NSFetchedResultsSectionInfo>)sectionInfo atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type {
+    
     if (controller == self.fetchedResultsController) {
         NSLog(@"YJ << NSFetchedResultsController - didChangeSection - BookDetailViewController");
         switch(type) {
@@ -554,45 +552,43 @@
         NSLog(@"YJ << new section : %ld", newIndexPath.section);
         NSLog(@"YJ << new item : %ld", newIndexPath.item);
         
-//        self.fetchedResultsController = nil;
-//        self.managedObjectContext = nil;
-//
-//        self.fetchedResultsController = coreData.fetchedResultsController;
-//        self.fetchedResultsController.delegate = self;
-//        self.managedObjectContext = coreData.managedObjectContext;
-        
         __weak UICollectionView *collectionView = self.collectionView;
         
-        switch(type) {
-            case NSFetchedResultsChangeInsert: {
-                [self.updateBlock addExecutionBlock:^{
-                    //                     [collectionView insertItemsAtIndexPaths:@[newIndexPath]];
-                    [collectionView reloadItemsAtIndexPaths:@[newIndexPath]];
-                }];
-                break;
-            }
-            case NSFetchedResultsChangeDelete: {
-                [self.updateBlock addExecutionBlock:^{
-                    [collectionView deleteItemsAtIndexPaths:@[indexPath]];
-//                    [collectionView reloadItemsAtIndexPaths:@[indexPath]];
-//                    [collectionView reloadSections:[NSIndexSet indexSetWithIndex:0]];
-                }];
-                break;
-            }
-            case NSFetchedResultsChangeUpdate: {
-                [self.updateBlock addExecutionBlock:^{
-                    [collectionView reloadItemsAtIndexPaths:@[newIndexPath]];
-                }];
-                break;
-            }
-            case NSFetchedResultsChangeMove: {
-                [self.updateBlock addExecutionBlock:^{
-//                    [collectionView moveItemAtIndexPath:indexPath toIndexPath:newIndexPath];
-                    [collectionView reloadItemsAtIndexPaths:@[indexPath]];
-                }];
-                break;
-            }
-        }
+        [self.updateBlock addExecutionBlock:^{
+            [collectionView reloadData];
+        }];
+        
+//        switch(type) {
+//            case NSFetchedResultsChangeInsert: {
+//                [self.updateBlock addExecutionBlock:^{
+//                    //                     [collectionView insertItemsAtIndexPaths:@[newIndexPath]];
+//                    [collectionView reloadItemsAtIndexPaths:@[newIndexPath]];
+//                }];
+//                break;
+//            }
+//            case NSFetchedResultsChangeDelete: {
+//                [self.updateBlock addExecutionBlock:^{
+//                    [collectionView reloadData];
+////                    [collectionView deleteItemsAtIndexPaths:@[indexPath]];
+//                }];
+//                break;
+//            }
+//            case NSFetchedResultsChangeUpdate: {
+//                [self.updateBlock addExecutionBlock:^{
+//                    [collectionView reloadData];
+////                    [collectionView reloadItemsAtIndexPaths:@[newIndexPath]];
+//                }];
+//                break;
+//            }
+//            case NSFetchedResultsChangeMove: {
+//                [self.updateBlock addExecutionBlock:^{
+//                    [collectionView reloadData];
+////                    [collectionView moveItemAtIndexPath:indexPath toIndexPath:newIndexPath];
+////                    [collectionView reloadItemsAtIndexPaths:@[indexPath]];
+//                }];
+//                break;
+//            }
+//        }
     }
 }
 

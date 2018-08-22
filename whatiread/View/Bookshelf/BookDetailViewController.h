@@ -15,8 +15,8 @@
 
 @interface BookDetailViewController : CommonViewController <NSFetchedResultsControllerDelegate>
 
-@property (strong, nonatomic) NSFetchedResultsController <Book *> *fetchedResultsController;
-@property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
+@property (weak, nonatomic) NSFetchedResultsController <Book *> *fetchedResultsController;
+@property (weak, nonatomic) NSManagedObjectContext *managedObjectContext;
 
 @property (nonatomic, strong) Book *book;
 @property (nonatomic, strong) NSIndexPath *indexPath;

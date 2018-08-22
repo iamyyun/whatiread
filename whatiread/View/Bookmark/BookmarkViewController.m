@@ -45,6 +45,7 @@
     self.quoteFetchedResultsController = coreData.quoteFetchedResultsController;
     self.quoteFetchedResultsController.delegate = self;
     self.managedObjectContext = coreData.managedObjectContext;
+    self.quoteManagedObjectContext = coreData.quoteManagedObjectContext;
     
     id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][0];
     NSInteger bookCount = [sectionInfo numberOfObjects];
@@ -83,15 +84,17 @@
     [super viewWillAppear:animated];
     
     self.managedObjectContext = nil;
+    self.quoteManagedObjectContext = nil;
     self.fetchedResultsController = nil;
     self.quoteFetchedResultsController = nil;
     
     [coreData coreDataInitialize];
     self.fetchedResultsController = coreData.fetchedResultsController;
     self.fetchedResultsController.delegate = self;
-    self.quoteFetchedResultsController = coreData.fetchedResultsController;
+    self.quoteFetchedResultsController = coreData.quoteFetchedResultsController;
     self.quoteFetchedResultsController.delegate = self;
     self.managedObjectContext = coreData.managedObjectContext;
+    self.quoteManagedObjectContext = coreData.quoteManagedObjectContext;
     
     [self.collectionView reloadData];
 }
@@ -158,14 +161,6 @@
         sortKey = @"rate";
     }
     
-    self.fetchedResultsController = nil;
-    self.quoteFetchedResultsController = nil;
-    [coreData coreDataInitialize];
-    self.fetchedResultsController = coreData.fetchedResultsController;
-    self.fetchedResultsController.delegate = self;
-    self.quoteFetchedResultsController = coreData.quoteFetchedResultsController;
-    self.quoteFetchedResultsController.delegate = self;
-    
     NSFetchRequest *request = [self.fetchedResultsController fetchRequest];
     NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:sortKey ascending:isAscending];
     [request setSortDescriptors:@[sortDescriptor]];
@@ -183,11 +178,9 @@
 #pragma mark - Bookmark Configure
 // delete Bookmark
 - (void)deleteBookmark:(Book *)book indexPath:(NSIndexPath *)indexPath {
-//    NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
-    NSManagedObjectContext *context = [self.quoteFetchedResultsController managedObjectContext];
     NSFetchRequest <Quote *> *fetchRequest = Quote.fetchRequest;
     
-    [context performBlock:^{
+    [self.managedObjectContext performBlock:^{
         
         NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"index" ascending:YES];
         NSArray *quoteArr = [book.quotes sortedArrayUsingDescriptors:[NSArray arrayWithObject:sortDescriptor]];
@@ -195,16 +188,16 @@
         
         NSError * error;
         
-        NSArray * resultArray = [context executeFetchRequest:fetchRequest error:&error];
+        NSArray * resultArray = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
         
         if([resultArray count]) {
             [book removeQuotesObject:quote];
             
-            [context save:&error];
+            [self.managedObjectContext save:&error];
             
-            if (!error) {
-                [self popController:YES];
-            }
+//            if (!error) {
+//                [self popController:YES];
+//            }
         }
     }];
 }
@@ -402,6 +395,8 @@
 {
     NSLog(@"YJ << select collectionview cell section : %ld, item : %ld", indexPath.section, indexPath.item);
     
+    isSearchBarActive = NO;
+    
     NSIndexPath *fetchIndexPath = [NSIndexPath indexPathForItem:indexPath.section inSection:0];
     Book *book = [self.fetchedResultsController objectAtIndexPath:fetchIndexPath];
 
@@ -460,99 +455,117 @@
     
     if (controller == self.fetchedResultsController) {
         NSLog(@"YJ << NSFetchedResultsController - controllerWillChangeContent - BookmarkViewController");
-    } else if (controller == self.quoteFetchedResultsController) {
-        NSLog(@"YJ << NSFetchedResultsController - controllerWillChangeContent - BookmarkViewController");
+        
+        self.updateBlock = [NSBlockOperation new];
+        
     }
 }
 
 - (void) controller:(NSFetchedResultsController *)controller didChangeSection:(nonnull id<NSFetchedResultsSectionInfo>)sectionInfo atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type {
     
+    __weak UICollectionView *collectionView = self.collectionView;
+    
     if (controller == self.fetchedResultsController) {
         NSLog(@"YJ << NSFetchedResultsController - didChangeSection - BookmarkViewController");
-    } else if (controller == self.quoteFetchedResultsController) {
-        NSLog(@"YJ << NSFetchedResultsController - didChangeSection - BookmarkViewController");
+        
+        switch(type) {
+            case NSFetchedResultsChangeInsert: {
+                [self.updateBlock addExecutionBlock:^{
+                    //                    [self.collectionView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex]];
+                    [collectionView reloadSections:[NSIndexSet indexSetWithIndex:sectionIndex]];
+                }];
+            }
+                break;
+            case NSFetchedResultsChangeDelete: {
+                [self.updateBlock addExecutionBlock:^{
+                    //                    [self.collectionView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex]];
+                    [collectionView reloadSections:[NSIndexSet indexSetWithIndex:sectionIndex]];
+                }];
+            }
+                break;
+            default:
+                return;
+        }
     }
-    
-//    switch(type) {
-//        case NSFetchedResultsChangeInsert:
-//            [self.collectionView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex]];
-//            break;
-//        case NSFetchedResultsChangeDelete:
-//            [self.collectionView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex]];
-//            break;
-//        default:
-//            return;
-//    }
 }
 
 - (void) controller:(NSFetchedResultsController *)controller didChangeObject:(nonnull id)anObject atIndexPath:(nullable NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(nullable NSIndexPath *)newIndexPath {
     
+     __weak UICollectionView *collectionView = self.collectionView;
+    
     if (controller == self.fetchedResultsController) {
         NSLog(@"YJ << NSFetchedResultsController - didChangeObject - BookmarkViewController");
-    } else if (controller == self.quoteFetchedResultsController) {
-        NSLog(@"YJ << NSFetchedResultsController - didChangeObject - BookmarkViewController");
+        
+        [self.updateBlock addExecutionBlock:^{
+            [collectionView reloadData];
+        }];
+        
+//        switch(type) {
+//            case NSFetchedResultsChangeInsert: {
+//                [self.updateBlock addExecutionBlock:^{
+//                    //                     [collectionView insertItemsAtIndexPaths:@[newIndexPath]];
+//                    [collectionView reloadItemsAtIndexPaths:@[newIndexPath]];
+//                }];
+//                break;
+//            }
+//            case NSFetchedResultsChangeDelete: {
+//                [self.updateBlock addExecutionBlock:^{
+//                    //                    [collectionView deleteItemsAtIndexPaths:@[indexPath]];
+//                    [collectionView reloadData];
+//                }];
+//                break;
+//            }
+//            case NSFetchedResultsChangeUpdate: {
+//                [self.updateBlock addExecutionBlock:^{
+////                    [collectionView reloadItemsAtIndexPaths:@[newIndexPath]];
+//                    [collectionView reloadData];
+//                }];
+//                break;
+//            }
+//            case NSFetchedResultsChangeMove: {
+//                [self.updateBlock addExecutionBlock:^{
+//                    //                    [collectionView moveItemAtIndexPath:indexPath toIndexPath:newIndexPath];
+////                    [collectionView reloadItemsAtIndexPaths:@[indexPath]];
+//                    [collectionView reloadData];
+//                }];
+//                break;
+//            }
+//        }
     }
-    
-    
-    self.fetchedResultsController = nil;
-    self.quoteFetchedResultsController = nil;
-    self.managedObjectContext = nil;
-    
-    self.fetchedResultsController = coreData.fetchedResultsController;
-    self.fetchedResultsController.delegate = self;
-    self.quoteFetchedResultsController = coreData.quoteFetchedResultsController;
-    self.quoteFetchedResultsController.delegate = self;
-    self.managedObjectContext = coreData.managedObjectContext;
-    
-//    switch(type) {
-//        case NSFetchedResultsChangeInsert:
-//            [self.collectionView insertSections:[NSIndexSet indexSetWithIndex:newIndexPath.item]];
-////            [self.collectionView insertItemsAtIndexPaths:@[newIndexPath]];
-//            break;
-//        case NSFetchedResultsChangeDelete:
-////            [self.collectionView deleteItemsAtIndexPaths:@[indexPath]];
-//            [self.collectionView deleteSections:[NSIndexSet indexSetWithIndex:indexPath.item]];
-//            break;
-//        case NSFetchedResultsChangeUpdate:
-////            [self.collectionView reloadItemsAtIndexPaths:@[newIndexPath]];
-//            [self.collectionView reloadSections:[NSIndexSet indexSetWithIndex:newIndexPath.item]];
-//            break;
-//        case NSFetchedResultsChangeMove:
-////            [self.collectionView moveItemAtIndexPath:indexPath toIndexPath:newIndexPath];
-//            [self.collectionView moveSection:indexPath.item toSection:newIndexPath.item];
-//            break;
-//    }
 }
 
 - (void) controllerDidChangeContent:(NSFetchedResultsController *)controller {
     
     if (controller == self.fetchedResultsController) {
         NSLog(@"YJ << NSFetchedResultsController - controllerDidChangeContent - BookmarkViewController");
-    } else if (controller == self.quoteFetchedResultsController) {
-        NSLog(@"YJ << NSFetchedResultsController - controllerDidChangeContent - BookmarkViewController");
-    }
-    
-    
-    id <NSFetchedResultsSectionInfo> sectionInfo = [controller sections][0];
-    NSInteger bookCount = [sectionInfo numberOfObjects];
-    NSInteger bmCount = 0;
-    if (bookCount > 0) {
-        for (int i = 0; i < bookCount; i++) {
-            NSIndexPath *indexPath = [NSIndexPath indexPathForItem:i inSection:0];
-            Book *book = [self.fetchedResultsController objectAtIndexPath:indexPath];
-            bmCount = book.quotes.count;
+        
+        id <NSFetchedResultsSectionInfo> sectionInfo = [controller sections][0];
+        NSInteger bookCount = [sectionInfo numberOfObjects];
+        NSInteger bmCount = 0;
+        if (bookCount > 0) {
+            for (int i = 0; i < bookCount; i++) {
+                NSIndexPath *indexPath = [NSIndexPath indexPathForItem:i inSection:0];
+                Book *book = [self.fetchedResultsController objectAtIndexPath:indexPath];
+                bmCount = book.quotes.count;
+            }
+            [self.collectionView setHidden:NO];
+            [self.emptyView setHidden:YES];
+        } else {
+            [self.collectionView setHidden:YES];
+            [self.emptyView setHidden:NO];
         }
-        [self.collectionView setHidden:NO];
-        [self.emptyView setHidden:YES];
-    } else {
-        [self.collectionView setHidden:YES];
-        [self.emptyView setHidden:NO];
+        
+        [self.bCountLabel setText:[NSString stringWithFormat:@"%ld", bookCount]];
+        [self.bmCountLabel setText:[NSString stringWithFormat:@"%ld", bmCount]];
+        
+        [self.collectionView reloadData];
+        
+        [self.collectionView performBatchUpdates:^{
+            [[NSOperationQueue currentQueue] addOperation:self.updateBlock];
+        } completion:^(BOOL finished) {
+            [self.collectionView reloadData];
+        }];
     }
-    
-    [self.bCountLabel setText:[NSString stringWithFormat:@"%ld", bookCount]];
-    [self.bmCountLabel setText:[NSString stringWithFormat:@"%ld", bmCount]];
-
-    [self.collectionView reloadData];
 }
 
 #pragma mark - keyboard actions
