@@ -38,18 +38,23 @@
             NSSortDescriptor *desc = [NSSortDescriptor sortDescriptorWithKey:@"index" ascending:YES];
             NSArray *quoteArr = [self.book.quotes sortedArrayUsingDescriptors:[NSArray arrayWithObject:desc]];
             Quote *quote = quoteArr[self.indexPath.item];
+            NSLog(@"YJ << detail quote index : %lld", quote.index);
+            NSLog(@"YJ << detail quote data : %@", quote.strData);
             NSAttributedString *attrQuote = (NSAttributedString *)quote.data;
             
+            [self.textView.textStorage setAttributedString:attrQuote];
             [self.textView setContentInset:UIEdgeInsetsZero];
             self.textView.textContainerInset = UIEdgeInsetsMake(5, 5, 5, 5);
             self.textView.textContainer.lineFragmentPadding = 0;
-            [self.textView setAttributedText:attrQuote];
+//            [self.textView setAttributedText:attrQuote];
         }
     }
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    
+    [self.navigationController setNavigationBarHidden:NO];
     
     self.managedObjectContext = nil;
     self.quoteManagedObjectContext = nil;
@@ -112,6 +117,7 @@
             addVC.indexPath = self.indexPath;
             addVC.book = self.book;
             [addVC setBookmarkCompositionHandler:self.book bookmarkCreateCompleted:nil bookmarkModifyCompleted:^(NSAttributedString *attrQuote, NSIndexPath *indexPath) {
+                
                 NSMutableDictionary *dic = [NSMutableDictionary dictionary];
                 [dic setObject:attrQuote forKey:@"mQuote"];
                 [self modifyBookmark:self.book qDic:dic indexPath:indexPath completed:^(BOOL isResult) {

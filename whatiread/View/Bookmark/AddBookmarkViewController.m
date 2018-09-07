@@ -76,6 +76,10 @@
     [self.textView setFont:[UIFont systemFontOfSize:14.f]];
 }
 
+- (void)viewDidDisappear:(BOOL)animated {
+    [IndicatorUtil stopProcessIndicator];
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -194,12 +198,14 @@
     }
     if (self.isModifyMode) {
         if (self.bookmarkModifyCompleted) {
+            [IndicatorUtil startProcessIndicator];
             self.bookmarkModifyCompleted(self.textView.attributedText, self.indexPath);
             [self popController:YES];
         }
     }
     else {
         if (self.bookmarkCreateCompleted) {
+            [IndicatorUtil startProcessIndicator];
             self.bookmarkCreateCompleted(self.textView.attributedText);
             [self popController:YES];
         }

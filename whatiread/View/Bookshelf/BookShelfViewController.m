@@ -298,6 +298,16 @@
 
 // create bookmark
 - (void)createBook:(NSDictionary *)bookDic isSearchMode:(BOOL)isSearchMode indexPath:(NSIndexPath *)indexPath completed:(void (^)(BOOL isResult))completed {
+    
+    // refresh data
+    self.managedObjectContext = nil;
+    self.fetchedResultsController = nil;
+    
+    [coreData coreDataInitialize];
+    self.fetchedResultsController = coreData.fetchedResultsController;
+    self.fetchedResultsController.delegate = self;
+    self.managedObjectContext = coreData.managedObjectContext;
+    
     id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][0];
     NSInteger bookCount = [sectionInfo numberOfObjects];
     
@@ -455,10 +465,10 @@
     NSLog(@"YJ << select collectionview cell");
     
     isSearchBarActive = NO;
+    [self.searchBar setText:@""];
     
     Book *book = [self.fetchedResultsController objectAtIndexPath:indexPath];
     BookDetailViewController *detailVC = [[BookDetailViewController alloc] init];
-    detailVC.indexPath = indexPath;
     detailVC.book = book;
     [self pushController:detailVC animated:YES];
 }

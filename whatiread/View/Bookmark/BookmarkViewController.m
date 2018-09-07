@@ -48,6 +48,10 @@
     self.quoteManagedObjectContext = coreData.quoteManagedObjectContext;
     
     id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][0];
+    NSLog(@"YJ << name : %@", [sectionInfo name]);
+    NSLog(@"YJ << array : %@", [sectionInfo objects]);
+    NSLog(@"YJ << index title : %@", [sectionInfo indexTitle]);
+    
     NSInteger bookCount = [sectionInfo numberOfObjects];
     NSInteger bmCount = 0;
     if (bookCount > 0) {
@@ -230,10 +234,13 @@
     [self.view addGestureRecognizer:bgTap];
 
     self.fetchedResultsController = nil;
+    self.quoteFetchedResultsController = nil;
     
     [coreData coreDataInitialize];
     self.fetchedResultsController = coreData.fetchedResultsController;
     self.fetchedResultsController.delegate = self;
+    self.quoteFetchedResultsController = coreData.quoteFetchedResultsController;
+    self.quoteFetchedResultsController.delegate = self;
     
     NSFetchRequest *request = [self.fetchedResultsController fetchRequest];
     NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"title" ascending:NO];
@@ -247,6 +254,19 @@
     if (![self.fetchedResultsController performFetch:&error]) {
         // Handle error
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        abort();
+    }
+    
+    
+    NSFetchRequest *qRequest = [self.quoteFetchedResultsController fetchRequest];
+    NSSortDescriptor *qSortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"index" ascending:YES];
+    NSPredicate *qPredicate = [NSPredicate predicateWithFormat:@"strData contains[cd] %@", searchBar.text];
+    [qRequest setPredicate:qPredicate];
+    [qRequest setSortDescriptors:@[qSortDescriptor]];
+    
+    NSError *qError = nil;
+    if (![self.quoteFetchedResultsController performFetch:&qError]) {
+        NSLog(@"Unresolved qError %@, %@", qError, [qError userInfo]);
         abort();
     }
 
@@ -263,6 +283,8 @@
     
     NSIndexPath *fetchIndexPath = [NSIndexPath indexPathForItem:indexPath.section inSection:0];
     Book *book = [self.fetchedResultsController objectAtIndexPath:fetchIndexPath];
+    
+    [cell.indexLabel setText:[NSString stringWithFormat:@"%ld", (indexPath.item+1)]];
     
     if (book) {
         
@@ -285,7 +307,7 @@
             NSAttributedString *attrQuote = (NSAttributedString *)quote.data;
             
             if (attrQuote && attrQuote.length > 0) {
-                __block CGFloat height = [attrQuote boundingRectWithSize:CGSizeMake(cell.quoteTextView.frame.size.width, 1000) options:(NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading) context:nil].size.height+1;
+                __block CGFloat height = [attrQuote boundingRectWithSize:CGSizeMake(cell.quoteTextView.frame.size.width, 1000) options:(NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading) context:nil].size.height;
                 
                 [attrQuote enumerateAttribute:NSAttachmentAttributeName inRange:NSMakeRange(0, attrQuote.length) options:0 usingBlock:^(id value, NSRange range, BOOL *stop) {
                     if (![value isKindOfClass:[NSTextAttachment class]]) {
@@ -306,13 +328,16 @@
                     
                     if (reHeight > origHeight) {
                         height += (reHeight - origHeight);
-                    } else if (reHeight < origHeight) {
-                        height -= (origHeight - reHeight);
                     }
+//                    else if (reHeight < origHeight) {
+//                        height -= (origHeight - reHeight);
+//                    }
                     NSLog(@"YJ << final height : %f", height);
+                    NSLog(@"-------------------------------------------------------");
                 }];
                 
-                [cell.quoteTextView setAttributedText:attrQuote];
+//                [cell.quoteTextView setAttributedText:attrQuote];
+                [cell.quoteTextView.textStorage setAttributedString:attrQuote];
                 cell.quoteTextViewHeightConst.constant = height;
                 cell.quoteTextView.contentSize = CGSizeMake(cell.quoteTextView.frame.size.width, height);
                 [cell.quoteTextView setContentInset:UIEdgeInsetsZero];
@@ -323,8 +348,6 @@
             }
         }
     }
-
-    [cell.indexLabel setText:[NSString stringWithFormat:@"%ld", (indexPath.item+1)]];
     
     return cell;
 }
@@ -395,14 +418,35 @@
 {
     NSLog(@"YJ << select collectionview cell section : %ld, item : %ld", indexPath.section, indexPath.item);
     
-    isSearchBarActive = NO;
-    
     NSIndexPath *fetchIndexPath = [NSIndexPath indexPathForItem:indexPath.section inSection:0];
     Book *book = [self.fetchedResultsController objectAtIndexPath:fetchIndexPath];
 
+    NSSortDescriptor *desc = [NSSortDescriptor sortDescriptorWithKey:@"index" ascending:YES];
+    NSArray *quoteArr = [book.quotes sortedArrayUsingDescriptors:[NSArray arrayWithObject:desc]];
+    Quote *quote;
+    
+    if (isSearchBarActive) {
+        NSMutableArray *modiArr = [NSMutableArray array];
+        for (int i = 0; i < book.quotes.count; i++) {
+            Quote *quote = quoteArr[i];
+            if ([quote.strData containsString:self.searchBar.text]) {
+                [modiArr addObject:quote];
+            }
+        }
+        quoteArr = [modiArr copy];
+        
+        isSearchBarActive = NO;
+        [self.searchBar setText:@""];
+    }
+    
+    if (quoteArr.count > 0 && quoteArr) {
+        quote = quoteArr[indexPath.item];
+    }
+    NSIndexPath *reIndexPath = [NSIndexPath indexPathForItem:quote.index inSection:book.index];
+    
     BookmarkDetailViewController *detailVC = [[BookmarkDetailViewController alloc] init];
     detailVC.book = book;
-    detailVC.indexPath = indexPath;
+    detailVC.indexPath = reIndexPath;
     [detailVC setBookmarkDetailCompositionHandler:book bookmarkDeleteCompleted:^(NSIndexPath *indexPath) {
         [self deleteBookmark:book indexPath:indexPath];
     }];
@@ -412,19 +456,30 @@
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     CGFloat width = self.collectionView.frame.size.width;
-    __block CGFloat height = 100.f;
+    __block CGFloat height = 0.f;
     NSIndexPath *fetchIndexPath = [NSIndexPath indexPathForItem:indexPath.section inSection:0];
     Book *book = [self.fetchedResultsController objectAtIndexPath:fetchIndexPath];
     
     NSSortDescriptor *desc = [NSSortDescriptor sortDescriptorWithKey:@"index" ascending:YES];
     NSArray *quoteArr = [book.quotes sortedArrayUsingDescriptors:[NSArray arrayWithObject:desc]];
+    
+    if (isSearchBarActive) {
+        NSMutableArray *modiArr = [NSMutableArray array];
+        for (int i = 0; i < book.quotes.count; i++) {
+            Quote *quote = quoteArr[i];
+            if ([quote.strData containsString:self.searchBar.text]) {
+                [modiArr addObject:quote];
+            }
+        }
+        quoteArr = [modiArr copy];
+    }
 
     if (quoteArr && quoteArr.count > 0) {
         Quote *quote = quoteArr[indexPath.item];
         NSAttributedString *attrQuote = (NSAttributedString *)quote.data;
         
         if (attrQuote && attrQuote.length > 0) {
-            height = [attrQuote boundingRectWithSize:CGSizeMake(width-61, 1000) options:(NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading) context:nil].size.height+1;
+            height = [attrQuote boundingRectWithSize:CGSizeMake(width-61, 1000) options:(NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading) context:nil].size.height;
             
             [attrQuote enumerateAttribute:NSAttachmentAttributeName inRange:NSMakeRange(0, attrQuote.length) options:0 usingBlock:^(id value, NSRange range, BOOL *stop) {
                 if (![value isKindOfClass:[NSTextAttachment class]]) {
@@ -438,16 +493,21 @@
                 
                 if (reHeight > origHeight) {
                     height += (reHeight - origHeight);
-                } else if (reHeight < origHeight) {
-                    height -= (origHeight - reHeight);
                 }
+//                else if (reHeight < origHeight) {
+//                    height -= (origHeight - reHeight);
+//                }
+                height += 5.f;
                 NSLog(@"YJ << size of final height : %f", height);
             }];
         }
+        NSLog(@"YJ << size of cell width : %f", width);
+        NSLog(@"YJ << size of cell height : %f", height+20.f);
+        NSLog(@"====================================================");
         
     }
     
-    return CGSizeMake(width, (height+20));
+    return CGSizeMake(width, (height+20.f));
 }
 
 #pragma mark - Fetched results controller

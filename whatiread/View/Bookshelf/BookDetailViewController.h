@@ -19,7 +19,6 @@
 @property (weak, nonatomic) NSManagedObjectContext *managedObjectContext;
 
 @property (nonatomic, strong) Book *book;
-@property (nonatomic, strong) NSIndexPath *indexPath;
 
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *authorLabel;

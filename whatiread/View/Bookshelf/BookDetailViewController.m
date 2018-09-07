@@ -156,7 +156,7 @@
             
             [self dataInitialize];
             
-            [self modifyBook:self.book bookDic:bookDic indexPath:self.indexPath completed:^(BOOL isResult) {
+            [self modifyBook:self.book bookDic:bookDic completed:^(BOOL isResult) {
                 
             }];
         }];
@@ -177,7 +177,7 @@
             //            self.book.quoteImg = bookImage;
             [self dataInitialize];
             
-            [self modifyBook:self.book bookDic:bookDic indexPath:self.indexPath completed:^(BOOL isResult) {
+            [self modifyBook:self.book bookDic:bookDic completed:^(BOOL isResult) {
                 
             }];
         }];
@@ -198,7 +198,7 @@
         NSString *strFirst = NSLocalizedString(@"Deleting", @"");
         NSString *strSecond = NSLocalizedString(@"Cancel", @"");
         UIAlertAction *firstAction = [UIAlertAction actionWithTitle:strFirst style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-            [self deleteBook:self.indexPath];
+            [self deleteBook];
         }];
         UIAlertAction *secondAction = [UIAlertAction actionWithTitle:strSecond style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
             [self dismissController:alert animated:YES];
@@ -219,6 +219,7 @@
         addVC.strOcrText = ocrText;
     }
     [addVC setBookmarkCompositionHandler:self.book bookmarkCreateCompleted:^(NSAttributedString *attrQuote) {
+        
         NSMutableDictionary *dic = [NSMutableDictionary dictionary];
         [dic setObject:attrQuote forKey:@"mQuote"];
         
@@ -289,7 +290,7 @@
 }
 
 // modify book
-- (void)modifyBook:(Book *)book bookDic:(NSDictionary *)bookDic indexPath:(NSIndexPath *)indexPath completed:(void (^)(BOOL isResult))completed {
+- (void)modifyBook:(Book *)book bookDic:(NSDictionary *)bookDic completed:(void (^)(BOOL isResult))completed {
 
     NSFetchRequest <Book *> *fetchRequest = Book.fetchRequest;
     
@@ -298,7 +299,7 @@
     [self.managedObjectContext performBlock:^{
         NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"completeDate" ascending:NO];
         [fetchRequest setSortDescriptors:@[sortDescriptor]];
-        [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"completeDate = %@", book.completeDate]];
+        [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"modifyDate = %@", book.modifyDate]];
         
         NSError * error;
         
@@ -379,15 +380,14 @@
 }
 
 // delete Book
-- (void)deleteBook:(NSIndexPath *)indexPath {
-    Book *book = [self.fetchedResultsController objectAtIndexPath:indexPath];
+- (void)deleteBook {
 
     NSFetchRequest <Book *> *fetchRequest = Book.fetchRequest;
     
     [self.managedObjectContext performBlock:^{
         NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"completeDate" ascending:NO];
         [fetchRequest setSortDescriptors:@[sortDescriptor]];
-        [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"completeDate = %@", book.completeDate]];
+        [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"modifyDate = %@", self.book.modifyDate]];
         
         NSError * error;
         
@@ -421,21 +421,35 @@
         
            __block CGFloat height = [attrQuote boundingRectWithSize:CGSizeMake(cell.quoteTextView.frame.size.width, 1000) options:(NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading) context:nil].size.height;
             
+            NSLog(@"YJ << cell height : %f", height);
+            NSLog(@"YJ << cell width : %f", cell.quoteTextView.frame.size.width);
+            
             [attrQuote enumerateAttribute:NSAttachmentAttributeName inRange:NSMakeRange(0, attrQuote.length) options:0 usingBlock:^(id value, NSRange range, BOOL *stop) {
                 if (![value isKindOfClass:[NSTextAttachment class]]) {
                     return;
                 }
                 NSTextAttachment *attachment = (NSTextAttachment*)value;
                 CGFloat origHeight = attachment.image.size.height;
-                CGFloat reHeight = (attachment.image.size.width / cell.quoteTextView.frame.size.width) * origHeight;
+                NSLog(@"YJ << origin height : %f", origHeight);
+                NSLog(@"YJ << origin width : %f", attachment.image.size.width);
+//                CGFloat reHeight = (attachment.image.size.width / cell.quoteTextView.frame.size.width) * origHeight;
+                CGFloat reHeight = (cell.quoteTextView.frame.size.width / attachment.image.size.width) * origHeight;
                 attachment.bounds = CGRectMake(0, 0, cell.quoteTextView.frame.size.width, reHeight);
                 
                 if (reHeight > origHeight) {
                     height += (reHeight - origHeight);
                 }
+                
+                NSLog(@"YJ << re height : %f", reHeight);
+                NSLog(@"YJ << final width : %f", cell.quoteTextView.frame.size.width);
             }];
+        
+            NSLog(@"YJ << final height : %f", height);
+            NSLog(@"------------------------------------------------------");
             
-            [cell.quoteTextView setAttributedText:attrQuote];
+//            [cell.quoteTextView setAttributedText:attrQuote];
+            [cell.quoteTextView.textStorage setAttributedString:attrQuote];
+//            [cell.quoteTextView.textStorage insertAttributedString:attrQuote atIndex:0];
             cell.quoteTextViewHeightConst.constant = height;
             cell.quoteTextView.contentSize = CGSizeMake(cell.quoteTextView.frame.size.width, height);
             [cell.quoteTextView setContentInset:UIEdgeInsetsZero];
@@ -504,15 +518,23 @@
     
                 NSTextAttachment *attachment = (NSTextAttachment*)value;
                 CGFloat origHeight = attachment.image.size.height;
-                CGFloat reHeight = (attachment.image.size.width / (width-30)) * origHeight;
+                CGFloat reHeight = ((width-30) / attachment.image.size.width) * origHeight;
+//                CGFloat reHeight = (attachment.image.size.width / (width-30)) * origHeight;
                 
                 if (reHeight > origHeight) {
                     height += (reHeight - origHeight);
                 }
+                height  += 5.f;
             }];
+            
+            NSLog(@"YJ << item textview size height : %f", height);
             
             cellSize = CGSizeMake(width, (30.f + 11.f + height));
         }
+        
+        NSLog(@"YJ << item cell size width : %f", cellSize.width);
+        NSLog(@"YJ << item cell size height : %f", cellSize.height);
+        NSLog(@"===================================================");
     }
     return cellSize;
 }

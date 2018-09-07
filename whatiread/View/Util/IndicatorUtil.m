@@ -154,7 +154,7 @@
             [self.uvWaitView setFrame:CGRectMake(0, 0, deviceSize.width, deviceSize.height)];
         }
         
-        self.uvWaitView.center = ((AppDelegate *)[[UIApplication sharedApplication] delegate]).window.center;
+        self.uvWaitView.center = SHAREDAPPDELEGATE.window.center;
     }
     else
     {
@@ -196,7 +196,7 @@
     
 	[self.uvWaitView addSubview:self.coImageView];
     
-    [((AppDelegate *)[[UIApplication sharedApplication] delegate]).window addSubview:self.uvWaitView];
+    [SHAREDAPPDELEGATE.window addSubview:self.uvWaitView];
 }
 
 #pragma mark - 프로그레스 진행 중인지 확인
