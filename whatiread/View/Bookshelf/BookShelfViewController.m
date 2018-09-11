@@ -34,6 +34,12 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
+    // localize language
+    [self.addButton setTitle:NSLocalizedString(@"Add Book", @"") forState:UIControlStateNormal];
+    [self.searchBar setPlaceholder:NSLocalizedString(@"Search with book title", @"")];
+    [self.noBookLabel setText:NSLocalizedString(@"There is no registered book.", @"")];
+    [self.sortLabel setText:NSLocalizedString(@"Complete Date", @"")];
+    
     UIImage *image = [UIImage imageNamed:@"icon_menu_bookshelf"];
     [self setNaviBarType:BAR_MENU title:NSLocalizedString(@"Bookshelf", @"") image:image];
     
@@ -66,12 +72,12 @@
     [self.bmCountLabel setText:[NSString stringWithFormat:@"%ld", bmCount]];
     
     // Sort PickerView
-    sortArr = @[@"완독일", @"책 제목", @"평점"];
+    sortArr = @[NSLocalizedString(@"Complete Date", @""), NSLocalizedString(@"Book Title", @""), NSLocalizedString(@"Rating", @"")];
     sortPickerView = [GKActionSheetPicker stringPickerWithItems:sortArr selectCallback:^(id selected) {
         [self sortBookshelf:selected];
     } cancelCallback:nil];
-    sortPickerView.selectButtonTitle = @"완료";
-    sortPickerView.cancelButtonTitle = @"취소";
+    sortPickerView.selectButtonTitle = NSLocalizedString(@"Done", @"");
+    sortPickerView.cancelButtonTitle = NSLocalizedString(@"Cancel", @"");
     
     // Add Observer
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillShowNote:) name:UIWindowDidResignKeyNotification object:self.view.window];
@@ -140,8 +146,8 @@
 - (IBAction)addBtnAction:(id)sender {
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
     
-    NSString *strFirst = @"책 검색하여 등록";
-    NSString *strSecond = @"직접 입력";
+    NSString *strFirst = NSLocalizedString(@"Add book by searching", @"");
+    NSString *strSecond = NSLocalizedString(@"Add book directly", @"");
     UIAlertAction *firstAction = [UIAlertAction actionWithTitle:strFirst style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
         BookSearchViewController *searchVC = [[BookSearchViewController alloc] init];
         searchVC.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
@@ -152,7 +158,7 @@
                     [self bookConfigure:nil bookDic:bookDic indexPath:nil isSearchMode:YES];
                 }
                 else {
-                    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"이미 등록된 책입니다." message:nil preferredStyle:UIAlertControllerStyleAlert];
+                    UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"This book is already registered.", @"") message:nil preferredStyle:UIAlertControllerStyleAlert];
                     UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Confirm", @"") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {}];
                     [alert addAction:okAction];
                     [self presentController:alert animated:YES];
@@ -221,12 +227,12 @@
     
     NSString *sortKey = @"";
     BOOL isAscending = NO;
-    if ([strSelect isEqualToString:@"완독일"]) {
+    if ([strSelect isEqualToString:NSLocalizedString(@"Complete Date", @"")]) {
         sortKey = @"completeDate";
-    } else if ([strSelect isEqualToString:@"책 제목"]) {
+    } else if ([strSelect isEqualToString:NSLocalizedString(@"Book Title", @"")]) {
         isAscending = YES;
         sortKey = @"title";
-    } else if ([strSelect isEqualToString:@"평점"]) {
+    } else if ([strSelect isEqualToString:NSLocalizedString(@"Rating" , @"")]) {
         sortKey = @"rate";
     }
     

@@ -1,0 +1,24 @@
+
+/* Class = "UILabel"; text = "0 /"; ObjectID = "7y4-cc-aqW"; */
+"7y4-cc-aqW.text" = "0 /";
+
+/* Class = "UILabel"; text = "완독일"; ObjectID = "Mvj-v7-Mbi"; */
+"Mvj-v7-Mbi.text" = "완독일";
+
+/* Class = "UIButton"; normalTitle = "책 등록"; ObjectID = "Q7U-k4-8uA"; */
+"Q7U-k4-8uA.normalTitle" = "책 등록";
+
+/* Class = "UILabel"; text = "0"; ObjectID = "cea-Ie-vy1"; */
+"cea-Ie-vy1.text" = "0";
+
+/* Class = "UILabel"; text = "등록된 책이 없습니다."; ObjectID = "o2K-ss-RMC"; */
+"o2K-ss-RMC.text" = "등록된 책이 없습니다.";
+
+/* Class = "UISearchBar"; placeholder = "책 제목으로 검색"; ObjectID = "omG-B3-uzG"; */
+"omG-B3-uzG.placeholder" = "책 제목으로 검색";
+
+/* Class = "UISearchBar"; omG-B3-uzG.scopeButtonTitles[0] = "Title"; ObjectID = "omG-B3-uzG"; */
+"omG-B3-uzG.scopeButtonTitles[0]" = "Title";
+
+/* Class = "UISearchBar"; omG-B3-uzG.scopeButtonTitles[1] = "Title"; ObjectID = "omG-B3-uzG"; */
+"omG-B3-uzG.scopeButtonTitles[1]" = "Title";

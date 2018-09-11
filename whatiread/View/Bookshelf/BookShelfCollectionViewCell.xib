@@ -102,6 +102,7 @@
                 <outlet property="authorLeadingMarginConst" destination="xad-qb-kv5" id="Vd6-Fe-dKE"/>
                 <outlet property="bMarkCountLabel" destination="z7C-e2-stX" id="DuN-jw-2Dy"/>
                 <outlet property="compDateLabel" destination="Y0N-it-35a" id="IIw-iQ-h5K"/>
+                <outlet property="compLangLabel" destination="lQg-zJ-Zci" id="7ow-2W-7lz"/>
                 <outlet property="coverImgView" destination="oVm-zw-J2M" id="CwT-Nw-7bg"/>
                 <outlet property="coverImgViewWidthConst" destination="NgQ-pG-Sf1" id="Vjo-Va-NzC"/>
                 <outlet property="rateLabel" destination="lTo-QA-slK" id="Ee0-0k-eXa"/>

@@ -10,7 +10,11 @@
 
 @interface SettingViewController : CommonViewController
 
-@property (weak, nonatomic) IBOutlet UISwitch *switchView;
-- (IBAction)switchAction:(id)sender;
+@property (weak, nonatomic) IBOutlet UILabel *savePicLabel;
+@property (weak, nonatomic) IBOutlet UILabel *backupLabel;
+@property (weak, nonatomic) IBOutlet UISwitch *savePicSwitch;
+@property (weak, nonatomic) IBOutlet UISwitch *backupSwitch;
+- (IBAction)savePicSwitchAction:(id)sender;
+- (IBAction)backupSwitchAction:(id)sender;
 
 @end

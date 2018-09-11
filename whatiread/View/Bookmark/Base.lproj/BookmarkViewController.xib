@@ -17,6 +17,7 @@
                 <outlet property="collectionView" destination="eT8-Bx-Axc" id="4ch-Ta-Pfk"/>
                 <outlet property="dimBgView" destination="iN8-aR-QL3" id="uBX-zc-4EK"/>
                 <outlet property="emptyView" destination="Jze-6w-EwW" id="O1a-OM-0w9"/>
+                <outlet property="noBookLangLabel" destination="avz-y0-XIc" id="JgG-DX-0FG"/>
                 <outlet property="searchBar" destination="Iku-tx-PAz" id="dQB-AM-hbz"/>
                 <outlet property="sortBtn" destination="Ovh-9I-EaG" id="vdY-dy-OMi"/>
                 <outlet property="sortLabel" destination="3rz-Mp-x60" id="7aX-NI-MhL"/>

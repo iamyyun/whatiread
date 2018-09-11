@@ -20,6 +20,16 @@
 
 @property (nonatomic, strong) Book *book;
 
+// localize language
+@property (weak, nonatomic) IBOutlet UILabel *authorLangLabel;
+@property (weak, nonatomic) IBOutlet UILabel *publisherLangLabel;
+@property (weak, nonatomic) IBOutlet UILabel *pubDateLangLabel;
+@property (weak, nonatomic) IBOutlet UILabel *startDateLangLabel;
+@property (weak, nonatomic) IBOutlet UILabel *compDateLangLabel;
+@property (weak, nonatomic) IBOutlet UILabel *rateLangLabel;
+@property (weak, nonatomic) IBOutlet UILabel *bmLangLabel;
+@property (weak, nonatomic) IBOutlet UILabel *noBmLangLabel;
+
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *authorLabel;
 @property (weak, nonatomic) IBOutlet UILabel *publisherLabel;

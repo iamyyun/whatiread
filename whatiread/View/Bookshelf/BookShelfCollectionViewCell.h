@@ -10,6 +10,9 @@
 
 @interface BookShelfCollectionViewCell : UICollectionViewCell
 
+// localize language
+@property (weak, nonatomic) IBOutlet UILabel *compLangLabel;
+
 @property (weak, nonatomic) IBOutlet UIImageView *coverImgView;
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *authorLabel;

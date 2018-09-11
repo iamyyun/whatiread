@@ -35,6 +35,11 @@
     UIImage *image = [UIImage imageNamed:@"icon_menu_bookmark"];
     [self setNaviBarType:BAR_MENU title:NSLocalizedString(@"Bookmark", @"") image:image];
     
+    // localize language
+    [self.searchBar setPlaceholder:NSLocalizedString(@"Search with book quotes", @"")];
+    [self.noBookLangLabel setText:NSLocalizedString(@"There is no registered book.", @"")];
+    [self.sortLabel setText:NSLocalizedString(@"Complete Date", @"")];
+    
     [self.collectionView setAllowsSelection:YES];
     [self.collectionView registerNib:[UINib nibWithNibName:@"BookmarkCollectionViewCell" bundle:nil] forCellWithReuseIdentifier:@"BookmarkCollectionViewCell"];
     [self.collectionView registerNib:[UINib nibWithNibName:@"BookMarkHeaderCollectionReusableView" bundle:nil] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"BookMarkHeaderCollectionReusableView"];
@@ -71,12 +76,12 @@
     [self.bmCountLabel setText:[NSString stringWithFormat:@"%ld", bmCount]];
     
     // Sort PickerView
-    sortArr = @[@"완독일", @"책 제목", @"평점"];
+    sortArr = @[NSLocalizedString(@"Complete Date", @""), NSLocalizedString(@"Book Title", @""), NSLocalizedString(@"Rating", @"")];
     sortPickerView = [GKActionSheetPicker stringPickerWithItems:sortArr selectCallback:^(id selected) {
         [self sortBookmark:selected];
     } cancelCallback:nil];
-    sortPickerView.selectButtonTitle = @"완료";
-    sortPickerView.cancelButtonTitle = @"취소";
+    sortPickerView.selectButtonTitle = NSLocalizedString(@"Done", @"");
+    sortPickerView.cancelButtonTitle = NSLocalizedString(@"Cancel", @"");
     
     // Add Observer
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillShowNote:) name:UIWindowDidResignKeyNotification object:self.view.window];
@@ -140,11 +145,6 @@
 }
 
 #pragma mark - actions
-// add bookmark btn action
-- (IBAction)addBtnAction:(id)sender {
-//    [self bookConfigure:nil indexPath:nil isModifyMode:NO];
-}
-
 // sort btn action
 - (IBAction)sortBtnAction:(id)sender {
     [sortPickerView presentPickerOnView:self.view];
@@ -156,12 +156,12 @@
     
     NSString *sortKey = @"";
     BOOL isAscending = NO;
-    if ([strSelect isEqualToString:@"완독일"]) {
+    if ([strSelect isEqualToString:NSLocalizedString(@"Complete Date", @"")]) {
         sortKey = @"completeDate";
-    } else if ([strSelect isEqualToString:@"책 제목"]) {
+    } else if ([strSelect isEqualToString:NSLocalizedString(@"Book Title", @"")]) {
         isAscending = YES;
         sortKey = @"title";
-    } else if ([strSelect isEqualToString:@"평점"]) {
+    } else if ([strSelect isEqualToString:NSLocalizedString(@"Rating", @"")]) {
         sortKey = @"rate";
     }
     

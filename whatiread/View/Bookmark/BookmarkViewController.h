@@ -18,8 +18,10 @@
 @property (weak, nonatomic) NSManagedObjectContext *managedObjectContext;
 @property (weak, nonatomic) NSManagedObjectContext *quoteManagedObjectContext;
 
+// localize language
+@property (weak, nonatomic) IBOutlet UILabel *noBookLangLabel;
+
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
-@property (weak, nonatomic) IBOutlet UIButton *addBtn;
 @property (weak, nonatomic) IBOutlet UIButton *sortBtn;
 @property (weak, nonatomic) IBOutlet UILabel *sortLabel;
 @property (weak, nonatomic) IBOutlet UILabel *bmCountLabel;
@@ -30,7 +32,6 @@
 
 @property (nonatomic, strong) NSBlockOperation *updateBlock;
 
-- (IBAction)addBtnAction:(id)sender;
 - (IBAction)sortBtnAction:(id)sender;
 
 @end

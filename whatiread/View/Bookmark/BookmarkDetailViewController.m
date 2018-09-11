@@ -21,7 +21,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    [self setNaviBarType:BAR_EDIT title:@"책갈피" image:nil];
+    [self setNaviBarType:BAR_EDIT title:NSLocalizedString(@"Bookmark", @"") image:nil];
     
     coreData = [CoreDataAccess sharedInstance];
     self.fetchedResultsController = coreData.fetchedResultsController;

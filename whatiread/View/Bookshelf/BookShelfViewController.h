@@ -17,6 +17,11 @@
 @property (weak, nonatomic) NSFetchedResultsController <Book *> *fetchedResultsController;
 @property (weak, nonatomic) NSManagedObjectContext *managedObjectContext;
 
+// localize language
+@property (weak, nonatomic) IBOutlet UIButton *addButton;
+@property (weak, nonatomic) IBOutlet UILabel *noBookLabel;
+
+
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
 @property (weak, nonatomic) IBOutlet UIButton *addBtn;
 @property (weak, nonatomic) IBOutlet UIButton *sortBtn;

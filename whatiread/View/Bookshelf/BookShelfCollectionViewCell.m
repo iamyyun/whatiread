@@ -13,6 +13,9 @@
 - (void)awakeFromNib {
     [super awakeFromNib];
     // Initialization code
+    
+    // localize language
+    [self.compLangLabel setText:NSLocalizedString(@"Complete Date", @"")];
 }
 
 @end

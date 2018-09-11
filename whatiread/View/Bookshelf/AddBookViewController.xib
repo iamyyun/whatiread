@@ -14,11 +14,16 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AddBookViewController">
             <connections>
                 <outlet property="authorLabel" destination="1bA-we-hBk" id="2Ao-q0-D9t"/>
+                <outlet property="authorLangLabel" destination="Bct-Xz-2Gt" id="5GP-t8-Xye"/>
                 <outlet property="compDateTextField" destination="u9R-cI-pty" id="rAE-aU-2GB"/>
                 <outlet property="coverImgView" destination="D5a-Xo-bWI" id="fM2-Z8-jWc"/>
+                <outlet property="infoLangLabel" destination="5JZ-bq-Ym2" id="M2b-CL-4Ro"/>
+                <outlet property="pubDateLangLabel" destination="ycv-pc-rNE" id="eOC-ft-iw8"/>
                 <outlet property="pubDateTextField" destination="6ji-ZW-c8t" id="uth-la-ZdL"/>
                 <outlet property="publisherLabel" destination="VCx-Lj-rdO" id="B2b-S5-R1l"/>
+                <outlet property="publisherLangLabel" destination="Ccb-Ea-yGd" id="tC8-24-tyM"/>
                 <outlet property="rateLabel" destination="cxg-89-gGV" id="zAq-Jb-eBJ"/>
+                <outlet property="rateLangLabel" destination="1Ip-0U-yd0" id="8Bz-Xd-Fs5"/>
                 <outlet property="rateView" destination="ay4-cN-c9d" id="Nam-iA-ETy"/>
                 <outlet property="startDateTextField" destination="1SQ-UL-TdQ" id="WtI-14-hc7"/>
                 <outlet property="titleLabel" destination="uo2-rW-YI1" id="FiP-7d-MuD"/>
@@ -32,7 +37,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Y8k-bQ-PKg">
-                    <rect key="frame" x="0.0" y="84" width="375" height="298"/>
+                    <rect key="frame" x="0.0" y="64" width="375" height="298"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="어린 완자" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uo2-rW-YI1">
                             <rect key="frame" x="15" y="15" width="345" height="21"/>
@@ -213,7 +218,7 @@
                     </constraints>
                 </view>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="* 표시 정보는 모두 입력 해주세요." textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5JZ-bq-Ym2">
-                    <rect key="frame" x="15" y="387" width="345" height="16"/>
+                    <rect key="frame" x="15" y="367" width="345" height="16"/>
                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
@@ -221,7 +226,7 @@
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="Y8k-bQ-PKg" firstAttribute="top" secondItem="VLn-vb-io7" secondAttribute="top" constant="64" id="9Mt-R9-KVu"/>
+                <constraint firstItem="Y8k-bQ-PKg" firstAttribute="top" secondItem="SfJ-VV-ewQ" secondAttribute="top" constant="64" id="9Mt-R9-KVu"/>
                 <constraint firstItem="5JZ-bq-Ym2" firstAttribute="leading" secondItem="VLn-vb-io7" secondAttribute="leading" constant="15" id="STU-jb-NDA"/>
                 <constraint firstItem="Y8k-bQ-PKg" firstAttribute="leading" secondItem="VLn-vb-io7" secondAttribute="leading" id="UVZ-tC-rVS"/>
                 <constraint firstItem="VLn-vb-io7" firstAttribute="trailing" secondItem="5JZ-bq-Ym2" secondAttribute="trailing" constant="15" id="Zd3-cz-jE6"/>

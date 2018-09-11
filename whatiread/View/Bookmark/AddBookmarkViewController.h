@@ -23,6 +23,10 @@ typedef void (^BookmarkModifyCompleted)(NSAttributedString *attrQuote, NSIndexPa
 
 @property (nonatomic, strong) NSString *strOcrText;
 
+// localize language
+@property (weak, nonatomic) IBOutlet UILabel *textInputLangLabel;
+@property (weak, nonatomic) IBOutlet UILabel *photoInputLangLabel;
+
 @property (weak, nonatomic) IBOutlet UITextView *textView;
 @property (weak, nonatomic) IBOutlet UIButton *textInputBtn;
 @property (weak, nonatomic) IBOutlet UIButton *photoInputBtn;

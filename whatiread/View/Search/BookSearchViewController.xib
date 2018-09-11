@@ -16,6 +16,8 @@
                 <outlet property="collectionView" destination="ZXh-bq-5Ry" id="o8S-89-3Ah"/>
                 <outlet property="emptyView" destination="yi6-cR-aQt" id="338-6d-f1d"/>
                 <outlet property="flashBtn" destination="pjY-S3-42u" id="3sz-be-ZkS"/>
+                <outlet property="headerLabel" destination="Gx2-bF-NnH" id="UTf-Lw-OEB"/>
+                <outlet property="noResultLabel" destination="OyT-qB-QFs" id="vOn-ps-JtV"/>
                 <outlet property="previewView" destination="8pN-YP-50Z" id="0Lt-9j-HaN"/>
                 <outlet property="scanCloseBtn" destination="Ms1-q2-1mS" id="BGI-W8-aNd"/>
                 <outlet property="scanView" destination="o4k-E4-I8G" id="oFC-4e-vKR"/>
@@ -30,7 +32,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nfJ-7d-SbK">
-                    <rect key="frame" x="0.0" y="40" width="375" height="44"/>
+                    <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bFU-lr-H5d">
                             <rect key="frame" x="0.0" y="43" width="375" height="1"/>
@@ -70,7 +72,7 @@
                     </constraints>
                 </view>
                 <searchBar contentMode="redraw" placeholder="책 제목을 입력하세요." showsBookmarkButton="YES" showsCancelButton="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fOG-ge-Z22">
-                    <rect key="frame" x="0.0" y="84" width="375" height="56"/>
+                    <rect key="frame" x="0.0" y="64" width="375" height="56"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="56" id="ouG-4v-ers"/>
                     </constraints>
@@ -84,7 +86,7 @@
                     </connections>
                 </searchBar>
                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="ZXh-bq-5Ry">
-                    <rect key="frame" x="0.0" y="140" width="375" height="527"/>
+                    <rect key="frame" x="0.0" y="120" width="375" height="547"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="dEE-Y9-Ov7">
                         <size key="itemSize" width="50" height="50"/>
@@ -98,10 +100,10 @@
                     </connections>
                 </collectionView>
                 <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yi6-cR-aQt">
-                    <rect key="frame" x="0.0" y="140" width="375" height="527"/>
+                    <rect key="frame" x="0.0" y="120" width="375" height="547"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="검색 결과가 없습니다." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OyT-qB-QFs">
-                            <rect key="frame" x="114.5" y="253" width="146" height="21"/>
+                            <rect key="frame" x="114.5" y="263" width="146" height="21"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
@@ -216,7 +218,7 @@
                 <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="o4k-E4-I8G" secondAttribute="trailing" id="I9h-MP-Uxk"/>
                 <constraint firstItem="o4k-E4-I8G" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="top" id="RME-K0-xnl"/>
                 <constraint firstItem="yi6-cR-aQt" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="Tmq-t5-1jN"/>
-                <constraint firstItem="nfJ-7d-SbK" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="top" constant="20" id="WQw-2Z-AbG"/>
+                <constraint firstItem="nfJ-7d-SbK" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="20" id="WQw-2Z-AbG"/>
                 <constraint firstItem="fOG-ge-Z22" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="ajg-qj-yFf"/>
                 <constraint firstItem="ZXh-bq-5Ry" firstAttribute="top" secondItem="fOG-ge-Z22" secondAttribute="bottom" id="bOR-9y-rgk"/>
                 <constraint firstItem="nfJ-7d-SbK" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="cNY-tT-ti4"/>

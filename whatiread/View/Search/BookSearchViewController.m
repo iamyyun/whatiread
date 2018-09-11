@@ -31,6 +31,11 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
+    // localized language
+    [self.headerLabel setText:NSLocalizedString(@"Search Book", @"")];
+    [self.searchBar setPlaceholder:NSLocalizedString(@"Please enter the book title.", @"")];
+    [self.noResultLabel setText:NSLocalizedString(@"There is no result.", @"")];
+    
     searchArr = [NSMutableArray array];
     
     [self.searchBar setImage:[UIImage imageNamed:@"btn_barcode"] forSearchBarIcon:UISearchBarIconBookmark state:UIControlStateNormal];
@@ -150,7 +155,7 @@
         if (responseData && chaDic) {
             totalCount = [[chaDic objectForKey:@"total"] integerValue];
             if (totalCount == 0) {
-                UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"해당하는 책 정보가 없습니다." message:nil preferredStyle:UIAlertControllerStyleAlert];
+                UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"There is no result.", @"") message:nil preferredStyle:UIAlertControllerStyleAlert];
                 UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Confirm", @"") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {}];
                 [alert addAction:okAction];
                 [self presentController:alert animated:YES];
@@ -159,7 +164,7 @@
                 NSDictionary *dic = [chaDic objectForKey:@"item"];
                 NSString *strTitle = [dic objectForKey:@"title"];
                 
-                UIAlertController *alert = [UIAlertController alertControllerWithTitle:[NSString stringWithFormat:@"[%@] 을(를) 나의 책장에 추가 하시겠습니까?", [self makeMetaToString:strTitle]] message:nil preferredStyle:UIAlertControllerStyleAlert];
+                UIAlertController *alert = [UIAlertController alertControllerWithTitle:[NSString stringWithFormat:NSLocalizedString(@"Do you want to add [%@] in Bookshelf?", @""), [self makeMetaToString:strTitle]] message:nil preferredStyle:UIAlertControllerStyleAlert];
                 UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"") style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
                 }];
                 UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Confirm", @"") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
@@ -271,7 +276,7 @@
     NSDictionary *dic = searchArr[indexPath.item];
     NSString *strTitle = [dic objectForKey:@"title"];
     
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:[NSString stringWithFormat:@"[%@] 을(를) 나의 책장에 추가 하시겠습니까?", [self makeMetaToString:strTitle]] message:nil preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:[NSString stringWithFormat:NSLocalizedString(@"Do you want to add [%@] in Bookshelf?", @""), [self makeMetaToString:strTitle]] message:nil preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"") style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
         [cell.checkImgView setHidden:YES];
     }];

@@ -15,9 +15,11 @@
             <connections>
                 <outlet property="authorTextField" destination="OF6-Fj-rlG" id="U5Y-fI-aAd"/>
                 <outlet property="compDateTextField" destination="VDw-R9-d4M" id="xYE-27-fxg"/>
+                <outlet property="infoLangLabel" destination="x3m-3t-U9O" id="6sg-El-OYI"/>
                 <outlet property="pubDateTextField" destination="iX0-9q-U4i" id="1Wa-C2-CzV"/>
                 <outlet property="publishTextField" destination="D3V-T1-cA8" id="98T-Xc-7vS"/>
                 <outlet property="rateLabel" destination="deM-Zd-hxw" id="c9h-Ka-hbQ"/>
+                <outlet property="rateLangLabel" destination="7wF-ge-Leh" id="kmS-rQ-U1W"/>
                 <outlet property="rateView" destination="5Xh-lp-eb2" id="MCp-qf-dUb"/>
                 <outlet property="startDateTextField" destination="mFA-Q5-1i9" id="MW5-C4-J8b"/>
                 <outlet property="titleTextField" destination="wyB-Kq-DAW" id="SOW-iR-Mzg"/>
@@ -30,7 +32,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pYH-hA-VRm">
-                    <rect key="frame" x="0.0" y="84" width="375" height="374"/>
+                    <rect key="frame" x="0.0" y="64" width="375" height="374"/>
                     <subviews>
                         <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="책 제목 *" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="wyB-Kq-DAW" customClass="JVFloatLabeledTextField">
                             <rect key="frame" x="15" y="20" width="345" height="38"/>
@@ -213,7 +215,7 @@
                     </constraints>
                 </view>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="* 표시 정보는 모두 입력 해주세요." textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="x3m-3t-U9O">
-                    <rect key="frame" x="15" y="463" width="345" height="16"/>
+                    <rect key="frame" x="15" y="443" width="345" height="16"/>
                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
@@ -222,7 +224,7 @@
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="pYH-hA-VRm" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="5TW-zG-7jJ"/>
-                <constraint firstItem="pYH-hA-VRm" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="top" constant="64" id="7TX-pN-yoG"/>
+                <constraint firstItem="pYH-hA-VRm" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="64" id="7TX-pN-yoG"/>
                 <constraint firstItem="x3m-3t-U9O" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="15" id="FbR-uA-WGy"/>
                 <constraint firstItem="x3m-3t-U9O" firstAttribute="top" secondItem="pYH-hA-VRm" secondAttribute="bottom" constant="5" id="KlI-NI-aIa"/>
                 <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="pYH-hA-VRm" secondAttribute="trailing" id="u9W-Ir-eOQ"/>

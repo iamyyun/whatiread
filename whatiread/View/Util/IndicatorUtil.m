@@ -79,7 +79,7 @@
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     
     [self stopAlertIndicator];
-    [self startAlertIndicator:@"처리 중입니다."];
+    [self startAlertIndicator:NSLocalizedString(@"Processing.", @"")];
     [IndicatorUtil sharedIndicator].bProcessIndicator = YES;
 }
 

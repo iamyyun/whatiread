@@ -13,11 +13,13 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="BookShelfViewController">
             <connections>
                 <outlet property="addBtn" destination="Q7U-k4-8uA" id="4ms-dq-2lS"/>
+                <outlet property="addButton" destination="Q7U-k4-8uA" id="vJC-x0-hxK"/>
                 <outlet property="bCountLabel" destination="7y4-cc-aqW" id="9GA-Ra-po6"/>
                 <outlet property="bmCountLabel" destination="cea-Ie-vy1" id="DVN-6h-Vic"/>
                 <outlet property="collectionView" destination="huL-oV-xsP" id="D1a-fa-cHz"/>
                 <outlet property="dimBgView" destination="ROG-9H-40T" id="uz4-OC-MzM"/>
                 <outlet property="emptyView" destination="nzL-Db-mUP" id="z9J-s9-GXN"/>
+                <outlet property="noBookLabel" destination="o2K-ss-RMC" id="jpc-mR-Snz"/>
                 <outlet property="searchBar" destination="omG-B3-uzG" id="se8-Ej-ibd"/>
                 <outlet property="sortBtn" destination="Pa0-wK-J3b" id="no6-Db-PG3"/>
                 <outlet property="sortLabel" destination="Mvj-v7-Mbi" id="Vjl-I8-RFD"/>

@@ -22,6 +22,13 @@ typedef void (^AddBookModifyCompleted)(NSDictionary *bookDic);
 
 @property (nonatomic, assign) BOOL isModifyMode;    // create / modify
 
+// localize language
+@property (weak, nonatomic) IBOutlet UILabel *authorLangLabel;
+@property (weak, nonatomic) IBOutlet UILabel *publisherLangLabel;
+@property (weak, nonatomic) IBOutlet UILabel *pubDateLangLabel;
+@property (weak, nonatomic) IBOutlet UILabel *rateLangLabel;
+@property (weak, nonatomic) IBOutlet UILabel *infoLangLabel;
+
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *authorLabel;
 @property (weak, nonatomic) IBOutlet UILabel *publisherLabel;

@@ -20,9 +20,12 @@
 #define CUR_VERSION     [NSString stringWithFormat:@"%@", [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]]
 
 // UserDefault Key
-#define SWITCH_STATUS   @"SWITCH_STATUS"
+#define SWITCH_SAVEPIC_STATUS   @"SWITCH_SAVEPIC_STATUS"
+#define SWITCH_BACKUP_STATUS    @"SWTICH_BACKUP_STATUS"
 
 // UserDefault Value
-#define SWITCH_ON       @"SWITCH_ON"
-#define SWITCH_OFF      @"SWITCH_OFF"
+#define SWITCH_SAVEPIC_ON       @"SWITCH_SAVEPIC_ON"
+#define SWITCH_SAVEPIC_OFF      @"SWITCH_SAVEPIC_OFF"
+#define SWITCH_BACKUP_ON        @"SWITCH_BACKUP_ON"
+#define SWITCH_BACKUP_OFF       @"SWITCH_BACKUP_OFF"
 

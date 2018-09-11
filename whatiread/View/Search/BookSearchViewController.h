@@ -14,6 +14,11 @@ typedef void (^BookSelectCompleted)(NSDictionary *bookDic);
 
 @property (nonatomic, copy) BookSelectCompleted bookSelectCompleted;
 
+// localize language
+@property (weak, nonatomic) IBOutlet UILabel *headerLabel;
+@property (weak, nonatomic) IBOutlet UILabel *noResultLabel;
+//
+
 @property (weak, nonatomic) IBOutlet UIButton *closeBtn;
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;

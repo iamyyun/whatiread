@@ -27,7 +27,17 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    [self setNaviBarType:BAR_ADD title:@"책 등록" image:nil];
+    [self setNaviBarType:BAR_ADD title:NSLocalizedString(@"Add Book", @"") image:nil];
+    
+    // localize language
+    [self.titleTextField setPlaceholder:NSLocalizedString(@"Book Title *", @"")];
+    [self.authorTextField setPlaceholder:NSLocalizedString(@"Author *", @"")];
+    [self.publishTextField setPlaceholder:NSLocalizedString(@"Publisher", @"")];
+    [self.pubDateTextField setPlaceholder:NSLocalizedString(@"Published Date", @"")];
+    [self.startDateTextField setPlaceholder:NSLocalizedString(@"Start Date", @"")];
+    [self.compDateTextField setPlaceholder:NSLocalizedString(@"Complete Date *", @"")];
+    [self.rateLangLabel setText:NSLocalizedString(@"Rating *", @"")];
+    [self.infoLangLabel setText:NSLocalizedString(@"* fields are necessary.", @"")];
     
     isEdited = NO;
     
@@ -66,7 +76,7 @@
             [self.rateLabel setText:[NSString stringWithFormat:@"%g", self.book.rate]];
             
             // set NavigationBar
-            [self setNaviBarType:BAR_ADD title:@"책 수정" image:nil];
+            [self setNaviBarType:BAR_ADD title:NSLocalizedString(@"Edit Book", @"") image:nil];
             
             if ([self isCheckField]) {
                 [self.navigationItem.rightBarButtonItem setEnabled:YES];
@@ -119,11 +129,11 @@
 - (void)leftBarBtnClick:(id)sender {
     
     if (isEdited) {
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Close", @"") message:@"작성중인 글이 있습니다." preferredStyle:UIAlertControllerStyleActionSheet];
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Close", @"") message:NSLocalizedString(@"Finish writing the book information.", @"") preferredStyle:UIAlertControllerStyleActionSheet];
         
-        NSString *strFirst = @"계속 쓰기";
-        NSString *strSecond = @"삭제하고 나가기";
-        NSString *strThird = @"저장하고 나가기";
+        NSString *strFirst = NSLocalizedString(@"Keep writing", @"");
+        NSString *strSecond = NSLocalizedString(@"Delete & Leave", @"");
+        NSString *strThird = NSLocalizedString(@"Save & Leave", @"");
         UIAlertAction *firstAction = [UIAlertAction actionWithTitle:strFirst style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
             
         }];
@@ -176,12 +186,12 @@
         [alert addAction:okAction];
         [self presentController:alert animated:YES];
     } else if (self.authorTextField.text.length <= 0) {
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"저자를 입력해주세요." message:nil preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Please write author.", @"") message:nil preferredStyle:UIAlertControllerStyleAlert];
         UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Confirm", @"") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {}];
         [alert addAction:okAction];
         [self presentController:alert animated:YES];
     } else if (self.rateView.rating == 0) {
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"평점을 매겨주세요." message:nil preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Please rate the book.", @"") message:nil preferredStyle:UIAlertControllerStyleAlert];
         UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Confirm", @"") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {}];
         [alert addAction:okAction];
         [self presentController:alert animated:YES];
@@ -224,18 +234,18 @@
 {
     NSString *strTitle = @"";
     if (textField == self.pubDateTextField) {
-        strTitle = @"출판일";
+        strTitle = NSLocalizedString(@"Published Date", @"");
     }
     else if (textField == self.startDateTextField) {
-        strTitle = @"시작일";
+        strTitle = NSLocalizedString(@"Start Date", @"");
     }
     else if (textField == self.compDateTextField) {
-        strTitle = @"완독일";
+        strTitle = NSLocalizedString(@"Complete Date", @"");
     }
     
     LSLDatePickerDialog *dpDialog = [[LSLDatePickerDialog alloc] init];
     if (textField == self.pubDateTextField) {
-        [dpDialog showWithTitle:@"출판일" doneButtonTitle:@"확인" cancelButtonTitle:@"취소" defaultDate:[NSDate date] datePickerMode:UIDatePickerModeDate callback:^(NSDate *date) {
+        [dpDialog showWithTitle:NSLocalizedString(@"Published Date", @"") doneButtonTitle:NSLocalizedString(@"Confirm", @"") cancelButtonTitle:NSLocalizedString(@"Cancel", @"") defaultDate:[NSDate date] datePickerMode:UIDatePickerModeDate callback:^(NSDate *date) {
             if (date) {
                 publishDate = date;
                 NSDateFormatter *format = [[NSDateFormatter alloc] init];
@@ -247,7 +257,7 @@
         return NO;
     }
     else if (textField == self.startDateTextField) {
-        [dpDialog showWithTitle:@"시작일" doneButtonTitle:@"확인" cancelButtonTitle:@"취소" defaultDate:[NSDate date] datePickerMode:UIDatePickerModeDate callback:^(NSDate *date) {
+        [dpDialog showWithTitle:NSLocalizedString(@"Start Date", @"") doneButtonTitle:NSLocalizedString(@"Confirm", @"") cancelButtonTitle:NSLocalizedString(@"Cancel", @"") defaultDate:[NSDate date] datePickerMode:UIDatePickerModeDate callback:^(NSDate *date) {
             if (date) {
                 startDate = date;
                 NSDateFormatter *format = [[NSDateFormatter alloc] init];
@@ -259,7 +269,7 @@
         return NO;
     }
     else if (textField == self.compDateTextField) {
-        [dpDialog showWithTitle:@"완독일" doneButtonTitle:@"확인" cancelButtonTitle:@"취소" defaultDate:[NSDate date] datePickerMode:UIDatePickerModeDate callback:^(NSDate *date) {
+        [dpDialog showWithTitle:NSLocalizedString(@"Complete Date", @"") doneButtonTitle:NSLocalizedString(@"Confirm", @"") cancelButtonTitle:NSLocalizedString(@"Cancel", @"") defaultDate:[NSDate date] datePickerMode:UIDatePickerModeDate callback:^(NSDate *date) {
             if (date) {
                 compDate = date;
                 NSDateFormatter *format = [[NSDateFormatter alloc] init];

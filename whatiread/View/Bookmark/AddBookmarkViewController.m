@@ -27,7 +27,11 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    [self setNaviBarType:BAR_ADD title:@"책갈피 등록" image:nil];
+    [self setNaviBarType:BAR_ADD title:NSLocalizedString(@"Add Bookmark", @"") image:nil];
+    
+    // localize language
+    [self.textInputLangLabel setText:NSLocalizedString(@"Text Recognition", @"")];
+    [self.photoInputLangLabel setText:NSLocalizedString(@"Add Photo", @"")];
     
     isEdited = NO;
     
@@ -104,8 +108,8 @@
     
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
     
-    NSString *strCamera = @"사진 찍기";
-    NSString *strAlbum = @"사진 보관함에서 추가";
+    NSString *strCamera = NSLocalizedString(@"Take Photo", @"");
+    NSString *strAlbum = NSLocalizedString(@"Add from Library", @"");
     UIAlertAction *cameraAction = [UIAlertAction actionWithTitle:strCamera style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
         UIImagePickerController *picker = [[UIImagePickerController alloc] init];
         picker.delegate = self;
@@ -135,8 +139,8 @@
     
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
     
-    NSString *strCamera = @"사진 찍기";
-    NSString *strAlbum = @"사진 보관함에서 추가";
+    NSString *strCamera = NSLocalizedString(@"Take Photo", @"");
+    NSString *strAlbum = NSLocalizedString(@"Add from Library", @"");
     UIAlertAction *cameraAction = [UIAlertAction actionWithTitle:strCamera style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
         UIImagePickerController *picker = [[UIImagePickerController alloc] init];
         picker.delegate = self;
@@ -164,11 +168,11 @@
 #pragma mark - Navigation Action
 - (void)leftBarBtnClick:(id)sender {
     if (isEdited) {
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Close", @"") message:@"작성중인 글이 있습니다." preferredStyle:UIAlertControllerStyleActionSheet];
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Close", @"") message:NSLocalizedString(@"Finish writing the bookmark.", @"") preferredStyle:UIAlertControllerStyleActionSheet];
         
-        NSString *strFirst = @"계속 쓰기";
-        NSString *strSecond = @"삭제하고 나가기";
-        NSString *strThird = @"저장하고 나가기";
+        NSString *strFirst = NSLocalizedString(@"Keep writing", @"");
+        NSString *strSecond = NSLocalizedString(@"Delete & Leave", @"");
+        NSString *strThird = NSLocalizedString(@"Save & Leave", @"");
         UIAlertAction *firstAction = [UIAlertAction actionWithTitle:strFirst style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
             
         }];
@@ -191,7 +195,7 @@
 
 - (void)rightBarBtnClick:(id)sender {
     if (self.textView.attributedText.length <= 0) {
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"책갈피를 입력해주세요." message:nil preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Please write quotes.", @"") message:nil preferredStyle:UIAlertControllerStyleAlert];
         UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Confirm", @"") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {}];
         [alert addAction:okAction];
         [self presentController:alert animated:YES];
@@ -258,13 +262,13 @@
     UIImage *resultImage = image;
     [self dismissController:cropViewController animated:YES];
     
-    NSString *strStat = [[NSUserDefaults standardUserDefaults] objectForKey:SWITCH_STATUS];
+    NSString *strStat = [[NSUserDefaults standardUserDefaults] objectForKey:SWITCH_SAVEPIC_STATUS];
     if (!strStat || strStat.length <= 0) {
-        strStat = SWITCH_ON;
-        [[NSUserDefaults standardUserDefaults] setObject:SWITCH_ON forKey:SWITCH_STATUS];
+        strStat = SWITCH_SAVEPIC_ON;
+        [[NSUserDefaults standardUserDefaults] setObject:SWITCH_SAVEPIC_ON forKey:SWITCH_SAVEPIC_STATUS];
         [[NSUserDefaults standardUserDefaults] synchronize];
     }
-    if ([strStat isEqualToString:SWITCH_ON]) {
+    if ([strStat isEqualToString:SWITCH_SAVEPIC_ON]) {
         [self savePhoto:resultImage];
     }
     
@@ -281,7 +285,7 @@
             strOcr = [recognizedTesseract recognizedText];
             [IndicatorUtil stopProcessIndicator];
             
-            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"텍스트 추출" message:strOcr preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Text Recognition", @"") message:strOcr preferredStyle:UIAlertControllerStyleAlert];
             
             NSString *strConfirm = NSLocalizedString(@"Confirm", @"");
             NSString *strCancel = NSLocalizedString(@"Cancel", @"");

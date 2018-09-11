@@ -21,6 +21,10 @@ typedef void (^WriteBookModifyCompleted)(NSDictionary *bookDic);
 
 @property (nonatomic, assign) BOOL isModifyMode;    // create / modify
 
+// localize language
+@property (weak, nonatomic) IBOutlet UILabel *rateLangLabel;
+@property (weak, nonatomic) IBOutlet UILabel *infoLangLabel;
+
 @property (weak, nonatomic) IBOutlet JVFloatLabeledTextField *titleTextField;
 @property (weak, nonatomic) IBOutlet JVFloatLabeledTextField *authorTextField;
 @property (weak, nonatomic) IBOutlet JVFloatLabeledTextField *publishTextField;

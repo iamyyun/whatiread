@@ -51,13 +51,14 @@
         
         NSDictionary *dic = [[NSDictionary alloc] initWithDictionary:menuList[i] copyItems:YES];
         
+        CGFloat btnWidth = 0.f;
+        
         NSString *btnTitle = NSLocalizedString(dic[@"title"], @"");
         CGFloat titleWidth = [btnTitle boundingRectWithSize:CGSizeMake(1000, 16) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:15.0f]} context:nil].size.width;
         
         UIButton *menuBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         
         UIImageView *imgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:dic[@"image"]]];
-        [imgView setFrame:CGRectMake(0, 0, 45, 45)];
         [menuBtn addSubview:imgView];
         
         UILabel *label = [[UILabel alloc] init];
@@ -65,10 +66,18 @@
         [label setFont:[UIFont systemFontOfSize:15.f]];
         [label setTextColor:[UIColor darkGrayColor]];
         [label setTextAlignment:NSTextAlignmentCenter];
-        [label setFrame:CGRectMake(0, 45, 45, 16)];
+        [label setFrame:CGRectMake(0, 45, titleWidth, 16)];
         [menuBtn addSubview:label];
         
-        [menuBtn setFrame:CGRectMake((viewWidth/2-(45/2)), 100+iPosY, 45, 61)];
+        if (titleWidth >= 45) {
+            btnWidth = titleWidth;
+        } else {
+            btnWidth = 45;
+        }
+        
+        [imgView setFrame:CGRectMake((btnWidth/2)-(45/2), 0, 45, 45)];
+        
+        [menuBtn setFrame:CGRectMake((viewWidth/2-(btnWidth/2)), 100+iPosY, btnWidth, 61)];
         [menuBtn setTag:i];
         [menuBtn setBackgroundColor:[UIColor clearColor]];
         [menuBtn addTarget:self action:@selector(onClickedMenuBtn:) forControlEvents:UIControlEventTouchUpInside];

@@ -30,6 +30,19 @@
     
     [self.navigationController setNavigationBarHidden:NO];
     
+    // localize language
+    [self.authorLangLabel setText:NSLocalizedString(@"Author", @"")];
+    [self.publisherLangLabel setText:NSLocalizedString(@"Publisher", @"")];
+    [self.pubDateLangLabel setText:NSLocalizedString(@"Published Date", @"")];
+    [self.startDateLangLabel setText:NSLocalizedString(@"Start Date", @"")];
+    [self.compDateLangLabel setText:NSLocalizedString(@"Complete Date", @"")];
+    [self.rateLangLabel setText:NSLocalizedString(@"Rating", @"")];
+    [self.bmLangLabel setText:NSLocalizedString(@"Bookmark", @"")];
+    [self.noBmLangLabel setText:NSLocalizedString(@"There is no bookmark.", @"")];
+    [self.addBmBtn setTitle:NSLocalizedString(@"Add Bookmark", @"") forState:UIControlStateNormal];
+    [self.editBsBtn setTitle:NSLocalizedString(@"Edit", @"") forState:UIControlStateNormal];
+    [self.deleteBsBtn setTitle:NSLocalizedString(@"Delete", @"") forState:UIControlStateNormal];
+    
     coreData = [CoreDataAccess sharedInstance];
     self.fetchedResultsController = coreData.fetchedResultsController;
     self.fetchedResultsController.delegate = self;
@@ -81,7 +94,7 @@
 
 - (void) dataInitialize {
     if (self.book) {
-        [self setNaviBarType:BAR_BACK title:@"책 정보" image:nil];
+        [self setNaviBarType:BAR_BACK title:NSLocalizedString(@"Book Information", @"") image:nil];
         
         NSDateFormatter *format = [[NSDateFormatter alloc] init];
         [format setDateFormat:@"yyyy.MM.dd"];
@@ -188,7 +201,7 @@
 // delete bookshelf
 - (IBAction)deleteBookShelfBtnAction:(id)sender {
     if (quoteArr && quoteArr.count > 0) {
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"해당 책 정보에 책갈피가 등록되어 있어 책 정보를 삭제 할 수 없습니다. 책갈피 삭제 후 삭제 해 주시기 바랍니다." message:nil preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"You can not delete the book because bookmarks are registered. Please delete bookmarks and delete the book.", @"") message:nil preferredStyle:UIAlertControllerStyleAlert];
         UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Confirm", @"") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {}];
         [alert addAction:okAction];
         [self presentController:alert animated:YES];
