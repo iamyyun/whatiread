@@ -66,7 +66,6 @@
         [label setFont:[UIFont systemFontOfSize:15.f]];
         [label setTextColor:[UIColor darkGrayColor]];
         [label setTextAlignment:NSTextAlignmentCenter];
-        [label setFrame:CGRectMake(0, 45, titleWidth, 16)];
         [menuBtn addSubview:label];
         
         if (titleWidth >= 45) {
@@ -75,6 +74,7 @@
             btnWidth = 45;
         }
         
+        [label setFrame:CGRectMake(0, 45, btnWidth, 16)];
         [imgView setFrame:CGRectMake((btnWidth/2)-(45/2), 0, 45, 45)];
         
         [menuBtn setFrame:CGRectMake((viewWidth/2-(btnWidth/2)), 100+iPosY, btnWidth, 61)];

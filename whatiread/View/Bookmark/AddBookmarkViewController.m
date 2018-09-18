@@ -308,14 +308,14 @@
         
     } else {
         NSTextAttachment *textAttachment = [[NSTextAttachment alloc] init];
-        textAttachment.image = image;
+        textAttachment.image = resultImage;
         
         CGFloat oldWidth = textAttachment.image.size.width;
         
         //I'm subtracting 10px to make the image display nicely, accounting
         //for the padding inside the textView
         CGFloat scaleFactor = oldWidth / (self.textView.frame.size.width - 10);
-        textAttachment.image = [UIImage imageWithCGImage:textAttachment.image.CGImage scale:scaleFactor orientation:UIImageOrientationUp];
+        textAttachment.image = [UIImage imageWithCGImage:textAttachment.image.CGImage scale:scaleFactor orientation:resultImage.imageOrientation];
         NSAttributedString *attrStringWithImage = [NSAttributedString attributedStringWithAttachment:textAttachment];
         [self.textView.textStorage insertAttributedString:attrStringWithImage atIndex:self.textView.selectedRange.location];
         [self.textView setFont:[UIFont systemFontOfSize:14.f]];
@@ -397,7 +397,8 @@
     
     NSDictionary* userInfo = [notification userInfo];
     
-    CGSize keyboardSize = [[userInfo objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+//    CGSize keyboardSize = [[userInfo objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+    CGSize keyboardSize = [[userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
     
     self.textViewBottomMarginConst.constant = keyboardSize.height;
     [self.view updateConstraints];
@@ -409,7 +410,8 @@
     
     NSDictionary* userInfo = [notification userInfo];
     
-    CGSize keyboardSize = [[userInfo objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+//    CGSize keyboardSize = [[userInfo objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+    CGSize keyboardSize = [[userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
     self.textViewBottomMarginConst.constant = 60.f;
     [self.view updateConstraints];
 }
