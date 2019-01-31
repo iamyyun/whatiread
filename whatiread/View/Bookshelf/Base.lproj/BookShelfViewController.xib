@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -47,12 +47,12 @@
                 </searchBar>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Q7U-k4-8uA">
                     <rect key="frame" x="15" y="80" width="345" height="60"/>
-                    <color key="backgroundColor" red="0.92143100499999997" green="0.92145264149999995" blue="0.92144101860000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <color key="backgroundColor" red="0.10196078431372549" green="0.73725490196078436" blue="0.61176470588235299" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="60" id="Wba-Jm-ssv"/>
                     </constraints>
                     <state key="normal" title="책 등록">
-                        <color key="titleColor" red="0.57414853570000002" green="0.57416242360000003" blue="0.57415497299999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </state>
                     <connections>
                         <action selector="addBtnAction:" destination="-1" eventType="touchUpInside" id="JAI-GR-VlQ"/>
@@ -67,37 +67,41 @@
                                 <action selector="sortBtnAction:" destination="-1" eventType="touchUpInside" id="z9c-pJ-Sy4"/>
                             </connections>
                         </button>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_small_filter" translatesAutoresizingMaskIntoConstraints="NO" id="FVE-cn-huh">
-                            <rect key="frame" x="0.0" y="7" width="20" height="20"/>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_small_filter_color" translatesAutoresizingMaskIntoConstraints="NO" id="FVE-cn-huh">
+                            <rect key="frame" x="45" y="7.5" width="20" height="20"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="20" id="QyI-p2-TmV"/>
                                 <constraint firstAttribute="width" constant="20" id="rRa-Oi-CwY"/>
                             </constraints>
                         </imageView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="완독일" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mvj-v7-Mbi">
-                            <rect key="frame" x="23" y="8" width="42" height="19.5"/>
+                            <rect key="frame" x="0.0" y="8" width="42" height="19.5"/>
                             <fontDescription key="fontDescription" type="system" pointSize="16"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_small_book" translatesAutoresizingMaskIntoConstraints="NO" id="w6f-SL-nFn">
-                            <rect key="frame" x="265" y="8" width="20" height="20"/>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_small_book_color" translatesAutoresizingMaskIntoConstraints="NO" id="w6f-SL-nFn">
+                            <rect key="frame" x="265.5" y="7.5" width="20" height="20"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="20" id="uo6-6w-X9d"/>
+                                <constraint firstAttribute="height" constant="20" id="wC8-lc-cUe"/>
+                            </constraints>
                         </imageView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0 /" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7y4-cc-aqW">
-                            <rect key="frame" x="288" y="7" width="20" height="21"/>
+                            <rect key="frame" x="288.5" y="7" width="20" height="21"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_small_bookmark" translatesAutoresizingMaskIntoConstraints="NO" id="pSb-9e-sl1">
-                            <rect key="frame" x="313.5" y="8" width="20" height="20"/>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_small_bookmark_color" translatesAutoresizingMaskIntoConstraints="NO" id="pSb-9e-sl1">
+                            <rect key="frame" x="313.5" y="7.5" width="20" height="20"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="20" id="F1c-z0-WxL"/>
                                 <constraint firstAttribute="height" constant="20" id="her-6c-07x"/>
                             </constraints>
                         </imageView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cea-Ie-vy1">
-                            <rect key="frame" x="333" y="7" width="10.5" height="21"/>
+                            <rect key="frame" x="333.5" y="7" width="10.5" height="21"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
@@ -108,13 +112,13 @@
                         <constraint firstItem="pSb-9e-sl1" firstAttribute="leading" secondItem="7y4-cc-aqW" secondAttribute="trailing" constant="5" id="45D-GY-GNt"/>
                         <constraint firstItem="Pa0-wK-J3b" firstAttribute="top" secondItem="g22-Z1-6pa" secondAttribute="top" id="6OS-Y2-QgP"/>
                         <constraint firstItem="Pa0-wK-J3b" firstAttribute="leading" secondItem="g22-Z1-6pa" secondAttribute="leading" id="6Uq-ew-Zko"/>
-                        <constraint firstItem="Mvj-v7-Mbi" firstAttribute="leading" secondItem="FVE-cn-huh" secondAttribute="trailing" constant="3" id="BIh-wB-XSE"/>
-                        <constraint firstItem="FVE-cn-huh" firstAttribute="leading" secondItem="g22-Z1-6pa" secondAttribute="leading" id="Bxy-KY-6yT"/>
+                        <constraint firstItem="FVE-cn-huh" firstAttribute="leading" secondItem="Mvj-v7-Mbi" secondAttribute="trailing" constant="3" id="E3w-Cx-0rb"/>
                         <constraint firstItem="cea-Ie-vy1" firstAttribute="centerY" secondItem="g22-Z1-6pa" secondAttribute="centerY" id="E7x-mR-5ha"/>
                         <constraint firstItem="7y4-cc-aqW" firstAttribute="centerY" secondItem="g22-Z1-6pa" secondAttribute="centerY" id="Fh5-18-UC2"/>
                         <constraint firstItem="cea-Ie-vy1" firstAttribute="leading" secondItem="pSb-9e-sl1" secondAttribute="trailing" id="Gwx-bA-r70"/>
                         <constraint firstItem="7y4-cc-aqW" firstAttribute="leading" secondItem="w6f-SL-nFn" secondAttribute="trailing" constant="3" id="HtS-Rv-z5A"/>
-                        <constraint firstItem="Mvj-v7-Mbi" firstAttribute="trailing" secondItem="Pa0-wK-J3b" secondAttribute="trailing" id="LTe-Wf-b71"/>
+                        <constraint firstItem="FVE-cn-huh" firstAttribute="trailing" secondItem="Pa0-wK-J3b" secondAttribute="trailing" id="LTe-Wf-b71"/>
+                        <constraint firstItem="Mvj-v7-Mbi" firstAttribute="leading" secondItem="g22-Z1-6pa" secondAttribute="leading" id="MOd-7g-nby"/>
                         <constraint firstAttribute="height" constant="35" id="RCW-KG-Jj9"/>
                         <constraint firstAttribute="bottom" secondItem="Pa0-wK-J3b" secondAttribute="bottom" id="XVh-yJ-wZP"/>
                         <constraint firstAttribute="trailing" secondItem="cea-Ie-vy1" secondAttribute="trailing" id="gDo-J7-Qif"/>
@@ -142,7 +146,7 @@
                     <rect key="frame" x="16" y="180" width="343" height="487"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="등록된 책이 없습니다." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="o2K-ss-RMC">
-                            <rect key="frame" x="99" y="233.5" width="146" height="21"/>
+                            <rect key="frame" x="98.5" y="233" width="146" height="21"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
@@ -188,8 +192,8 @@
         </view>
     </objects>
     <resources>
-        <image name="icon_small_book" width="20" height="20"/>
-        <image name="icon_small_bookmark" width="20" height="20"/>
-        <image name="icon_small_filter" width="20" height="20"/>
+        <image name="icon_small_book_color" width="180" height="180"/>
+        <image name="icon_small_bookmark_color" width="180" height="180"/>
+        <image name="icon_small_filter_color" width="180" height="180"/>
     </resources>
 </document>

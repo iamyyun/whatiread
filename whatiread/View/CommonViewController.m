@@ -70,7 +70,7 @@
 
         // leftBarButton
         leftBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        [leftBtn setImage:[UIImage imageNamed:@"btn_menu"] forState:UIControlStateNormal];
+        [leftBtn setImage:[UIImage imageNamed:@"btn_menu_color"] forState:UIControlStateNormal];
         [leftBtn setTag:BTN_TYPE_MENU];
         [leftBtn addTarget:self action:@selector(leftBarBtnClick:) forControlEvents:UIControlEventTouchUpInside];
         [leftBtn setFrame:CGRectMake(0, 5, 34, 34)];
@@ -78,7 +78,7 @@
         
         // rightBarButton
         rightBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        [rightBtn setImage:[UIImage imageNamed:@"btn_search"] forState:UIControlStateNormal];
+        [rightBtn setImage:[UIImage imageNamed:@"btn_search_color"] forState:UIControlStateNormal];
         [rightBtn addTarget:self action:@selector(rightBarBtnClick:) forControlEvents:UIControlEventTouchUpInside];
         [rightBtn setFrame:CGRectMake(0, 5, 34, 34)];
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:rightBtn];
@@ -86,7 +86,7 @@
     else if (type == BAR_BACK) {
         // leftBarButton
         leftBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        [leftBtn setImage:[UIImage imageNamed:@"btn_back"] forState:UIControlStateNormal];
+        [leftBtn setImage:[UIImage imageNamed:@"btn_back_color"] forState:UIControlStateNormal];
         [leftBtn setTag:BTN_TYPE_BACK];
         [leftBtn addTarget:self action:@selector(leftBarBtnClick:) forControlEvents:UIControlEventTouchUpInside];
         [leftBtn setFrame:CGRectMake(0, 5, 34, 34)];
@@ -151,7 +151,7 @@
         
         // leftBarButton
         leftBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        [leftBtn setImage:[UIImage imageNamed:@"btn_back"] forState:UIControlStateNormal];
+        [leftBtn setImage:[UIImage imageNamed:@"btn_back_color"] forState:UIControlStateNormal];
         [leftBtn addTarget:self action:@selector(leftBarBtnClick:) forControlEvents:UIControlEventTouchUpInside];
         [leftBtn setFrame:CGRectMake(0, 5, 34, 34)];
         self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:leftBtn];
@@ -159,9 +159,26 @@
         // rightBarButton
         NSString *rightBtnTitle1 = NSLocalizedString(@"Delete", @"");
         NSString *rightBtnTitle2 = NSLocalizedString(@"Edit", @"");
-        UIBarButtonItem *delBtn = [[UIBarButtonItem alloc] initWithTitle:rightBtnTitle1 style:UIBarButtonItemStylePlain target:self action:@selector(rightBarBtnClick:)];
+        
+        UIButton *cusDelBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        [cusDelBtn setTitle:rightBtnTitle1 forState:UIControlStateNormal];
+        [cusDelBtn setTitleColor:[UIColor colorWithHexString:@"1abc9c"] forState:UIControlStateNormal];
+        [cusDelBtn.titleLabel setFont:[UIFont systemFontOfSize:17.f]];
+        [cusDelBtn addTarget:self action:@selector(rightBarBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+        [cusDelBtn setTag:BTN_TYPE_DELETE];
+        [cusDelBtn setFrame:CGRectMake(0, 0, 34, 44)];
+        
+        UIButton *cusEditBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        [cusEditBtn setTitle:rightBtnTitle2 forState:UIControlStateNormal];
+        [cusEditBtn setTitleColor:[UIColor colorWithHexString:@"1abc9c"] forState:UIControlStateNormal];
+        [cusEditBtn.titleLabel setFont:[UIFont systemFontOfSize:17.f]];
+        [cusEditBtn addTarget:self action:@selector(rightBarBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+        [cusEditBtn setTag:BTN_TYPE_EDIT];
+        [cusEditBtn setFrame:CGRectMake(0, 0, 34, 44)];
+        
+        UIBarButtonItem *delBtn = [[UIBarButtonItem alloc] initWithCustomView:cusDelBtn];
         [delBtn setTag:BTN_TYPE_DELETE];
-        UIBarButtonItem *editBtn = [[UIBarButtonItem alloc] initWithTitle:rightBtnTitle2 style:UIBarButtonItemStylePlain target:self action:@selector(rightBarBtnClick:)];
+        UIBarButtonItem *editBtn = [[UIBarButtonItem alloc] initWithCustomView:cusEditBtn];
         [editBtn setTag:BTN_TYPE_EDIT];
         self.navigationItem.rightBarButtonItems = [NSArray arrayWithObjects:delBtn, editBtn, nil];
     }

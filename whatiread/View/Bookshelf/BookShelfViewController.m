@@ -13,6 +13,7 @@
 #import "WriteBookViewController.h"
 #import "BookSearchViewController.h"
 #import <GKActionSheetPicker/GKActionSheetPicker.h>
+#import <CloudKit/CloudKit.h>
 
 #define MILLI_SECONDS           1000.f
 
@@ -40,7 +41,7 @@
     [self.noBookLabel setText:NSLocalizedString(@"There is no registered book.", @"")];
     [self.sortLabel setText:NSLocalizedString(@"Complete Date", @"")];
     
-    UIImage *image = [UIImage imageNamed:@"icon_menu_bookshelf"];
+    UIImage *image = [UIImage imageNamed:@"icon_menu_bookshelf_color"];
     [self setNaviBarType:BAR_MENU title:NSLocalizedString(@"Bookshelf", @"") image:image];
     
     [self.collectionView setAllowsSelection:YES];
@@ -49,7 +50,10 @@
     coreData = [CoreDataAccess sharedInstance];
     self.fetchedResultsController = coreData.fetchedResultsController;
     self.fetchedResultsController.delegate = self;
+    self.quoteFetchedResultsController = coreData.quoteFetchedResultsController;
+    self.quoteFetchedResultsController.delegate = self;
     self.managedObjectContext = coreData.managedObjectContext;
+    self.quoteManagedObjectContext = coreData.quoteManagedObjectContext;
     
     id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][0];
     NSInteger bookCount = [sectionInfo numberOfObjects];
@@ -65,6 +69,8 @@
     } else {
         [self.collectionView setHidden:YES];
         [self.emptyView setHidden:NO];
+        
+        [self getiCloudData];
     }
 
     
@@ -89,12 +95,17 @@
     [super viewWillAppear:animated];
     
     self.managedObjectContext = nil;
+    self.quoteManagedObjectContext = nil;
     self.fetchedResultsController = nil;
+    self.quoteFetchedResultsController = nil;
     
     [coreData coreDataInitialize];
     self.fetchedResultsController = coreData.fetchedResultsController;
     self.fetchedResultsController.delegate = self;
+    self.quoteFetchedResultsController = coreData.quoteFetchedResultsController;
+    self.quoteFetchedResultsController.delegate = self;
     self.managedObjectContext = coreData.managedObjectContext;
+    self.quoteManagedObjectContext = coreData.quoteManagedObjectContext;
     
     id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][0];
     NSInteger bookCount = [sectionInfo numberOfObjects];
@@ -250,6 +261,124 @@
     [self.collectionView reloadData];
 }
 
+- (void)getiCloudData
+{
+    if ([CloudKitManager isiCloudAccountIsSignedIn]) { // icloud account is signed in
+        
+        [[CKContainer defaultContainer] accountStatusWithCompletionHandler:^(CKAccountStatus accountStatus, NSError * _Nullable error) {
+            if (error) {
+                [self showAlertViewController:NSLocalizedString(@"iCloud is not available.", @"") msg:NSLocalizedString(@"iCloud is temporarily unavailable.", @"")];
+            } else {
+                if (accountStatus == CKAccountStatusAvailable) {
+                    UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Do you want to restore data?", @"") message:nil preferredStyle:UIAlertControllerStyleAlert];
+                    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"") style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+                    }];
+                    UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Confirm", @"") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+                        [self dismissViewControllerAnimated:YES completion:nil];
+                        
+                        // iCloud data restore
+                        [CloudKitManager fetchAllBooksWithCompletionHandler:^(NSArray *result, NSError *error) {
+                            if (!error || error.code == 11) {
+                                if (result && result.count > 0) {
+                                    NSLog(@"YJ << iCloud book data count : %lu", (unsigned long)result.count);
+                                    NSLog(@"YJ << iCloud book data : %@", result);
+                                    
+                                    // refresh data
+                                    self.managedObjectContext = nil;
+                                    self.fetchedResultsController = nil;
+                                    
+                                    [coreData coreDataInitialize];
+                                    self.fetchedResultsController = coreData.fetchedResultsController;
+                                    self.fetchedResultsController.delegate = self;
+                                    self.managedObjectContext = coreData.managedObjectContext;
+                                    
+                                    for (int i = 0; i < result.count; i++) {
+                                        
+//                                        Book *book = [[CoreDataAccess sharedInstance] mapBook:result[i]];
+                                        
+                                        [[CoreDataAccess sharedInstance] mapBook:result[i] completionHandler:^(Book *book) {
+                                            if (book) {
+                                                NSLog(@"YJ << book object : %@", book);
+                                                
+                                                NSError * error = nil;
+                                                
+                                                if(![self.managedObjectContext save:&error]) {
+                                                    NSLog(@"Unresolved error = %@, %@", error, error.userInfo);
+                                                    NSLog(@"YJ << Fail save iCloud data to CoreData");
+                                                } else {
+                                                    NSLog(@"YJ << Success save iCloud data to CoreData");
+                                                }
+                                            }
+                                        }];
+                                        
+////                                        // test
+//                                        if (i == result.count-1) {
+//                                            [CloudKitManager fetchAllQuotesWithCompletionHandler:^(NSArray *result, NSError *error) {
+//                                                if (!error || error.code == 11) {
+//                                                    if (result && result.count > 0) {
+//                                                        NSLog(@"YJ << iCloud quote data count : %lu", (unsigned long)result.count);
+//                                                        NSLog(@"YJ << iCloud quote data : %@", result);
+//
+//                                                        self.quoteManagedObjectContext = nil;
+//                                                        self.quoteFetchedResultsController = nil;
+//
+//                                                        [coreData coreDataInitialize];
+//                                                        self.quoteFetchedResultsController = coreData.quoteFetchedResultsController;
+//                                                        self.quoteFetchedResultsController.delegate = self;
+//                                                        self.quoteManagedObjectContext = coreData.quoteManagedObjectContext;
+//
+//                                                        for (int i = 0; i < result.count; i++) {
+//                                                            [[CoreDataAccess sharedInstance] mapQuote:result[i] completionHandler:^(Quote *quote) {
+//                                                                if (quote) {
+//                                                                    NSLog(@"YJ << quote object : %@", quote);
+//
+//                                                                    NSError *error = nil;
+//
+//                                                                    if (![self.quoteManagedObjectContext save:&error]) {
+//                                                                        NSLog(@"Unresolved error = %@, %@", error, error.userInfo);
+//                                                                        NSLog(@"YJ << Fail save iCloud data to CoreData - quote");
+//                                                                    } else {
+//                                                                        NSLog(@"YJ << Success save iCloud data to CoreData - quote");
+//                                                                    }
+//                                                                }
+//                                                            }];
+//                                                        }
+//                                                    }
+//                                                }
+//                                            }];
+////                                            [[CoreDataAccess sharedInstance] mapQuote:<#(CKRecord *)#> completionHandler:<#^(Quote *quote)handler#>]
+//                                        }
+                                    }
+                                    [self.collectionView reloadData];
+                                } else {
+                                    NSLog(@"YJ << iCloud data not exists");
+                                     [self showAlertViewController:NSLocalizedString(@"No backup data exsits.", @"") msg:nil];
+                                }
+                            }
+                        }];
+                    }];
+                    [alert addAction:cancelAction];
+                    [alert addAction:okAction];
+                    [self presentController:alert animated:YES];
+                } else {
+                    NSLog(@"YJ << iCloud account is not available");
+                    [self showAlertViewController:NSLocalizedString(@"iCloud is not available.", @"") msg:NSLocalizedString(@"iCloud is temporarily unavailable.", @"")];
+                }
+            }
+        }];
+        
+    } else {
+        [self showAlertViewController:NSLocalizedString(@"iCloud is disabled.", @"") msg:NSLocalizedString(@"iCloud is disalbed. Please enable iCloud Drive in Settings->iCloud.", @"")];
+    }
+}
+
+- (void)showAlertViewController:(NSString *)title msg:(NSString *)msg {
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:title message:msg preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Confirm", @"") style:UIAlertActionStyleDefault handler:nil];
+    [alert addAction:okAction];
+    [self presentController:alert animated:YES];
+}
+
 #pragma mark - BookConfigure
 - (void)bookConfigure:(Book *)book bookDic:(NSDictionary *)bookDic indexPath:(NSIndexPath *)indexPath isSearchMode:(BOOL)isSearchMode {
     
@@ -331,6 +460,7 @@
     book.startDate = [bookDic objectForKey:@"bStartDate"];
     book.completeDate = [bookDic objectForKey:@"bCompleteDate"];
     book.rate = [[bookDic objectForKey:@"bRate"] floatValue];
+    book.review = @"";
     book.coverImg = imageData;
 //    book.quote = bookQuotes;
     book.modifyDate = now;

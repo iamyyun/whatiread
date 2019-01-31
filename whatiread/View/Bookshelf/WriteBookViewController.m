@@ -79,12 +79,15 @@
             [self setNaviBarType:BAR_ADD title:NSLocalizedString(@"Edit Book", @"") image:nil];
             
             if ([self isCheckField]) {
+                [self.navigationItem.rightBarButtonItem setTintColor:[UIColor colorWithHexString:@"1abc9c"]];
                 [self.navigationItem.rightBarButtonItem setEnabled:YES];
             } else {
+                [self.navigationItem.rightBarButtonItem setTintColor:[UIColor lightGrayColor]];
                 [self.navigationItem.rightBarButtonItem setEnabled:NO];
             }
         }
     } else {
+        [self.navigationItem.rightBarButtonItem setTintColor:[UIColor lightGrayColor]];
         [self.navigationItem.rightBarButtonItem setEnabled:NO];
     }
     
@@ -287,8 +290,10 @@
 - (void)textFieldDidEndEditing:(UITextField *)textField {
     isEdited = YES;
     if ([self isCheckField]) {
+        [self.navigationItem.rightBarButtonItem setTintColor:[UIColor colorWithHexString:@"1abc9c"]];
         [self.navigationItem.rightBarButtonItem setEnabled:YES];
     } else {
+        [self.navigationItem.rightBarButtonItem setTintColor:[UIColor lightGrayColor]];
         [self.navigationItem.rightBarButtonItem setEnabled:NO];
     }
 }
@@ -302,8 +307,10 @@
     [self.rateLabel setText:[NSString stringWithFormat:@"%g", self.rateView.rating]];
     
     if ([self isCheckField]) {
+        [self.navigationItem.rightBarButtonItem setTintColor:[UIColor colorWithHexString:@"1abc9c"]];
         [self.navigationItem.rightBarButtonItem setEnabled:YES];
     } else {
+        [self.navigationItem.rightBarButtonItem setTintColor:[UIColor lightGrayColor]];
         [self.navigationItem.rightBarButtonItem setEnabled:NO];
     }
 }

@@ -3,7 +3,7 @@
 
 target 'whatiread' do
   # Uncomment the next line if you're using Swift or would like to use dynamic frameworks
-  # use_frameworks!
+   use_frameworks!
 
   # Pods for whatiread
 	pod 'RateView'
@@ -14,6 +14,8 @@ target 'whatiread' do
 	pod 'MTBBarcodeScanner'
 	pod 'TOCropViewController'
 	pod 'TesseractOCRiOS'
+	pod 'SyncKit/CoreData', '~> 0.6.3'
+	pod 'Toast', '~> 3.1'
 end
 
 post_install do |installer|

@@ -65,3 +65,14 @@
 "Complete Date *" = "Complete Date *";
 "Rating *" = "Rating *";
 "Search with book quotes" = "Search with book quotes";
+"The latest backup date is" = "The latest backup date is";
+"The backup data not exist." = "The backup data not exist.";
+"Picture will be saved automatically which is taken when you write the bookmark." = "Picture will be saved automatically which is taken when you write the bookmark.";
+"Do you want to backup your data in iCloud?" = "Do you want to backup your data in iCloud?";
+"iCloud is not available." = "iCloud is not available.";
+"iCloud is temporarily unavailable." = "iCloud is temporarily unavailable.";
+"iCloud is disabled." = "iCloud is disabled.";
+"iCloud is disalbed. Please enable iCloud Drive in Settings->iCloud." = "iCloud is disalbed. Please enable iCloud Drive in Settings->iCloud.";
+"There is no data to backup." = "There is no data to backup.";
+"Do you want to restore data?" = "Do you want to restore data?";
+"No backup data exsits." = "No backup data exsits.";

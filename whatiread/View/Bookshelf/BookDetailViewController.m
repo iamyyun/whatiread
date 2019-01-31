@@ -249,15 +249,20 @@
 - (void)createBookmark:(Book *)book qDic:(NSDictionary *)qDic completed:(void (^)(BOOL isResult))completed {
     NSInteger quoteCount = book.quotes.count;
     
-    NSData *imgData = UIImagePNGRepresentation([qDic objectForKey:@"mImage"]);
     NSAttributedString *attrStr = [qDic objectForKey:@"mQuote"];
+    NSData *attrData = [NSKeyedArchiver archivedDataWithRootObject:attrStr]; // nsdate -> nsattributedstring
+    // test
+    NSString *urlString = [[NSString alloc] initWithData:attrData encoding:NSUTF8StringEncoding];
+    NSURL *url = [[NSURL alloc] initWithString:attrStr.string];
+    //
     
     Quote *quote = [[Quote alloc] initWithContext:self.managedObjectContext];
     quote.index = quoteCount;
     quote.date = [NSDate date];
-    quote.data = attrStr;
+//    quote.data = attrStr;
+    quote.data = attrData;
+//    quote.data = url;
     quote.strData = attrStr.string;
-    quote.image = imgData;
     
     [book addQuotesObject:quote];
     
@@ -428,7 +433,10 @@
     
     if(quoteArr && quoteArr.count > 0) {
         Quote *quote = quoteArr[indexPath.item];
-        NSAttributedString *attrQuote = (NSAttributedString *)quote.data;
+//        NSAttributedString *attrQuote = (NSAttributedString *)quote.data;
+        NSAttributedString *attrQuote = [NSKeyedUnarchiver unarchiveObjectWithData:(NSData *)quote.data]; // nsdate -> nsattributedstring
+//        NSData *attrData = [[NSData alloc] initWithContentsOfURL:(NSURL *)quote.data];
+//        NSAttributedString *attrQuote = [NSKeyedUnarchiver unarchiveObjectWithData:attrData];
         
         if (attrQuote && attrQuote.length > 0) {
         
@@ -518,7 +526,10 @@
     if (quoteArr && quoteArr.count > 0) {
         
         Quote *quote = quoteArr[indexPath.item];
-        NSAttributedString *attrQuote = (NSAttributedString *)quote.data;
+//        NSAttributedString *attrQuote = (NSAttributedString *)quote.data;
+        NSAttributedString *attrQuote = [NSKeyedUnarchiver unarchiveObjectWithData:(NSData *)quote.data]; // nsdate -> nsattributedstring
+//        NSData *attrData = [[NSData alloc] initWithContentsOfURL:(NSURL *)quote.data];
+//        NSAttributedString *attrQuote = [NSKeyedUnarchiver unarchiveObjectWithData:attrData];
         
         if (attrQuote && attrQuote.length > 0) {
             

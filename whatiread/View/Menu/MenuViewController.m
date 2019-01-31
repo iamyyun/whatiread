@@ -26,13 +26,13 @@
     
     menuList = [NSMutableArray array];
     [menuList addObject:@{@"title":@"Bookshelf",
-                          @"image":@"icon_menu_bookshelf"
+                          @"image":@"icon_menu_bookshelf_color"
                           }];
     [menuList addObject:@{@"title":@"Bookmark",
-                          @"image":@"icon_menu_bookmark"
+                          @"image":@"icon_menu_bookmark_color"
                           }];
     [menuList addObject:@{@"title":@"Settings",
-                          @"image":@"icon_menu_setting"
+                          @"image":@"icon_menu_setting_color"
                           }];
     
     [self drawViews];
@@ -43,7 +43,7 @@
     CGFloat viewWidth = CGRectGetWidth(self.view.frame) - 110.0f;
     
     UIImageView *logoView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo"]];
-    [logoView setFrame:CGRectMake(viewWidth/2-(190/2), 100, 190, 79)];
+    [logoView setFrame:CGRectMake(viewWidth/2-(190/2), 100, 176, 104)];
     [self.view addSubview:logoView];
     
     CGFloat iPosY = 100.f;

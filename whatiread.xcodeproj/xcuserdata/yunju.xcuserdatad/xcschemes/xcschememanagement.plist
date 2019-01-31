@@ -7,7 +7,12 @@
 		<key>whatiread.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>10</integer>
+			<integer>11</integer>
+		</dict>
+		<key>whatiread.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>11</integer>
 		</dict>
 	</dict>
 </dict>

@@ -23,6 +23,7 @@
 
 - (void)saveContext;
 
-
 @end
 
+// Quote object에 type을 추가하여, 0:text, 1:image, 2:mixed로 구분하여 저장하고,
+// cell에는 imageView와 TTTAttributedLabel로 text 출력

@@ -1,0 +1,6 @@
+framework module DatePickerDialog_ObjC {
+  umbrella header "DatePickerDialog-ObjC-umbrella.h"
+
+  export *
+  module * { export * }
+}

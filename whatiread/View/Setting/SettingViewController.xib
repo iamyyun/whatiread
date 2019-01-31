@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SettingViewController">
             <connections>
+                <outlet property="backupBtn" destination="uZl-hn-7gP" id="oNE-fp-EJB"/>
+                <outlet property="backupDescLabel" destination="pbQ-EC-XBI" id="5OF-Wh-mer"/>
                 <outlet property="backupLabel" destination="O0l-Ev-fhO" id="HFp-gT-meC"/>
-                <outlet property="backupSwitch" destination="WpN-YT-J0X" id="d7h-o4-ONv"/>
                 <outlet property="savePicLabel" destination="g6a-NA-cmI" id="LdU-He-y2P"/>
                 <outlet property="savePicSwitch" destination="7HL-6z-vvC" id="tq4-yQ-kdE"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -25,64 +26,91 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5bE-bg-wF4">
-                    <rect key="frame" x="0.0" y="64" width="375" height="60"/>
+                    <rect key="frame" x="0.0" y="64" width="375" height="80"/>
                     <subviews>
                         <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7HL-6z-vvC">
-                            <rect key="frame" x="306" y="15" width="51" height="31"/>
+                            <rect key="frame" x="306" y="13.5" width="51" height="31"/>
+                            <color key="onTintColor" red="0.1019607843" green="0.73725490199999999" blue="0.61176470589999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <connections>
                                 <action selector="savePicSwitchAction:" destination="-1" eventType="touchUpInside" id="mw5-Ec-9Tg"/>
                             </connections>
                         </switch>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="사진 자동저장" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="g6a-NA-cmI">
-                            <rect key="frame" x="20" y="21" width="82" height="18"/>
+                            <rect key="frame" x="20" y="20" width="82" height="18"/>
                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
                             <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="책갈피 작성시 카메라로 찍은 사진이 카메라롤에 자동으로 저장됩니다." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dfT-zm-KQ5">
+                            <rect key="frame" x="20" y="52" width="335" height="14.5"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                            <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
+                        <constraint firstItem="dfT-zm-KQ5" firstAttribute="leading" secondItem="5bE-bg-wF4" secondAttribute="leading" constant="20" id="2Tb-2f-QIW"/>
                         <constraint firstItem="g6a-NA-cmI" firstAttribute="leading" secondItem="5bE-bg-wF4" secondAttribute="leading" constant="20" id="3gH-xb-tnh"/>
-                        <constraint firstAttribute="height" constant="60" id="W5A-FC-jzp"/>
-                        <constraint firstItem="7HL-6z-vvC" firstAttribute="centerY" secondItem="5bE-bg-wF4" secondAttribute="centerY" id="WuM-2b-pAT"/>
-                        <constraint firstItem="g6a-NA-cmI" firstAttribute="centerY" secondItem="5bE-bg-wF4" secondAttribute="centerY" id="g01-bT-zfU"/>
+                        <constraint firstAttribute="trailing" secondItem="dfT-zm-KQ5" secondAttribute="trailing" constant="20" id="54g-M6-aFg"/>
+                        <constraint firstItem="g6a-NA-cmI" firstAttribute="top" secondItem="5bE-bg-wF4" secondAttribute="top" constant="20" id="D6C-nf-Z8O"/>
+                        <constraint firstItem="7HL-6z-vvC" firstAttribute="centerY" secondItem="g6a-NA-cmI" secondAttribute="centerY" id="Hm4-yl-4UU"/>
+                        <constraint firstAttribute="height" constant="80" id="W5A-FC-jzp"/>
                         <constraint firstAttribute="trailing" secondItem="7HL-6z-vvC" secondAttribute="trailing" constant="20" id="hPT-bo-EH6"/>
+                        <constraint firstItem="dfT-zm-KQ5" firstAttribute="top" secondItem="g6a-NA-cmI" secondAttribute="bottom" constant="14" id="mqZ-N1-pyC"/>
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BEg-7p-RIZ">
-                    <rect key="frame" x="0.0" y="124" width="375" height="1"/>
+                    <rect key="frame" x="0.0" y="144" width="375" height="1"/>
                     <color key="backgroundColor" red="0.78117068527918776" green="0.78117068527918776" blue="0.78117068527918776" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="1" id="NJV-Yz-k1Z"/>
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="taB-Yc-ppJ">
-                    <rect key="frame" x="0.0" y="125" width="375" height="60"/>
+                    <rect key="frame" x="0.0" y="145" width="375" height="80"/>
                     <subviews>
-                        <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="WpN-YT-J0X">
-                            <rect key="frame" x="306" y="14.5" width="51" height="31"/>
-                            <connections>
-                                <action selector="backupSwitchAction:" destination="-1" eventType="touchUpInside" id="X3Q-0K-eCV"/>
-                            </connections>
-                        </switch>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="데이터 백업(iCloud)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="O0l-Ev-fhO">
-                            <rect key="frame" x="20" y="21" width="124" height="18"/>
+                            <rect key="frame" x="20" y="18" width="124" height="18"/>
                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="마지막 백업" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pbQ-EC-XBI">
+                            <rect key="frame" x="20" y="50" width="55.5" height="14.5"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                            <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uZl-hn-7gP">
+                            <rect key="frame" x="305" y="45" width="50" height="25"/>
+                            <color key="backgroundColor" red="0.1019607843" green="0.73725490199999999" blue="0.61176470589999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="50" id="N1S-lW-jiZ"/>
+                                <constraint firstAttribute="height" constant="25" id="kJn-Rq-MfH"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                            <state key="normal" title="백업">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </state>
+                            <connections>
+                                <action selector="actionBackupBtn:" destination="-1" eventType="touchUpInside" id="PYV-fo-MSp"/>
+                            </connections>
+                        </button>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstItem="O0l-Ev-fhO" firstAttribute="leading" secondItem="taB-Yc-ppJ" secondAttribute="leading" constant="20" id="5Dx-um-JLe"/>
-                        <constraint firstItem="WpN-YT-J0X" firstAttribute="centerY" secondItem="taB-Yc-ppJ" secondAttribute="centerY" id="5bY-vc-E28"/>
-                        <constraint firstAttribute="trailing" secondItem="WpN-YT-J0X" secondAttribute="trailing" constant="20" id="OBK-2V-Wgq"/>
-                        <constraint firstItem="O0l-Ev-fhO" firstAttribute="centerY" secondItem="taB-Yc-ppJ" secondAttribute="centerY" id="pfM-pc-CGq"/>
-                        <constraint firstAttribute="height" constant="60" id="wF7-kZ-MDa"/>
+                        <constraint firstItem="pbQ-EC-XBI" firstAttribute="top" secondItem="O0l-Ev-fhO" secondAttribute="bottom" constant="14" id="eQx-Ax-eu0"/>
+                        <constraint firstItem="O0l-Ev-fhO" firstAttribute="top" secondItem="taB-Yc-ppJ" secondAttribute="top" constant="18" id="ejr-7d-hzF"/>
+                        <constraint firstItem="uZl-hn-7gP" firstAttribute="centerY" secondItem="pbQ-EC-XBI" secondAttribute="centerY" id="p3f-Gz-iyJ"/>
+                        <constraint firstItem="pbQ-EC-XBI" firstAttribute="leading" secondItem="O0l-Ev-fhO" secondAttribute="leading" id="ufP-qd-OwT"/>
+                        <constraint firstAttribute="height" constant="80" id="wF7-kZ-MDa"/>
+                        <constraint firstAttribute="trailing" secondItem="uZl-hn-7gP" secondAttribute="trailing" constant="20" id="y89-vm-swa"/>
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Rqc-mi-r4b">
-                    <rect key="frame" x="0.0" y="185" width="375" height="1"/>
+                    <rect key="frame" x="0.0" y="225" width="375" height="1"/>
                     <color key="backgroundColor" red="0.7811706853" green="0.7811706853" blue="0.7811706853" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="1" id="EvH-af-YSD"/>

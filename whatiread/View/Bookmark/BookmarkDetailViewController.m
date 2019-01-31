@@ -40,7 +40,10 @@
             Quote *quote = quoteArr[self.indexPath.item];
             NSLog(@"YJ << detail quote index : %lld", quote.index);
             NSLog(@"YJ << detail quote data : %@", quote.strData);
-            NSAttributedString *attrQuote = (NSAttributedString *)quote.data;
+//            NSAttributedString *attrQuote = (NSAttributedString *)quote.data;
+            NSAttributedString *attrQuote = [NSKeyedUnarchiver unarchiveObjectWithData:(NSData *)quote.data]; // nsdate -> nsattributedstring
+//            NSData *attrData = [[NSData alloc] initWithContentsOfURL:(NSURL *)quote.data];
+//            NSAttributedString *attrQuote = [NSKeyedUnarchiver unarchiveObjectWithData:attrData];
             
             [self.textView.textStorage setAttributedString:attrQuote];
             [self.textView setContentInset:UIEdgeInsetsZero];
@@ -124,7 +127,10 @@
                         NSSortDescriptor *desc = [NSSortDescriptor sortDescriptorWithKey:@"index" ascending:YES];
                         NSArray *quoteArr = [self.book.quotes sortedArrayUsingDescriptors:[NSArray arrayWithObject:desc]];
                         Quote *quote = quoteArr[self.indexPath.item];
-                        NSAttributedString *attrQuote = (NSAttributedString *)quote.data;
+//                        NSAttributedString *attrQuote = (NSAttributedString *)quote.data;
+                    NSAttributedString *attrQuote = [NSKeyedUnarchiver unarchiveObjectWithData:(NSData *)quote.data]; // nsdate -> nsattributedstring
+//                    NSData *attrData = [[NSData alloc] initWithContentsOfURL:(NSURL *)quote.data];
+//                    NSAttributedString *attrQuote = [NSKeyedUnarchiver unarchiveObjectWithData:attrData];
                     
                         [self.textView setAttributedText:attrQuote];
                         [self.view layoutIfNeeded];
@@ -154,24 +160,25 @@
         
         if([resultArray count]) {
             
+//            NSAttributedString *attrStr = [qDic objectForKey:@"mQuote"];
             NSAttributedString *attrStr = [qDic objectForKey:@"mQuote"];
+            NSData *attrData = [NSKeyedArchiver archivedDataWithRootObject:attrStr]; // nsdate -> nsattributedstring
+            // test
+//            NSString *urlString = [[NSString alloc] initWithData:attrData encoding:NSUTF8StringEncoding];
+//            NSURL *url = [[NSURL alloc] initWithString:urlString];
+            //
             
             quote.date = [NSDate date];
             
             if (attrStr) {
-                quote.data = attrStr;
+//                quote.data = attrStr;
+                quote.data = attrData;
+//                quote.data = url;
                 quote.strData = attrStr.string;
             } else {
                 quote.data = @"";
                 quote.strData = @"";
-            }
-            
-            if ([qDic objectForKey:@"mImage"]) {
-                NSData *imageData = UIImagePNGRepresentation([qDic objectForKey:@"mImage"]);
-                quote.image = imageData;
-            } else {
-                quote.image = nil;
-            }
+            } 
             
             [self.quoteManagedObjectContext save:&error];
             

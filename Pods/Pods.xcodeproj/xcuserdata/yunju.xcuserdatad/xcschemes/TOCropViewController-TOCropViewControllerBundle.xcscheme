@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "C316B007CA745D081E22E6759CAD5212"
+               BlueprintIdentifier = "3974B3118FF3CDA320E810249582232B"
                BuildableName = "TOCropViewControllerBundle.bundle"
                BlueprintName = "TOCropViewController-TOCropViewControllerBundle"
                ReferencedContainer = "container:Pods.xcodeproj">
@@ -45,7 +45,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "C316B007CA745D081E22E6759CAD5212"
+            BlueprintIdentifier = "3974B3118FF3CDA320E810249582232B"
             BuildableName = "TOCropViewControllerBundle.bundle"
             BlueprintName = "TOCropViewController-TOCropViewControllerBundle"
             ReferencedContainer = "container:Pods.xcodeproj">

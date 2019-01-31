@@ -28,6 +28,7 @@
     // Do any additional setup after loading the view from its nib.
     
     [self setNaviBarType:BAR_ADD title:NSLocalizedString(@"Add Bookmark", @"") image:nil];
+    [self.navigationItem.rightBarButtonItem setTintColor:[UIColor colorWithHexString:@"1abc9c"]];
     
     // localize language
     [self.textInputLangLabel setText:NSLocalizedString(@"Text Recognition", @"")];
@@ -59,7 +60,8 @@
                 NSSortDescriptor *desc = [NSSortDescriptor sortDescriptorWithKey:@"index" ascending:YES];
                 NSArray *quoteArr = [self.book.quotes sortedArrayUsingDescriptors:[NSArray arrayWithObject:desc]];
                 Quote *quote = quoteArr[self.indexPath.item];
-                [self.textView setAttributedText:quote.data];
+                NSAttributedString *attrQuote = [NSKeyedUnarchiver unarchiveObjectWithData:(NSData *)quote.data]; // nsdate -> nsattributedstring
+                [self.textView setAttributedText:attrQuote];
             }
         }
     }
@@ -278,8 +280,16 @@
         
         [IndicatorUtil startProcessIndicator];
         
-        G8RecognitionOperation *operation = [[G8RecognitionOperation alloc] initWithLanguage:@"kor+eng"];
+//        G8RecognitionOperation *operation = [[G8RecognitionOperation alloc] initWithLanguage:@"kor+eng"];
+        G8RecognitionOperation *operation = [[G8RecognitionOperation alloc] initWithLanguage:@"kor+eng" configDictionary:nil configFileNames:nil absoluteDataPath:[NSBundle mainBundle].bundlePath engineMode:G8OCREngineModeTesseractOnly];
         operation.tesseract.image = [image g8_blackAndWhite];
+        //
+//        operation.tesseract.engineMode = G8OCREngineModeTesseractOnly;
+//        operation.tesseract.pageSegmentationMode = G8PageSegmentationModeAutoOnly;
+////        operation.tesseract.maximumRecognitionTime = 1.0;
+//        operation.delegate = self;
+//        operation.tesseract.image = image;
+        //
         operation.recognitionCompleteBlock = ^(G8Tesseract *recognizedTesseract) {
             
             strOcr = [recognizedTesseract recognizedText];
@@ -319,10 +329,6 @@
         NSAttributedString *attrStringWithImage = [NSAttributedString attributedStringWithAttachment:textAttachment];
         [self.textView.textStorage insertAttributedString:attrStringWithImage atIndex:self.textView.selectedRange.location];
         [self.textView setFont:[UIFont systemFontOfSize:14.f]];
-        
-//        NSMutableDictionary *dic = [NSMutableDictionary dictionary];
-//        //    [dic setObject:strQuote forKey:@"mQuote"];
-//        [dic setObject:image forKey:@"mImage"];
         
 //        [self createBookmark:self.book qDic:dic completed:^(BOOL isResult) {
         

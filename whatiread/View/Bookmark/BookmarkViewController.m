@@ -32,7 +32,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    UIImage *image = [UIImage imageNamed:@"icon_menu_bookmark"];
+    UIImage *image = [UIImage imageNamed:@"icon_menu_bookmark_color"];
     [self setNaviBarType:BAR_MENU title:NSLocalizedString(@"Bookmark", @"") image:image];
     
     // localize language
@@ -304,7 +304,10 @@
         
         if (quoteArr && quoteArr.count > 0) {
             Quote *quote = quoteArr[indexPath.item];
-            NSAttributedString *attrQuote = (NSAttributedString *)quote.data;
+//            NSAttributedString *attrQuote = (NSAttributedString *)quote.data;
+            NSAttributedString *attrQuote = [NSKeyedUnarchiver unarchiveObjectWithData:(NSData *)quote.data]; // nsdate -> nsattributedstring
+//            NSData *attrData = [[NSData alloc] initWithContentsOfURL:(NSURL *)quote.data];
+//            NSAttributedString *attrQuote = [NSKeyedUnarchiver unarchiveObjectWithData:attrData];
             
             if (attrQuote && attrQuote.length > 0) {
                 __block CGFloat height = [attrQuote boundingRectWithSize:CGSizeMake(cell.quoteTextView.frame.size.width, 1000) options:(NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading) context:nil].size.height;
@@ -476,7 +479,10 @@
 
     if (quoteArr && quoteArr.count > 0) {
         Quote *quote = quoteArr[indexPath.item];
-        NSAttributedString *attrQuote = (NSAttributedString *)quote.data;
+//        NSAttributedString *attrQuote = (NSAttributedString *)quote.data;
+        NSAttributedString *attrQuote = [NSKeyedUnarchiver unarchiveObjectWithData:(NSData *)quote.data]; // nsdate -> nsattributedstring
+//        NSData *attrData = [[NSData alloc] initWithContentsOfURL:(NSURL *)quote.data];
+//        NSAttributedString *attrQuote = [NSKeyedUnarchiver unarchiveObjectWithData:attrData];
         
         if (attrQuote && attrQuote.length > 0) {
             height = [attrQuote boundingRectWithSize:CGSizeMake(width-61, 1000) options:(NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading) context:nil].size.height;

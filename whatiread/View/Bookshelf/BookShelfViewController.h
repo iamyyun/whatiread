@@ -15,7 +15,9 @@
 @interface BookShelfViewController : CommonViewController <NSFetchedResultsControllerDelegate>
 
 @property (weak, nonatomic) NSFetchedResultsController <Book *> *fetchedResultsController;
+@property (weak, nonatomic) NSFetchedResultsController <Quote *> *quoteFetchedResultsController;
 @property (weak, nonatomic) NSManagedObjectContext *managedObjectContext;
+@property (weak, nonatomic) NSManagedObjectContext *quoteManagedObjectContext;
 
 // localize language
 @property (weak, nonatomic) IBOutlet UIButton *addButton;

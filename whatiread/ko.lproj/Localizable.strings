@@ -65,3 +65,14 @@
 "Complete Date *" = "완독일 *";
 "Rating *" = "평점 *";
 "Search with book quotes" = "책갈피 내용으로 검색";
+"The latest backup date is" = "최근 백업 날짜";
+"The backup data not exist." = "최근 백업 데이터가 없습니다.";
+"Picture will be saved automatically which is taken when you write the bookmark." = "책갈피 작성시 카메라로 찍은 사진이 카메라롤에 자동으로 저장됩니다.";
+"Do you want to backup your data in iCloud?" = "데이터를 iCloud에 백업하시겠습니까?";
+"iCloud is not available." = "iCloud 사용 불가능";
+"iCloud is temporarily unavailable." = "일시적으로 iCloud 사용이 불가능합니다.";
+"iCloud is disabled." = "iCloud 비활성화";
+"iCloud is disalbed. Please enable iCloud Drive in Settings->iCloud." = "iCloud 설정이 비활성화 되어 있습니다.\n설정->iCloud에서 iCloud Drive를 활성화 해주시기 바랍니다.";
+"There is no data to backup." = "백업할 데이터가 존재하지 않습니다.";
+"Do you want to restore data?" = "데이터를 복원하시겠습니까?";
+"No backup data exsits." = "백업 데이터가 존재하지 않습니다.";

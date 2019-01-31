@@ -14,10 +14,10 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "B9C3B0B519A0A7B8C2FCFF0B214A09D8"
+               BlueprintIdentifier = "9ECED5F96B4144BA1D74C50E06371449"
                BlueprintName = "GKActionSheetPicker"
                ReferencedContainer = "container:Pods.xcodeproj"
-               BuildableName = "libGKActionSheetPicker.a">
+               BuildableName = "GKActionSheetPicker.framework">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
