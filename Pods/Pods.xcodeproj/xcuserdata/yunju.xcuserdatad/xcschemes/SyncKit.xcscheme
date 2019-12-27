@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0930"
+   LastUpgradeVersion = "1100"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,10 +14,10 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "843ABE5E5C6DB166C5B556E42980F587"
+               BlueprintIdentifier = "630AE2DE3D36BE4EBD5B6B1667CC7DE1"
+               BuildableName = "SyncKit.framework"
                BlueprintName = "SyncKit"
-               ReferencedContainer = "container:Pods.xcodeproj"
-               BuildableName = "SyncKit.framework">
+               ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>

@@ -37,21 +37,36 @@
         if (self.book.quotes.count > 0) {
             NSSortDescriptor *desc = [NSSortDescriptor sortDescriptorWithKey:@"index" ascending:YES];
             NSArray *quoteArr = [self.book.quotes sortedArrayUsingDescriptors:[NSArray arrayWithObject:desc]];
-            Quote *quote = quoteArr[self.indexPath.item];
-            NSLog(@"YJ << detail quote index : %lld", quote.index);
-            NSLog(@"YJ << detail quote data : %@", quote.strData);
-//            NSAttributedString *attrQuote = (NSAttributedString *)quote.data;
+            
+            Quote *quote;
+            for (int i = 0; i < quoteArr.count; i++) {
+                Quote *preQuote = quoteArr[i];
+                if (preQuote.index == self.quoteIndex) {
+                    quote = preQuote;
+                    self.indexPath = [NSIndexPath indexPathForItem:i inSection:0];
+                }
+            }
+//            Quote *quote = quoteArr[self.indexPath.item];
             NSAttributedString *attrQuote = [NSKeyedUnarchiver unarchiveObjectWithData:(NSData *)quote.data]; // nsdate -> nsattributedstring
-//            NSData *attrData = [[NSData alloc] initWithContentsOfURL:(NSURL *)quote.data];
-//            NSAttributedString *attrQuote = [NSKeyedUnarchiver unarchiveObjectWithData:attrData];
             
             [self.textView.textStorage setAttributedString:attrQuote];
             [self.textView setContentInset:UIEdgeInsetsZero];
             self.textView.textContainerInset = UIEdgeInsetsMake(5, 5, 5, 5);
             self.textView.textContainer.lineFragmentPadding = 0;
-//            [self.textView setAttributedText:attrQuote];
         }
     }
+    
+    // top Constraint
+    if ([self isiPad]) {
+        self.topConstraint.constant = 20.f;
+    } else {
+        if ([self isAfteriPhoneX]) {
+            self.topConstraint.constant = 44.f;
+        } else {
+            self.topConstraint.constant = 20.f;
+        }
+    }
+    [self updateViewConstraints];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -94,23 +109,31 @@
     switch ([sender tag]) {
         case BTN_TYPE_DELETE:
         {
+//            AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+//            [appDelegate.alertWindow makeKeyAndVisible];
+            
             UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Delete", @"") message:NSLocalizedString(@"Do you really want to delete?", @"") preferredStyle:UIAlertControllerStyleActionSheet];
             
             NSString *strFirst = NSLocalizedString(@"Deleting", @"");
             NSString *strSecond = NSLocalizedString(@"Cancel", @"");
             UIAlertAction *firstAction = [UIAlertAction actionWithTitle:strFirst style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+//                [appDelegate.alertWindow setHidden:YES];
+                
                 if (self.bookmarkDeleteCompleted) {
                     [self popController:YES];
                     self.bookmarkDeleteCompleted(self.indexPath);
                 }
             }];
             UIAlertAction *secondAction = [UIAlertAction actionWithTitle:strSecond style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+//                [appDelegate.alertWindow setHidden:YES];
+                
                 [self dismissController:alert animated:YES];
             }];
             
             [alert addAction:firstAction];
             [alert addAction:secondAction];
             [self presentController:alert animated:YES];
+//            [appDelegate.alertWindow.rootViewController presentViewController:alert animated:YES completion:nil];
         }
             break;
         case BTN_TYPE_EDIT:
@@ -124,16 +147,13 @@
                 NSMutableDictionary *dic = [NSMutableDictionary dictionary];
                 [dic setObject:attrQuote forKey:@"mQuote"];
                 [self modifyBookmark:self.book qDic:dic indexPath:indexPath completed:^(BOOL isResult) {
-                        NSSortDescriptor *desc = [NSSortDescriptor sortDescriptorWithKey:@"index" ascending:YES];
-                        NSArray *quoteArr = [self.book.quotes sortedArrayUsingDescriptors:[NSArray arrayWithObject:desc]];
-                        Quote *quote = quoteArr[self.indexPath.item];
-//                        NSAttributedString *attrQuote = (NSAttributedString *)quote.data;
+                    NSSortDescriptor *desc = [NSSortDescriptor sortDescriptorWithKey:@"index" ascending:YES];
+                    NSArray *quoteArr = [self.book.quotes sortedArrayUsingDescriptors:[NSArray arrayWithObject:desc]];
+                    Quote *quote = quoteArr[self.indexPath.item];
                     NSAttributedString *attrQuote = [NSKeyedUnarchiver unarchiveObjectWithData:(NSData *)quote.data]; // nsdate -> nsattributedstring
-//                    NSData *attrData = [[NSData alloc] initWithContentsOfURL:(NSURL *)quote.data];
-//                    NSAttributedString *attrQuote = [NSKeyedUnarchiver unarchiveObjectWithData:attrData];
                     
-                        [self.textView setAttributedText:attrQuote];
-                        [self.view layoutIfNeeded];
+                    [self.textView setAttributedText:attrQuote];
+                    [self.view layoutIfNeeded];
                 }];
             }];
             [self pushController:addVC animated:YES];
@@ -160,20 +180,13 @@
         
         if([resultArray count]) {
             
-//            NSAttributedString *attrStr = [qDic objectForKey:@"mQuote"];
             NSAttributedString *attrStr = [qDic objectForKey:@"mQuote"];
             NSData *attrData = [NSKeyedArchiver archivedDataWithRootObject:attrStr]; // nsdate -> nsattributedstring
-            // test
-//            NSString *urlString = [[NSString alloc] initWithData:attrData encoding:NSUTF8StringEncoding];
-//            NSURL *url = [[NSURL alloc] initWithString:urlString];
-            //
             
-            quote.date = [NSDate date];
+            quote.modifyDate = [NSDate date];
             
             if (attrStr) {
-//                quote.data = attrStr;
                 quote.data = attrData;
-//                quote.data = url;
                 quote.strData = attrStr.string;
             } else {
                 quote.data = @"";
@@ -247,11 +260,6 @@
             }
         }
     }
-    
-    
-    NSLog(@"YJ << section : %ld", newIndexPath.section);
-    NSLog(@"YJ << item : %ld", newIndexPath.item);
-    
 }
 
 - (void) controllerDidChangeContent:(NSFetchedResultsController *)controller {

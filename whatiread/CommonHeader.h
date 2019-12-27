@@ -24,7 +24,7 @@
 
 // UserDefault Key
 #define SWITCH_SAVEPIC_STATUS   @"SWITCH_SAVEPIC_STATUS"    // value : SWITCH_SAVEPIC_ON / SWITCH_SAVEPIC_OFF
-#define BACKUP_DATE    @"BACKUP_DATE"
+#define BACKUP_DATE             @"BACKUP_DATE"
 
 // UserDefault Value
 #define SWITCH_SAVEPIC_ON       @"SWITCH_SAVEPIC_ON"

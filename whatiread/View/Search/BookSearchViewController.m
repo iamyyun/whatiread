@@ -21,6 +21,8 @@
     NSInteger totalCount;
     
     MTBBarcodeScanner *scanner;
+    
+    UITapGestureRecognizer *bgTap;
 }
 
 @end
@@ -44,6 +46,24 @@
     [self.collectionView registerNib:[UINib nibWithNibName:@"BookSearchCollectionViewCell" bundle:nil] forCellWithReuseIdentifier:@"BookSearchCollectionViewCell"];
     
     scanner = [[MTBBarcodeScanner alloc] initWithPreviewView:self.previewView];
+    scanner.allowTapToFocus = YES;
+    
+    // Add Observer
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillShowNote:) name:UIKeyboardWillShowNotification object:self.view.window];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillHideNote:) name:UIKeyboardWillHideNotification object:self.view.window];
+    bgTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(writeFinished)];
+    
+    // top Constraint
+    if ([self isiPad]) {
+        self.topConstraint.constant = 20.f;
+    } else {
+        if ([self isAfteriPhoneX]) {
+            self.topConstraint.constant = 44.f;
+        } else {
+            self.topConstraint.constant = 20.f;
+        }
+    }
+    [self updateViewConstraints];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -67,15 +87,9 @@
     return strResult;
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+- (void) writeFinished {
+    [self.view endEditing:YES];
 }
-*/
 
 #pragma mark - Actions
 - (IBAction)closeBtnAction:(id)sender {
@@ -85,10 +99,6 @@
 - (IBAction)scanCloseBtnAction:(id)sender {
     [self.scanView setHidden:YES];
     [scanner stopScanning];
-}
-
-- (IBAction)swtichBtnAction:(id)sender {
-    [scanner flipCamera];
 }
 
 - (IBAction)flashBtnAction:(id)sender {
@@ -101,31 +111,42 @@
     }
 }
 
-- (void) barcodeBtnAction:(id)sender {
-    
-}
-
 #pragma mark - API Request
 - (void)requestSearchBook {
     [IndicatorUtil startProcessIndicator];
+    
     NSMutableDictionary *dataDic = [NSMutableDictionary dictionary];
     [dataDic setObject:self.searchBar.text forKey:@"query"];
     [dataDic setObject:[NSString stringWithFormat:@"%i", SEARCH_COUNT_ONCE] forKey:@"display"];
     [dataDic setObject:[NSString stringWithFormat:@"%i", 1] forKey:@"start"];
     [dataDic setObject:@"sim" forKey:@"sort"];
+    
+    // request SEARCH BOOK
     [[AdminConnectionManager connManager] sendRequest:API_SEARCH_BOOK dataInfo:dataDic success:^(id responseData) {
         NSDictionary *chaDic = [responseData objectForKey:@"channel"];
         if (responseData && chaDic) {
             NSInteger count = [[chaDic objectForKey:@"display"] integerValue];
+            
+            NSMutableArray *muArr = [NSMutableArray arrayWithArray:[chaDic objectForKey:@"item"]];
+            for (int i = 0; i < count; i++) {
+                NSMutableDictionary *muDic = [NSMutableDictionary dictionaryWithDictionary:muArr[i]];
+                NSString *title = [self makeMetaToString:[muDic objectForKey:@"title"]];
+                NSString *author = [self makeMetaToString:[muDic objectForKey:@"author"]];
+                
+                [muDic setObject:title forKey:@"title"];
+                [muDic setObject:author forKey:@"author"];
+                
+                [muArr replaceObjectAtIndex:i withObject:muDic];
+            }
+            
             if (count == 1) {
-                searchArr = @[[chaDic objectForKey:@"item"]];
+                searchArr = @[muArr];
             } else {
-                searchArr = [chaDic objectForKey:@"item"];
+                searchArr = muArr;
             }
             
             searchIndex = [[chaDic objectForKey:@"start"] integerValue];
             totalCount = [[chaDic objectForKey:@"total"] integerValue];
-            NSLog(@"YJ << book search data : %@", searchArr);
             
             if (!searchArr || searchArr.count <= 0) {
                 [self.collectionView setHidden:YES];
@@ -134,40 +155,55 @@
                 [self.collectionView setHidden:NO];
                 [self.emptyView setHidden:YES];
             }
+            
             [self.collectionView reloadData];
+            
             [IndicatorUtil stopProcessIndicator];
         }
     } failure:^(NSError *error, NSString *serverFault) {
-        
+        [IndicatorUtil stopProcessIndicator];
+        [self.view makeToast:NSLocalizedString(@"Network Error", @"")];
     }];
 }
 
 - (void)requestSearchBookDetail:(NSString *)strBarcode {
     [IndicatorUtil startProcessIndicator];
+    
     NSMutableDictionary *dataDic = [NSMutableDictionary dictionary];
-//    [dataDic setObject:self.searchBar.text forKey:@"query"];
-//    [dataDic setObject:[NSString stringWithFormat:@"%i", SEARCH_COUNT_ONCE] forKey:@"display"];
-//    [dataDic setObject:[NSString stringWithFormat:@"%i", 1] forKey:@"start"];
-//    [dataDic setObject:@"sim" forKey:@"sort"];
     [dataDic setObject:strBarcode forKey:@"d_isbn"];
+    
+    // request BOOK DETAIL
     [[AdminConnectionManager connManager] sendRequest:API_SEARCH_BOOK_DETAIL dataInfo:dataDic success:^(id responseData) {
         NSDictionary *chaDic = [responseData objectForKey:@"channel"];
         if (responseData && chaDic) {
             totalCount = [[chaDic objectForKey:@"total"] integerValue];
             if (totalCount == 0) {
+//                AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+//                [appDelegate.alertWindow makeKeyAndVisible];
+                
                 UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"There is no result.", @"") message:nil preferredStyle:UIAlertControllerStyleAlert];
-                UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Confirm", @"") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {}];
+                UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Confirm", @"") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+//                    [appDelegate.alertWindow setHidden:YES];
+                }];
                 [alert addAction:okAction];
                 [self presentController:alert animated:YES];
+//                [appDelegate.alertWindow.rootViewController presentViewController:alert animated:YES completion:nil];
+
             } else {
                 
                 NSDictionary *dic = [chaDic objectForKey:@"item"];
                 NSString *strTitle = [dic objectForKey:@"title"];
                 
+//                AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+//                [appDelegate.alertWindow makeKeyAndVisible];
+                
                 UIAlertController *alert = [UIAlertController alertControllerWithTitle:[NSString stringWithFormat:NSLocalizedString(@"Do you want to add [%@] in Bookshelf?", @""), [self makeMetaToString:strTitle]] message:nil preferredStyle:UIAlertControllerStyleAlert];
                 UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"") style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+//                    [appDelegate.alertWindow setHidden:YES];
                 }];
                 UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Confirm", @"") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+//                    [appDelegate.alertWindow setHidden:YES];
+                    
                     if (self.bookSelectCompleted) {
                         self.bookSelectCompleted(dic);
                         [self dismissViewControllerAnimated:YES completion:nil];
@@ -176,11 +212,14 @@
                 [alert addAction:cancelAction];
                 [alert addAction:okAction];
                 [self presentController:alert animated:YES];
+//                [appDelegate.alertWindow.rootViewController presentViewController:alert animated:YES completion:nil];
             }
+            
             [IndicatorUtil stopProcessIndicator];
         }
     } failure:^(NSError *error, NSString *serverFault) {
-        
+        [IndicatorUtil stopProcessIndicator];
+        [self.view makeToast:NSLocalizedString(@"Network Error", @"")];
     }];
 }
 
@@ -189,7 +228,9 @@
 {
     [self.searchBar setText:@""];
     [self.view endEditing:YES];
+    
     searchArr = [NSMutableArray array];
+    
     [self.collectionView reloadData];
 }
 
@@ -201,6 +242,8 @@
 
 - (void)searchBarBookmarkButtonClicked:(UISearchBar *)searchBar
 {
+    [self writeFinished];
+    
     [self.scanView setHidden:NO];
     [MTBBarcodeScanner requestCameraPermissionWithSuccess:^(BOOL success) {
         if (success) {
@@ -218,6 +261,19 @@
             
         } else {
             // The user denied access to the camera
+            [self.scanView setHidden:YES];
+            [scanner stopScanning];
+            
+//            AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+//            [appDelegate.alertWindow makeKeyAndVisible];
+            
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Camera Access Denied", @"") message:NSLocalizedString(@"App needs camera access.\nTo do this, go to Settings > Privacy > Camera on your device.", @"") preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Confirm", @"") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+//                [appDelegate.alertWindow setHidden:YES];
+            }];
+            [alert addAction:okAction];
+            [self presentController:alert animated:YES];
+//            [appDelegate.alertWindow.rootViewController presentViewController:alert animated:YES completion:nil];
         }
     }];
 }
@@ -229,6 +285,7 @@
 
 #pragma mark - UICollectionViewDataSource
 - (nonnull __kindof UICollectionViewCell *)collectionView:(nonnull UICollectionView *)collectionView cellForItemAtIndexPath:(nonnull NSIndexPath *)indexPath {
+    
     NSString *cellIdentifier = @"BookSearchCollectionViewCell";
     BookSearchCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:cellIdentifier forIndexPath:indexPath];
     if (!cell) {
@@ -237,8 +294,8 @@
     
     NSDictionary *dic = searchArr[indexPath.item];
     if (dic) {
-        NSString *strTitle = [NSString stringWithFormat:@"%@ (%@)", [self makeMetaToString:[dic objectForKey:@"title"]], [dic objectForKey:@"pubdate"]];
-        NSString *strDesc = [NSString stringWithFormat:@"%@ | %@", [self makeMetaToString:[dic objectForKey:@"author"]], [dic objectForKey:@"publisher"]];
+        NSString *strTitle = [NSString stringWithFormat:@"%@ (%@)", [dic objectForKey:@"title"], [dic objectForKey:@"pubdate"]];
+        NSString *strDesc = [NSString stringWithFormat:@"%@ | %@", [dic objectForKey:@"author"], [dic objectForKey:@"publisher"]];
         
         [cell.titleLabel setText:strTitle];
         [cell.descLabel setText:strDesc];
@@ -271,16 +328,24 @@
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath;
 {
     BookSearchCollectionViewCell *cell = (BookSearchCollectionViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
+    
     [cell.checkImgView setHidden:NO];
     
     NSDictionary *dic = searchArr[indexPath.item];
     NSString *strTitle = [dic objectForKey:@"title"];
     
+//    AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+//    [appDelegate.alertWindow makeKeyAndVisible];
+    
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:[NSString stringWithFormat:NSLocalizedString(@"Do you want to add [%@] in Bookshelf?", @""), [self makeMetaToString:strTitle]] message:nil preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"") style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+//        [appDelegate.alertWindow setHidden:YES];
+        
         [cell.checkImgView setHidden:YES];
     }];
     UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Confirm", @"") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+//        [appDelegate.alertWindow setHidden:YES];
+        
         if (self.bookSelectCompleted) {
             NSDictionary *dic = searchArr[indexPath.item];
             self.bookSelectCompleted(dic);
@@ -289,7 +354,9 @@
     }];
     [alert addAction:cancelAction];
     [alert addAction:okAction];
+    
     [self presentController:alert animated:YES];
+//    [appDelegate.alertWindow.rootViewController presentViewController:alert animated:YES completion:nil];
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
@@ -299,32 +366,72 @@
 
 #pragma mark - UIScrollViewDelegate
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+    
     float bottomEdge = scrollView.contentOffset.y + scrollView.frame.size.height;
     if (bottomEdge >= scrollView.contentSize.height) {
-        NSLog(@"YJ << scrollview did end deceleratgin");
+        
         if ((searchIndex * SEARCH_COUNT_ONCE) < totalCount) {
+            
             [IndicatorUtil startProcessIndicator];
+            
             NSMutableDictionary *dataDic = [NSMutableDictionary dictionary];
             [dataDic setObject:self.searchBar.text forKey:@"query"];
             [dataDic setObject:[NSString stringWithFormat:@"%i", SEARCH_COUNT_ONCE] forKey:@"display"];
             [dataDic setObject:[NSString stringWithFormat:@"%i", (searchIndex+1)] forKey:@"start"];
             [dataDic setObject:@"sim" forKey:@"sort"];
+            
             [[AdminConnectionManager connManager] sendRequest:API_SEARCH_BOOK dataInfo:dataDic success:^(id responseData) {
                 NSDictionary *chaDic = [responseData objectForKey:@"channel"];
                 if (responseData && chaDic) {
-                    [searchArr addObjectsFromArray:[chaDic objectForKey:@"item"]];
-//                    [searchArr addObject:[chaDic objectForKey:@"item"]];
+                    NSInteger count = [[chaDic objectForKey:@"display"] integerValue];
+                    
+                    NSMutableArray *muArr = [NSMutableArray arrayWithArray:[chaDic objectForKey:@"item"]];
+                    for (int i = 0; i < count; i++) {
+                        NSMutableDictionary *muDic = [NSMutableDictionary dictionaryWithDictionary:muArr[i]];
+                        NSString *title = [self makeMetaToString:[muDic objectForKey:@"title"]];
+                        NSString *author = [self makeMetaToString:[muDic objectForKey:@"author"]];
+                        
+                        [muDic setObject:title forKey:@"title"];
+                        [muDic setObject:author forKey:@"author"];
+                        
+                        [muArr replaceObjectAtIndex:i withObject:muDic];
+                    }
+                    
+                    [searchArr addObjectsFromArray:muArr];
                     searchIndex = [[chaDic objectForKey:@"start"] integerValue];
                     totalCount = [[chaDic objectForKey:@"total"] integerValue];
-                    NSLog(@"YJ << book search data : %@", searchArr);
+                    
                     [self.collectionView reloadData];
+                    
                     [IndicatorUtil stopProcessIndicator];
                 }
             } failure:^(NSError *error, NSString *serverFault) {
-                
+                [IndicatorUtil stopProcessIndicator];
+                [self.view makeToast:NSLocalizedString(@"Network Error", @"")];
             }];
         }
     }
+}
+
+#pragma mark - keyboard actions
+- (void)handleKeyboardWillShowNote:(NSNotification *)notification
+{
+    [self.view addGestureRecognizer:bgTap];
+    
+    NSDictionary* userInfo = [notification userInfo];
+    CGSize keyboardSize = [[userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
+    
+    [self.view updateConstraints];
+}
+
+- (void)handleKeyboardWillHideNote:(NSNotification *)notification
+{
+    [self.view removeGestureRecognizer:bgTap];
+    
+    NSDictionary* userInfo = [notification userInfo];
+    CGSize keyboardSize = [[userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
+    
+    [self.view updateConstraints];
 }
 
 @end

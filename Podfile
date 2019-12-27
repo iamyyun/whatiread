@@ -8,7 +8,7 @@ target 'whatiread' do
   # Pods for whatiread
 	pod 'RateView'
 	pod 'DatePickerDialog-ObjC', '~> 1.2'
-	pod 'GKActionSheetPicker'
+	pod 'GKActionSheetPicker', '~> 0.5'
 	pod 'AFNetworking', '~> 3.0'
 	pod 'SDWebImage', '~> 4.0'
 	pod 'MTBBarcodeScanner'

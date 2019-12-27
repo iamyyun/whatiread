@@ -15,23 +15,23 @@ PODS:
   - AFNetworking/UIKit (3.2.1):
     - AFNetworking/NSURLSession
   - DatePickerDialog-ObjC (1.2)
-  - GKActionSheetPicker (0.5.1)
-  - MTBBarcodeScanner (5.0.8)
+  - GKActionSheetPicker (0.6)
+  - MTBBarcodeScanner (5.0.11)
   - RateView (1.2)
-  - SDWebImage (4.4.3):
-    - SDWebImage/Core (= 4.4.3)
-  - SDWebImage/Core (4.4.3)
+  - SDWebImage (4.4.7):
+    - SDWebImage/Core (= 4.4.7)
+  - SDWebImage/Core (4.4.7)
   - SyncKit/Core (0.6.11)
   - SyncKit/CoreData (0.6.11):
     - SyncKit/Core
   - TesseractOCRiOS (5.0.1)
   - Toast (3.1.0)
-  - TOCropViewController (2.4.0)
+  - TOCropViewController (2.5.2)
 
 DEPENDENCIES:
   - AFNetworking (~> 3.0)
   - DatePickerDialog-ObjC (~> 1.2)
-  - GKActionSheetPicker
+  - GKActionSheetPicker (~> 0.5)
   - MTBBarcodeScanner
   - RateView
   - SDWebImage (~> 4.0)
@@ -56,15 +56,15 @@ SPEC REPOS:
 SPEC CHECKSUMS:
   AFNetworking: b6f891fdfaed196b46c7a83cf209e09697b94057
   DatePickerDialog-ObjC: 63266ee38d3d7b8b7a3e03f7512693b940baaddd
-  GKActionSheetPicker: c44947e518cda1e68f5ebb17007ef1a9d7d741df
-  MTBBarcodeScanner: 5b97f10a037e2560ff104da413343c5ce9413911
+  GKActionSheetPicker: 9da1d9c55f73008b964f0f8bc8ff277d0e339cf1
+  MTBBarcodeScanner: f453b33c4b7dfe545d8c6484ed744d55671788cb
   RateView: d4d12e9bb76dc23a77a56f4e5c5fb530a3f3f998
-  SDWebImage: c5594f1a19c48d526d321e548902b56b479cd508
+  SDWebImage: c10d14a8883ebd89664f02a422006f66a85c0c5d
   SyncKit: e24a70542381d5af1a2b72875ebd4c94ceda3f5e
   TesseractOCRiOS: 2c189465f86abb030d0c5141c90da9705b647854
   Toast: 14a93686d6c8bfe2727afd342414e35660a8a1f3
-  TOCropViewController: 368d8df3ea43b62c3dc5a61f11b9048274d240bd
+  TOCropViewController: e9da34f484aedd4e5d5a8ab230ba217cfe16c729
 
-PODFILE CHECKSUM: 038694e5006f01f759478b25c6095ff90d1a1ede
+PODFILE CHECKSUM: a361dcb15999511256914d509ccc57e2471213ff
 
-COCOAPODS: 1.5.3
+COCOAPODS: 1.6.1

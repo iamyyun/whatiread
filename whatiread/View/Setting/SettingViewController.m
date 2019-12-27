@@ -51,6 +51,18 @@
         strDate = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"The latest backup date is", @""), strBuDate];
     }
     [self.backupDescLabel setText:strDate];
+    
+    // top Constraint
+    if ([self isiPad]) {
+        self.topConstraint.constant = 64.f;
+    } else {
+        if ([self isAfteriPhoneX]) {
+            self.topConstraint.constant = 88.f;
+        } else {
+            self.topConstraint.constant = 64.f;
+        }
+    }
+    [self updateViewConstraints];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -61,25 +73,11 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [CloudKitManager fetchAllBooksWithCompletionHandler:^(NSArray *result, NSError *error) {
-        NSLog(@"YJ << book result : %@", result);
-        NSLog(@"YJ << book error : %@", error.userInfo[NSLocalizedDescriptionKey]);
     }];
     
     [CloudKitManager fetchAllQuotesWithCompletionHandler:^(NSArray *results, NSError *error) {
-        NSLog(@"YJ << quote result : %@", results);
-        NSLog(@"YJ << quote error : %@", error.userInfo[NSLocalizedDescriptionKey]);
     }];
 }
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 #pragma mark - Actions
 - (IBAction)savePicSwitchAction:(id)sender {
@@ -99,13 +97,23 @@
                     [self showAlertViewController:NSLocalizedString(@"iCloud is not available.", @"") msg:NSLocalizedString(@"iCloud is temporarily unavailable.", @"")];
                 } else {
                     if (accountStatus == CKAccountStatusAvailable) {
+                        // need another uiWindow in ios13
+//                        AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+//                        [appDelegate.alertWindow makeKeyAndVisible];
+                        
                         UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Do you want to backup your data in iCloud?", @"") message:nil preferredStyle:UIAlertControllerStyleAlert];
                         UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"") style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+//                            [appDelegate.alertWindow setHidden:YES];
                         }];
                         UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Confirm", @"") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+//                            [appDelegate.alertWindow setHidden:YES];
                             [self dismissViewControllerAnimated:YES completion:nil];
                             
-                            // iCloud data 삭제
+                            dispatch_async(dispatch_get_main_queue(), ^{
+                                [IndicatorUtil startProcessIndicator];
+                            });
+                            
+                            // Delete All iCloud Data
                             [CloudKitManager fetchAllQuotesWithCompletionHandler:^(NSArray *results, NSError *error) {
                                 if (!error || error.code == 11) {
                                     if (results && results.count > 0) {
@@ -113,20 +121,24 @@
                                             if (!error) {
                                                 [self deleteBooksAndBackup];
                                             } else {
-                                                NSLog(@"YJ << delete quotes data in iCloud failed");
+                                                [IndicatorUtil stopProcessIndicator];
+                                                [self.view makeToast:NSLocalizedString(@"Data backup failed!", @"")];
                                             }
                                         }];
                                     } else {
                                         [self deleteBooksAndBackup];
                                     }
+                                } else {
+                                    [IndicatorUtil stopProcessIndicator];
+                                    [self.view makeToast:NSLocalizedString(@"Data backup failed!", @"")];
                                 }
                             }];
                         }];
                         [alert addAction:cancelAction];
                         [alert addAction:okAction];
                         [self presentController:alert animated:YES];
+//                        [appDelegate.alertWindow.rootViewController presentViewController:alert animated:YES completion:nil];
                     } else {
-                        NSLog(@"YJ << iCloud account is not available");
                         [self showAlertViewController:NSLocalizedString(@"iCloud is not available.", @"") msg:NSLocalizedString(@"iCloud is temporarily unavailable.", @"")];
                     }
                 }
@@ -147,14 +159,19 @@
             if (result && result.count > 0) {
                 [CloudKitManager removeBookRecord:result completionHandler:^(NSArray *results, NSError *error) {
                     if (!error) {
+                        // back up data
                         [self backupCoreDataToiCloud];
                     } else {
-                        NSLog(@"YJ << iCloud data delete failed");
+                        [IndicatorUtil stopProcessIndicator];
+                        [self.view makeToast:NSLocalizedString(@"Data backup failed!", @"")];
                     }
                 }];
             } else {
                 [self backupCoreDataToiCloud];
             }
+        } else {
+            [IndicatorUtil stopProcessIndicator];
+            [self.view makeToast:NSLocalizedString(@"Data backup failed!", @"")];
         }
     }];
 }
@@ -170,44 +187,69 @@
         [muQuoteArr addObjectsFromArray:quoteArr];
     }
     
-    NSLog(@"YJ << books count : %lu", (unsigned long)bookArr.count);
-    NSLog(@"YJ << quotes count : %lu", (unsigned long)muQuoteArr.count);
-    
+    // Create Book CKRecord
     [CloudKitManager createBookRecord:bookArr completionHandler:^(NSArray *result, NSError *error) {
         if (error) {
+            [IndicatorUtil stopProcessIndicator];
             NSLog(@"YJ << book backup error : %@", error.userInfo[NSLocalizedDescriptionKey]);
-            [self.view makeToast:@"데이터 백업 실패!"];
+            [self.view makeToast:NSLocalizedString(@"Data backup succeeded!", @"")];
         } else {
-            NSLog(@"YJ << book backup success");
-            [CloudKitManager createQuoteRecord:muQuoteArr completionHandler:^(NSArray *result, NSError *error) {
-                if (error) {
-                    NSLog(@"YJ << quote backup error : %@", error.userInfo[NSLocalizedDescriptionKey]);
-                    [self.view makeToast:@"데이터 백업 실패!"];
-                } else {
-                    NSLog(@"YJ << quote backup success");
-                    [self.view makeToast:@"데이터 백업 성공!"];
-                    [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:BACKUP_DATE];
-                    
-                    NSString *strDate = @"";
-                    NSDate *date = [[NSUserDefaults standardUserDefaults] objectForKey:BACKUP_DATE];
-                    NSString *strBuDate = [NSDate NSDateChangeToNSString:date];
-                    if (!strBuDate || strBuDate.length <= 0) {
-                        strDate = NSLocalizedString(@"The backup data not exist.", @"");
+            if (muQuoteArr.count > 0) {
+                // Create Quote CKRecord
+                [CloudKitManager createQuoteRecord:muQuoteArr completionHandler:^(NSArray *result, NSError *error) {
+                    if (error) {
+                        NSLog(@"YJ << quote backup error : %@", error.userInfo[NSLocalizedDescriptionKey]);
+                        [IndicatorUtil stopProcessIndicator];
+                        [self.view makeToast:NSLocalizedString(@"Data backup failed!", @"")];
                     } else {
-                        strDate = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"The latest backup date is", @""), strBuDate];
+                        [self.view makeToast:NSLocalizedString(@"Data backup succeeded!", @"")];
+                        [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:BACKUP_DATE];
+                        
+                        NSString *strDate = @"";
+                        NSDate *date = [[NSUserDefaults standardUserDefaults] objectForKey:BACKUP_DATE];
+                        NSString *strBuDate = [NSDate NSDateChangeToNSString:date];
+                        if (!strBuDate || strBuDate.length <= 0) {
+                            strDate = NSLocalizedString(@"The backup data not exist.", @"");
+                        } else {
+                            strDate = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"The latest backup date is", @""), strBuDate];
+                        }
+                        [self.backupDescLabel setText:strDate];
+                        [self.view layoutIfNeeded];
+                        
+                        [IndicatorUtil stopProcessIndicator];
                     }
-                    [self.backupDescLabel setText:strDate];
-                    [self.view layoutIfNeeded];
+                }];
+            } else {
+                [self.view makeToast:NSLocalizedString(@"Data backup succeeded!", @"")];
+                [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:BACKUP_DATE];
+                
+                NSString *strDate = @"";
+                NSDate *date = [[NSUserDefaults standardUserDefaults] objectForKey:BACKUP_DATE];
+                NSString *strBuDate = [NSDate NSDateChangeToNSString:date];
+                if (!strBuDate || strBuDate.length <= 0) {
+                    strDate = NSLocalizedString(@"The backup data not exist.", @"");
+                } else {
+                    strDate = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"The latest backup date is", @""), strBuDate];
                 }
-            }];
+                [self.backupDescLabel setText:strDate];
+                [self.view layoutIfNeeded];
+                
+                [IndicatorUtil stopProcessIndicator];
+            }
         }
     }];
 }
 
 - (void)showAlertViewController:(NSString *)title msg:(NSString *)msg {
+//    AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+//    [appDelegate.alertWindow makeKeyAndVisible];
+    
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:title message:msg preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Confirm", @"") style:UIAlertActionStyleDefault handler:nil];
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Confirm", @"") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        
+    }];
     [alert addAction:okAction];
+    
     [self presentController:alert animated:YES];
 }
 

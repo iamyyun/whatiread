@@ -95,6 +95,18 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillShowNote:) name:UIKeyboardWillShowNotification object:self.view.window];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillHideNote:) name:UIKeyboardWillHideNotification object:self.view.window];
     bgTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(writeFinished)];
+    
+    // top Constraint
+    if ([self isiPad]) {
+        self.topConstraint.constant = 64.f;
+    } else {
+        if ([self isAfteriPhoneX]) {
+            self.topConstraint.constant = 88.f;
+        } else {
+            self.topConstraint.constant = 64.f;
+        }
+    }
+    [self updateViewConstraints];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -132,18 +144,25 @@
 - (void)leftBarBtnClick:(id)sender {
     
     if (isEdited) {
+//        AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+//        [appDelegate.alertWindow makeKeyAndVisible];
+        
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Close", @"") message:NSLocalizedString(@"Finish writing the book information.", @"") preferredStyle:UIAlertControllerStyleActionSheet];
         
         NSString *strFirst = NSLocalizedString(@"Keep writing", @"");
         NSString *strSecond = NSLocalizedString(@"Delete & Leave", @"");
         NSString *strThird = NSLocalizedString(@"Save & Leave", @"");
         UIAlertAction *firstAction = [UIAlertAction actionWithTitle:strFirst style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-            
+//            [appDelegate.alertWindow setHidden:YES];
         }];
         UIAlertAction *secondAction = [UIAlertAction actionWithTitle:strSecond style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+//            [appDelegate.alertWindow setHidden:YES];
+            
             [self popController:YES];
         }];
         UIAlertAction *thirdAction = [UIAlertAction actionWithTitle:strThird style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+//            [appDelegate.alertWindow setHidden:YES];
+            
             [self rightBarBtnClick:nil];
         }];
         
@@ -151,53 +170,41 @@
         [alert addAction:secondAction];
         [alert addAction:thirdAction];
         [self presentController:alert animated:YES];
+//        [appDelegate.alertWindow.rootViewController presentViewController:alert animated:YES completion:nil];
     } else {
         [self popController:YES];
     }
-    
-//    if (self.isModifyMode) {
-//        [self popController:YES];
-//    }
-//    else {
-//        UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Close", @"") message:@"작성중인 글이 있습니다." preferredStyle:UIAlertControllerStyleActionSheet];
-//
-//        NSString *strFirst = @"계속 쓰기";
-//        NSString *strSecond = @"삭제하고 나가기";
-//        NSString *strThird = @"저장하고 나가기";
-//        UIAlertAction *firstAction = [UIAlertAction actionWithTitle:strFirst style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-//
-//        }];
-//        UIAlertAction *secondAction = [UIAlertAction actionWithTitle:strSecond style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-//            [self popController:YES];
-//        }];
-//        UIAlertAction *thirdAction = [UIAlertAction actionWithTitle:strThird style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-//            [self rightBarBtnClick:nil];
-//        }];
-//
-//        [alert addAction:firstAction];
-//        [alert addAction:secondAction];
-//        [alert addAction:thirdAction];
-//        [self presentController:alert animated:YES];
-//    }
 }
 
 - (void)rightBarBtnClick:(id)sender
 {
+//    AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+//    [appDelegate.alertWindow makeKeyAndVisible];
+    
     if (self.titleTextField.text.length <= 0) {
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Please write title.", @"") message:nil preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Confirm", @"") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {}];
+        UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Confirm", @"") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+//            [appDelegate.alertWindow setHidden:YES];
+        }];
         [alert addAction:okAction];
         [self presentController:alert animated:YES];
+//        [appDelegate.alertWindow.rootViewController presentViewController:alert animated:YES completion:nil];
     } else if (self.authorTextField.text.length <= 0) {
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Please write author.", @"") message:nil preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Confirm", @"") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {}];
+        UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Confirm", @"") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+//            [appDelegate.alertWindow setHidden:YES];
+        }];
         [alert addAction:okAction];
         [self presentController:alert animated:YES];
+//        [appDelegate.alertWindow.rootViewController presentViewController:alert animated:YES completion:nil];
     } else if (self.rateView.rating == 0) {
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Please rate the book.", @"") message:nil preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Confirm", @"") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {}];
+        UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Confirm", @"") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+//            [appDelegate.alertWindow setHidden:YES];
+        }];
         [alert addAction:okAction];
         [self presentController:alert animated:YES];
+//        [appDelegate.alertWindow.rootViewController presentViewController:alert animated:YES completion:nil];
     }
     else {
         if (self.isModifyMode) {

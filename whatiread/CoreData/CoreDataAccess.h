@@ -19,8 +19,6 @@ typedef void (^QuoteDataCompletionHandler)(Quote *quote);
 + (CoreDataAccess *)sharedInstance;
 + (void)removeInstance;
 
-//@property (readonly, strong) NSPersistentContainer *persistentContainer;
-
 @property (strong, nonatomic) NSFetchedResultsController <Book *> *fetchedResultsController;
 @property (strong, nonatomic) NSFetchedResultsController <Quote *> *quoteFetchedResultsController;
 @property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
@@ -31,6 +29,5 @@ typedef void (^QuoteDataCompletionHandler)(Quote *quote);
 
 - (void)mapBook:(CKRecord *)record completionHandler:(BookDataCompletionHandler)handler;
 - (void)mapQuote:(CKRecord *)record completionHandler:(QuoteDataCompletionHandler)handler;
-//- (Quote *)mapQuote:(CKRecord *)record;
 
 @end

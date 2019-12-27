@@ -21,14 +21,15 @@
 
 + (IndicatorUtil *)sharedIndicator;
 + (void)startProcessIndicator;
++ (void)startProcessIndicator:(NSString *)title;
 + (void)stopProcessIndicator;
 
-- (void)startAlertIndicator;
-- (void)startAlertIndicator:(NSString*)title;
+- (void)startAlertIndicator:(NSString *)title;
+- (void)startAlertIndicator:(NSString*)title isShow:(BOOL)isShow;
 - (void)stopAlertIndicator;
 - (BOOL)isAnimating;
 
-- (void)loadIndicator;
+- (void)loadIndicator:(NSString *)title;
 
 
 @end

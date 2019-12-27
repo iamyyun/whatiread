@@ -30,6 +30,9 @@
 @property (weak, nonatomic) IBOutlet UIView *emptyView;
 @property (weak, nonatomic) IBOutlet UIView *dimBgView;
 
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *topSearchConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *topConstraint;
+
 @property (nonatomic, strong) NSBlockOperation *updateBlock;
 
 - (IBAction)sortBtnAction:(id)sender;

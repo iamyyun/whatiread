@@ -111,7 +111,8 @@
             }];
         }
     } else {
-        [self showAlert:@"에러" message:@"네트워크 연결 상태를 확인해주세요."];
+        [IndicatorUtil stopProcessIndicator];
+        [self showAlert:NSLocalizedString(@"Error", @"") message:NSLocalizedString(@"Please check your network connection.", @"")];
     }
 }
 
@@ -125,7 +126,7 @@
                 if (responseObject) {
                     NSString* newStr = [[NSString alloc] initWithData:responseObject
                                                              encoding:NSUTF8StringEncoding];
-                    NSLog(@"get connection manager - success string = %@", newStr);
+//                    NSLog(@"get connection manager - success string = %@", newStr);
                     NSDictionary *resDic = [NSDictionary dictionaryWithXMLData:responseObject];
                     if (resDic) {
                         success(resDic);
@@ -137,7 +138,8 @@
             }];
         }
     } else {
-        [self showAlert:@"에러" message:@"네트워크 연결 상태를 확인해주세요."];
+        [IndicatorUtil stopProcessIndicator];
+        [self showAlert:NSLocalizedString(@"Error", @"") message:NSLocalizedString(@"Please check your network connection.", @"")];
     }
 }
 
@@ -161,6 +163,9 @@
 // show alert
 -(void)showAlert:(NSString *)title message:(NSString *)message
 {
+//    AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+//    [appDelegate.alertWindow makeKeyAndVisible];
+    
     UIAlertController * alert=   [UIAlertController
                                   alertControllerWithTitle:title
                                   message:message
@@ -171,12 +176,15 @@
                          style:UIAlertActionStyleDefault
                          handler:^(UIAlertAction * action)
                          {
-                             [alert dismissViewControllerAnimated:YES completion:nil];
+//        [appDelegate.alertWindow setHidden:YES];
+        
+                            [alert dismissViewControllerAnimated:YES completion:nil];
                          }];
     
     [alert addAction:ok];
     
     [SHAREDAPPDELEGATE.navigationController.topViewController presentViewController:alert animated:YES completion:nil];
+//    [appDelegate.alertWindow.rootViewController presentViewController:alert animated:YES completion:nil];
 }
 
 @end

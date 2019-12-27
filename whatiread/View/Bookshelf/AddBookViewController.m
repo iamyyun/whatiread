@@ -10,7 +10,7 @@
 #import "LSLDatePickerDialog.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 
-@interface AddBookViewController () <UITextFieldDelegate, UITextViewDelegate, UIImagePickerControllerDelegate> {
+@interface AddBookViewController () <UITextFieldDelegate, UITextViewDelegate, UIImagePickerControllerDelegate, RateViewDelegate> {
     UITapGestureRecognizer *bgTap;
     
     NSDate *publishDate;
@@ -59,6 +59,9 @@
     
     if (self.isModifyMode) {
         if (self.book) {
+            [self.rateLangLabel setText:NSLocalizedString(@"Rating *", @"")];
+            [self.compDateTextField setPlaceholder:NSLocalizedString(@"Complete Date *", @"")];
+            
             [self.titleLabel setUserInteractionEnabled:NO];
             [self.authorLabel setUserInteractionEnabled:NO];
             [self.publisherLabel setUserInteractionEnabled:NO];
@@ -97,6 +100,9 @@
     } else {
         if (self.bookDic) {
             
+            [self.rateLangLabel setText:NSLocalizedString(@"Rating *", @"")];
+            [self.compDateTextField setPlaceholder:NSLocalizedString(@"Complete Date *", @"")];
+            
             NSDateFormatter *format = [[NSDateFormatter alloc] init];
             [format setDateFormat:@"yyyy.MM.dd"];
             NSString *strDate = [format stringFromDate:compDate];
@@ -132,6 +138,18 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillShowNote:) name:UIKeyboardWillShowNotification object:self.view.window];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillHideNote:) name:UIKeyboardWillHideNotification object:self.view.window];
     bgTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(writeFinished)];
+    
+    // top Constraint
+    if ([self isiPad]) {
+        self.topConstraint.constant = 64.f;
+    } else {
+        if ([self isAfteriPhoneX]) {
+            self.topConstraint.constant = 88.f;
+        } else {
+            self.topConstraint.constant = 64.f;
+        }
+    }
+    [self updateViewConstraints];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -200,18 +218,25 @@
     if (self.isModifyMode) {
         [self popController:YES];
     } else {
+//        AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+//        [appDelegate.alertWindow makeKeyAndVisible];
+        
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Close", @"") message:NSLocalizedString(@"Finish writing the book information.", @"") preferredStyle:UIAlertControllerStyleActionSheet];
         
         NSString *strFirst = NSLocalizedString(@"Keep writing", @"");
         NSString *strSecond = NSLocalizedString(@"Delete & Leave", @"");
         NSString *strThird = NSLocalizedString(@"Save & Leave", @"");
         UIAlertAction *firstAction = [UIAlertAction actionWithTitle:strFirst style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-            
+//            [appDelegate.alertWindow setHidden:YES];
         }];
         UIAlertAction *secondAction = [UIAlertAction actionWithTitle:strSecond style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+//            [appDelegate.alertWindow setHidden:YES];
+            
             [self popController:YES];
         }];
         UIAlertAction *thirdAction = [UIAlertAction actionWithTitle:strThird style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+//            [appDelegate.alertWindow setHidden:YES];
+            
             [self rightBarBtnClick:nil];
         }];
         
@@ -219,16 +244,23 @@
         [alert addAction:secondAction];
         [alert addAction:thirdAction];
         [self presentController:alert animated:YES];
+//        [appDelegate.alertWindow.rootViewController presentViewController:alert animated:YES completion:nil];
     }
 }
 
 - (void)rightBarBtnClick:(id)sender
 {
     if (self.rateView.rating == 0) {
+//        AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+//        [appDelegate.alertWindow makeKeyAndVisible];
+        
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Please rate the book.", @"") message:nil preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Confirm", @"") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {}];
+        UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Confirm", @"") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+//            [appDelegate.alertWindow setHidden:YES];
+        }];
         [alert addAction:okAction];
         [self presentController:alert animated:YES];
+//         [appDelegate.alertWindow.rootViewController presentViewController:alert animated:YES completion:nil];
     }
     else {
         if (self.isModifyMode) {

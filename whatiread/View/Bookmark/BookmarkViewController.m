@@ -53,9 +53,6 @@
     self.quoteManagedObjectContext = coreData.quoteManagedObjectContext;
     
     id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][0];
-    NSLog(@"YJ << name : %@", [sectionInfo name]);
-    NSLog(@"YJ << array : %@", [sectionInfo objects]);
-    NSLog(@"YJ << index title : %@", [sectionInfo indexTitle]);
     
     NSInteger bookCount = [sectionInfo numberOfObjects];
     NSInteger bmCount = 0;
@@ -87,10 +84,27 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillShowNote:) name:UIWindowDidResignKeyNotification object:self.view.window];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillHideNote:) name:UIWindowDidBecomeKeyNotification object:self.view.window];
     bgTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(writeFinished)];
+    
+    // top Constraint
+    if ([self isiPad]) {
+        self.topSearchConstraint.constant = 20.f;
+        self.topConstraint.constant = 70.f;
+    } else {
+        if ([self isAfteriPhoneX]) {
+            self.topSearchConstraint.constant = 44.f;
+            self.topConstraint.constant = 93.f;
+        } else {
+            self.topSearchConstraint.constant = 20.f;
+            self.topConstraint.constant = 70.f;
+        }
+    }
+    [self updateViewConstraints];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    
+    [self.sortLabel setText:NSLocalizedString(@"Complete Date", @"")];
     
     self.managedObjectContext = nil;
     self.quoteManagedObjectContext = nil;
@@ -198,10 +212,6 @@
             [book removeQuotesObject:quote];
             
             [self.managedObjectContext save:&error];
-            
-//            if (!error) {
-//                [self popController:YES];
-//            }
         }
     }];
 }
@@ -224,6 +234,7 @@
     [self.searchBar setHidden:YES];
     [self.searchBar setText:@""];
     [self.navigationController setNavigationBarHidden:NO animated:YES];
+    [self.sortLabel setText:NSLocalizedString(@"Complete Date", @"")];
 
     [self.collectionView reloadData];
 }
@@ -243,10 +254,9 @@
     self.quoteFetchedResultsController.delegate = self;
     
     NSFetchRequest *request = [self.fetchedResultsController fetchRequest];
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"title" ascending:NO];
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"title" ascending:YES];
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"quotes.strData contains[cd] %@", searchBar.text];
-//    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"title contains[cd] %@ OR quotes.data contains [cd] %@", searchBar.text, searchBar.text];
-//    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"title contains[cd] %@ OR quotes contains[cd] %@", searchBar.text, searchBar.text];
+    
     [request setPredicate:predicate];
     [request setSortDescriptors:@[sortDescriptor]];
 
@@ -256,6 +266,8 @@
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
         abort();
     }
+    
+    [self.collectionView reloadData];
     
     
     NSFetchRequest *qRequest = [self.quoteFetchedResultsController fetchRequest];
@@ -304,45 +316,82 @@
         
         if (quoteArr && quoteArr.count > 0) {
             Quote *quote = quoteArr[indexPath.item];
-//            NSAttributedString *attrQuote = (NSAttributedString *)quote.data;
             NSAttributedString *attrQuote = [NSKeyedUnarchiver unarchiveObjectWithData:(NSData *)quote.data]; // nsdate -> nsattributedstring
-//            NSData *attrData = [[NSData alloc] initWithContentsOfURL:(NSURL *)quote.data];
-//            NSAttributedString *attrQuote = [NSKeyedUnarchiver unarchiveObjectWithData:attrData];
             
             if (attrQuote && attrQuote.length > 0) {
-                __block CGFloat height = [attrQuote boundingRectWithSize:CGSizeMake(cell.quoteTextView.frame.size.width, 1000) options:(NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading) context:nil].size.height;
+                // get textView width
+                __block CGFloat width = cell.quoteTextView.frame.size.width;
+                CGFloat indexWidth = [cell.indexLabel.text boundingRectWithSize:CGSizeMake(1000, 16) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:15.0f]} context:nil].size.width;
+                CGFloat allWidth = 10.f + indexWidth + 1.f + 20.f + 5.f + 15.f;
+                width = cell.frame.size.width - allWidth;
+                
+                // get textView height
+                __block CGFloat height = [attrQuote boundingRectWithSize:CGSizeMake(width, 1000) options:(NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading) context:nil].size.height;
+                
+                __block NSMutableAttributedString *fixedAttrStr;
+                
+                // get ONLY text view height
+                CGFloat quoteHeight = 0.f;
+                NSString *strQuote = attrQuote.string;
+                if (strQuote && strQuote.length > 0) {
+                    quoteHeight = [strQuote boundingRectWithSize:CGSizeMake(width, 1000) options:NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:16.f]} context:nil].size.height;
+                    
+                    if (quoteHeight > height) {
+                        height = quoteHeight;
+                    }
+                }
                 
                 [attrQuote enumerateAttribute:NSAttachmentAttributeName inRange:NSMakeRange(0, attrQuote.length) options:0 usingBlock:^(id value, NSRange range, BOOL *stop) {
                     if (![value isKindOfClass:[NSTextAttachment class]]) {
                         return;
                     }
+                    
                     NSTextAttachment *attachment = (NSTextAttachment*)value;
+                    
+                    // get image height
                     CGFloat origHeight = attachment.image.size.height;
                     
-                    NSLog(@"YJ << cell width : %f", cell.quoteTextView.frame.size.width);
-                    NSLog(@"YJ << cell height : %f", height);
-                    NSLog(@"YJ << image width : %f", attachment.image.size.width);
-                    NSLog(@"YJ << image height : %f", origHeight);
+                    // get TEXT height
+                    CGFloat strHeight = 0.f;
+                    NSString *strAttr = attrQuote.string;
+                    if (strAttr && strAttr.length > 0) {
+                        strHeight = [strAttr boundingRectWithSize:CGSizeMake(width, 1000) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:15.f]} context:nil].size.height;
+                    }
                     
-//                    CGFloat reHeight = (attachment.image.size.width / cell.quoteTextView.frame.size.width) * origHeight;
-                    CGFloat reHeight = (cell.quoteTextView.frame.size.width / attachment.image.size.width) * origHeight;
-                    attachment.bounds = CGRectMake(0, 0, cell.quoteTextView.frame.size.width, reHeight);
-                    NSLog(@"YJ << reHight : %f", reHeight);
+                    // get resized image height
+                    CGFloat reHeight = (width / attachment.image.size.width) * origHeight;
                     
                     if (reHeight > origHeight) {
                         height += (reHeight - origHeight);
                     }
-//                    else if (reHeight < origHeight) {
-//                        height -= (origHeight - reHeight);
-//                    }
-                    NSLog(@"YJ << final height : %f", height);
-                    NSLog(@"-------------------------------------------------------");
+                    
+                    // height = image height + text height
+                    height = reHeight + strHeight;
+                    
+                    // set resized image bounds
+                    attachment.bounds = CGRectMake(0, 0, width, reHeight);
+                    
+                    // arrange attachment (text & image or image & text)
+                    NSAttributedString *attrStr = [[NSAttributedString alloc] initWithString:strAttr attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14.f], NSForegroundColorAttributeName:[UIColor colorWithHexString:@"333333"]}];
+                    if (range.location >=  strAttr.length-1) {
+                        NSAttributedString *attrImg = [NSAttributedString attributedStringWithAttachment:attachment];
+                        fixedAttrStr = [[NSMutableAttributedString alloc] initWithAttributedString:attrStr];
+                        [fixedAttrStr appendAttributedString:attrImg];
+                    } else if (range.location == 0) {
+                        NSAttributedString *attachAttr = [NSAttributedString attributedStringWithAttachment:attachment];
+                        fixedAttrStr = [[NSMutableAttributedString alloc] initWithAttributedString:attachAttr];
+                        [fixedAttrStr appendAttributedString:attrStr];
+                    }
+                    
                 }];
                 
-//                [cell.quoteTextView setAttributedText:attrQuote];
-                [cell.quoteTextView.textStorage setAttributedString:attrQuote];
+                if (fixedAttrStr && fixedAttrStr.length != 0) {
+                    attrQuote = fixedAttrStr;
+                }
+                
+                [cell.quoteTextView setAttributedText:attrQuote];
                 cell.quoteTextViewHeightConst.constant = height;
-                cell.quoteTextView.contentSize = CGSizeMake(cell.quoteTextView.frame.size.width, height);
+                cell.quoteTextView.contentSize = CGSizeMake(width, height);
                 [cell.quoteTextView setContentInset:UIEdgeInsetsZero];
                 cell.quoteTextView.textContainerInset = UIEdgeInsetsZero;
                 cell.quoteTextView.textContainer.lineFragmentPadding = 0;
@@ -378,7 +427,6 @@
         }
     }
     
-    NSLog(@"YJ << sections : %d", [sectionInfo numberOfObjects]);
     return [sectionInfo numberOfObjects];
 }
 
@@ -387,8 +435,6 @@
     NSInteger count = 0;
     NSIndexPath *indexPath = [NSIndexPath indexPathForItem:section inSection:0];
     Book *book = [self.fetchedResultsController objectAtIndexPath:indexPath];
-    
-    NSLog(@"YJ << quotes count : %d", book.quotes.count);
     
     if (isSearchBarActive) {
         NSSortDescriptor *desc = [NSSortDescriptor sortDescriptorWithKey:@"index" ascending:YES];
@@ -419,8 +465,6 @@
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath;
 {
-    NSLog(@"YJ << select collectionview cell section : %ld, item : %ld", indexPath.section, indexPath.item);
-    
     NSIndexPath *fetchIndexPath = [NSIndexPath indexPathForItem:indexPath.section inSection:0];
     Book *book = [self.fetchedResultsController objectAtIndexPath:fetchIndexPath];
 
@@ -445,11 +489,10 @@
     if (quoteArr.count > 0 && quoteArr) {
         quote = quoteArr[indexPath.item];
     }
-    NSIndexPath *reIndexPath = [NSIndexPath indexPathForItem:quote.index inSection:book.index];
     
     BookmarkDetailViewController *detailVC = [[BookmarkDetailViewController alloc] init];
     detailVC.book = book;
-    detailVC.indexPath = reIndexPath;
+    detailVC.quoteIndex = quote.index;
     [detailVC setBookmarkDetailCompositionHandler:book bookmarkDeleteCompleted:^(NSIndexPath *indexPath) {
         [self deleteBookmark:book indexPath:indexPath];
     }];
@@ -458,6 +501,7 @@
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
+    CGFloat textWidth = self.collectionView.frame.size.width;
     CGFloat width = self.collectionView.frame.size.width;
     __block CGFloat height = 0.f;
     NSIndexPath *fetchIndexPath = [NSIndexPath indexPathForItem:indexPath.section inSection:0];
@@ -478,42 +522,65 @@
     }
 
     if (quoteArr && quoteArr.count > 0) {
+        
+        // get textView width
+        NSString *strIndex = [NSString stringWithFormat:@"%ld", (indexPath.item+1)];
+        CGFloat indexWidth = [strIndex boundingRectWithSize:CGSizeMake(1000, 16) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:15.0f]} context:nil].size.width;
+        CGFloat allWidth = 10.f + indexWidth + 1.f + 20.f + 5.f + 15.f;
+        textWidth = width - allWidth;
+        
         Quote *quote = quoteArr[indexPath.item];
-//        NSAttributedString *attrQuote = (NSAttributedString *)quote.data;
         NSAttributedString *attrQuote = [NSKeyedUnarchiver unarchiveObjectWithData:(NSData *)quote.data]; // nsdate -> nsattributedstring
-//        NSData *attrData = [[NSData alloc] initWithContentsOfURL:(NSURL *)quote.data];
-//        NSAttributedString *attrQuote = [NSKeyedUnarchiver unarchiveObjectWithData:attrData];
         
         if (attrQuote && attrQuote.length > 0) {
-            height = [attrQuote boundingRectWithSize:CGSizeMake(width-61, 1000) options:(NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading) context:nil].size.height;
+            // get basic textView height
+            height = [attrQuote boundingRectWithSize:CGSizeMake(textWidth, 1000) options:(NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading) context:nil].size.height;
             
-            [attrQuote enumerateAttribute:NSAttachmentAttributeName inRange:NSMakeRange(0, attrQuote.length) options:0 usingBlock:^(id value, NSRange range, BOOL *stop) {
+            // get ONLY text view height
+            CGFloat quoteHeight = 0.f;
+            NSString *strQuote = attrQuote.string;
+            if (strQuote && strQuote.length > 0) {
+                quoteHeight = [strQuote boundingRectWithSize:CGSizeMake(width, 1000) options:NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:16.f]} context:nil].size.height;
+                
+                if (quoteHeight > height) {
+                    height = quoteHeight;
+                }
+            }
+            
+            [attrQuote enumerateAttribute:NSAttachmentAttributeName inRange:NSMakeRange(0, attrQuote.length) options:NSAttributedStringEnumerationReverse usingBlock:^(id value, NSRange range, BOOL *stop) {
                 if (![value isKindOfClass:[NSTextAttachment class]]) {
                     return;
                 }
                 
                 NSTextAttachment *attachment = (NSTextAttachment*)value;
+                
+                // get image height
                 CGFloat origHeight = attachment.image.size.height;
-//                CGFloat reHeight = (attachment.image.size.width / (width-61)) * origHeight;
-                CGFloat reHeight = ((width-61) / attachment.image.size.width) * origHeight;
+                
+                // get text height
+                CGFloat strHeight = 0.f;
+                NSString *strAttr = attrQuote.string;
+                if (strAttr && strAttr.length > 0) {
+                    strHeight = [strAttr boundingRectWithSize:CGSizeMake(textWidth, 1000) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:15.f]} context:nil].size.height;
+                }
+                
+                // get resized image height
+                CGFloat reHeight = (textWidth / attachment.image.size.width) * origHeight;
                 
                 if (reHeight > origHeight) {
                     height += (reHeight - origHeight);
                 }
-//                else if (reHeight < origHeight) {
-//                    height -= (origHeight - reHeight);
-//                }
-                height += 5.f;
-                NSLog(@"YJ << size of final height : %f", height);
+                
+                // height = image height + text height
+                height = reHeight + strHeight;
             }];
         }
-        NSLog(@"YJ << size of cell width : %f", width);
-        NSLog(@"YJ << size of cell height : %f", height+20.f);
-        NSLog(@"====================================================");
+        
+        height += 20.f;
         
     }
     
-    return CGSizeMake(width, (height+20.f));
+    return CGSizeMake(width, height);
 }
 
 #pragma mark - Fetched results controller
@@ -565,38 +632,6 @@
         [self.updateBlock addExecutionBlock:^{
             [collectionView reloadData];
         }];
-        
-//        switch(type) {
-//            case NSFetchedResultsChangeInsert: {
-//                [self.updateBlock addExecutionBlock:^{
-//                    //                     [collectionView insertItemsAtIndexPaths:@[newIndexPath]];
-//                    [collectionView reloadItemsAtIndexPaths:@[newIndexPath]];
-//                }];
-//                break;
-//            }
-//            case NSFetchedResultsChangeDelete: {
-//                [self.updateBlock addExecutionBlock:^{
-//                    //                    [collectionView deleteItemsAtIndexPaths:@[indexPath]];
-//                    [collectionView reloadData];
-//                }];
-//                break;
-//            }
-//            case NSFetchedResultsChangeUpdate: {
-//                [self.updateBlock addExecutionBlock:^{
-////                    [collectionView reloadItemsAtIndexPaths:@[newIndexPath]];
-//                    [collectionView reloadData];
-//                }];
-//                break;
-//            }
-//            case NSFetchedResultsChangeMove: {
-//                [self.updateBlock addExecutionBlock:^{
-//                    //                    [collectionView moveItemAtIndexPath:indexPath toIndexPath:newIndexPath];
-////                    [collectionView reloadItemsAtIndexPaths:@[indexPath]];
-//                    [collectionView reloadData];
-//                }];
-//                break;
-//            }
-//        }
     }
 }
 
@@ -637,8 +672,6 @@
 #pragma mark - keyboard actions
 - (void)handleKeyboardWillShowNote:(NSNotification *)notification
 {
-    
-    NSLog(@"YJ << keyboard show");
     [self.view addGestureRecognizer:bgTap];
     
     NSDictionary* userInfo = [notification userInfo];
@@ -648,7 +681,6 @@
 
 - (void)handleKeyboardWillHideNote:(NSNotification *)notification
 {
-    NSLog(@"YJ << keyboard hide");
     [self.view removeGestureRecognizer:bgTap];
     
     NSDictionary* userInfo = [notification userInfo];

@@ -31,7 +31,6 @@ NSString * const kQuotesRecord = @"Quote";
     
     __block BOOL isEnable = NO;
     [[CKContainer defaultContainer] accountStatusWithCompletionHandler:^(CKAccountStatus accountStatus, NSError * _Nullable error) {
-        NSLog(@"YJ << icloud account status : %d", accountStatus);
         if (!error) {
             if (accountStatus == CKAccountStatusAvailable) {
                 isEnable = YES;
@@ -48,10 +47,6 @@ NSString * const kQuotesRecord = @"Quote";
 
 + (CKDatabase *)privateCloudDatabase {
     return [[CKContainer defaultContainer] privateCloudDatabase];
-}
-
-+(void)fetchAllDataWithCompletionHandler:(CloudKitCompletionHandler)handler {
-    
 }
 
 +(void)fetchAllBooksWithCompletionHandler:(CloudKitCompletionHandler)handler {
@@ -80,12 +75,11 @@ NSString * const kQuotesRecord = @"Quote";
     }];
 }
 
-+(void)fetchBookWithRecordIdWithCompletionHandler:(CKReference *)bookRef handler:(CloudKitCompletionHandler)handler {
++(void)fetchBookWithRecordReferenceWithCompletionHandler:(CKReference *)bookRef handler:(CloudKitCompletionHandler)handler {
     
     NSMutableArray *bookArr = [NSMutableArray array];
     
     [[self publicCloudDatabase] fetchRecordWithID:bookRef.recordID completionHandler:^(CKRecord *record, NSError *error) {
-        NSLog(@"YJ << book record : %@", record);
         if (!handler) return;
         
         dispatch_sync(dispatch_get_main_queue(), ^{
@@ -95,12 +89,11 @@ NSString * const kQuotesRecord = @"Quote";
     }];
 }
 
-+(void)fetchQuoteWithRecordIdWithCompletionHandler:(CKReference *)quoteRef handler:(CloudKitCompletionHandler)handler {
++(void)fetchQuoteWithRecordReferenceWithCompletionHandler:(CKReference *)quoteRef handler:(CloudKitCompletionHandler)handler {
     
     NSMutableArray *quoteArr = [NSMutableArray array];
     
     [[self publicCloudDatabase] fetchRecordWithID:quoteRef.recordID completionHandler:^(CKRecord *record, NSError *error) {
-        NSLog(@"YJ << quote record : %@", record);
         if (!handler) return;
         
         dispatch_sync(dispatch_get_main_queue(), ^{
@@ -126,7 +119,7 @@ NSString * const kQuotesRecord = @"Quote";
             
             NSDateFormatter *format = [[NSDateFormatter alloc] init];
             [format setDateFormat:@"yyyyMMddHHssmm"];
-            NSString *strDate = [format stringFromDate:(NSDate *)quote.date];
+            NSString *strDate = [format stringFromDate:(NSDate *)quote.createDate];
             CKRecordID *recordId = [[CKRecordID alloc] initWithRecordName:strDate];
             CKReference *quoteReference = [[CKReference alloc] initWithRecordID:recordId action:CKReferenceActionNone];
             [muQuoteRefArr addObject:quoteReference];
@@ -137,7 +130,12 @@ NSString * const kQuotesRecord = @"Quote";
         record[@"quotes"] = muQuoteRefArr;
         
         [[dict allKeys] enumerateObjectsUsingBlock:^(NSString *key, NSUInteger idx, BOOL *stop) {
-            record[key] = dict[key];
+            id value = dict[key];
+            if (value == nil || value == [NSNull null]) {
+                
+            } else {
+                record[key] = dict[key];
+            }
         }];
         
         [[self publicCloudDatabase] saveRecord:record completionHandler:^(CKRecord *record, NSError *error) {
@@ -164,16 +162,20 @@ NSString * const kQuotesRecord = @"Quote";
         CKReference *bookReference = [[CKReference alloc] initWithRecordID:bookRecordId action:CKReferenceActionNone];
         
         // Quote
-//        CKRecordID *recordId = [[CKRecordID alloc] initWithRecordName:[NSString stringWithFormat:@"%@", [dict objectForKey:@"index"]]];
         NSDateFormatter *format = [[NSDateFormatter alloc] init];
         [format setDateFormat:@"yyyyMMddHHssmm"];
-        NSString *strDate = [format stringFromDate:(NSDate *)[dict objectForKey:@"date"]];
+        NSString *strDate = [format stringFromDate:(NSDate *)[dict objectForKey:@"createDate"]];
         CKRecordID *recordId = [[CKRecordID alloc] initWithRecordName:strDate];
         CKRecord *record = [[CKRecord alloc] initWithRecordType:kQuotesRecord recordID:recordId];
         record[@"book"] = bookReference;
         
         [[dict allKeys] enumerateObjectsUsingBlock:^(NSString *key, NSUInteger idx, BOOL *stop) {
-            record[key] = dict[key];
+            id value = dict[key];
+            if (value == nil || value == [NSNull null]) {
+                
+            } else {
+                record[key] = dict[key];
+            }
         }];
         
         [[self publicCloudDatabase] saveRecord:record completionHandler:^(CKRecord *record, NSError *error) {
@@ -190,13 +192,8 @@ NSString * const kQuotesRecord = @"Quote";
 
 +(void)removeBookRecord:(NSArray *)bookArray completionHandler:(CloudKitCompletionHandler)handler {
     
-    NSMutableArray<CKRecordID *> *recordIDArr = [NSMutableArray array];
-    
     for (int i = 0; i < bookArray.count; i++) {
         CKRecord *record = bookArray[i];
-        CKRecordID *recordId = [[CKRecordID alloc] initWithRecordName:[NSString stringWithFormat:@"%@", record.recordID]];
-        
-//        [recordIDArr addObject:record.recordID];
         [[self publicCloudDatabase] deleteRecordWithID:record.recordID completionHandler:^(CKRecordID *recordID, NSError *error) {
             if (!handler) return;
 
@@ -207,27 +204,12 @@ NSString * const kQuotesRecord = @"Quote";
             }
         }];
     }
-
-//    CKModifyRecordsOperation *modiOperation = [[CKModifyRecordsOperation alloc] initWithRecordsToSave:nil recordIDsToDelete:recordIDArr];
-//    modiOperation.atomic = NO;
-//    modiOperation.qualityOfService = NSQualityOfServiceUserInteractive;
-//    modiOperation.timeoutIntervalForRequest = 10;
-//    modiOperation.timeoutIntervalForResource = 10;
-//    modiOperation.modifyRecordsCompletionBlock = ^(NSArray<CKRecord *> * _Nullable savedRecords, NSArray<CKRecordID *> * _Nullable deletedRecordIDs, NSError * _Nullable operationError) {
-//        NSLog(@"YJ << response back!!!!");
-//        if (!handler) return;
-//
-//        dispatch_async(dispatch_get_main_queue(), ^{
-//            handler (nil, operationError);
-//        });
-//    };
 }
 
 +(void)removeQuoteRecord:(NSArray *)quoteArray completionHandler:(CloudKitCompletionHandler)handler {
 
     for (int i = 0; i < quoteArray.count; i++) {
         CKRecord *record = quoteArray[i];
-//        CKRecordID *recordId = [[CKRecordID alloc] initWithRecordName:[NSString stringWithFormat:@"%@", record.recordID]];
         [[self publicCloudDatabase] deleteRecordWithID:record.recordID completionHandler:^(CKRecordID *recordID, NSError *error) {
             if (!handler) return;
             

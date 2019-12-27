@@ -1,30 +1,32 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14460.32" systemVersion="18C54" minimumToolsVersion="Automatic" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="15508" systemVersion="18G87" minimumToolsVersion="Automatic" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
     <entity name="Book" representedClassName="Book" syncable="YES" codeGenerationType="class">
-        <attribute name="author" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="completeDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
-        <attribute name="coverImg" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="index" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="isSearchMode" optional="YES" attributeType="Boolean" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="modifyDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
-        <attribute name="publishDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
-        <attribute name="publisher" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="rate" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="review" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="startDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
-        <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="quotes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Quote" inverseName="book" inverseEntity="Quote" syncable="YES"/>
+        <attribute name="author" optional="YES" attributeType="String"/>
+        <attribute name="completeDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="coverImg" optional="YES" attributeType="Transformable"/>
+        <attribute name="createDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="index" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="isSearchMode" optional="YES" attributeType="Boolean" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="modifyDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="publishDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="publisher" optional="YES" attributeType="String"/>
+        <attribute name="rate" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="review" optional="YES" attributeType="String"/>
+        <attribute name="startDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="title" optional="YES" attributeType="String"/>
+        <relationship name="quotes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Quote" inverseName="book" inverseEntity="Quote"/>
     </entity>
     <entity name="Quote" representedClassName="Quote" syncable="YES" codeGenerationType="class">
-        <attribute name="data" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
-        <attribute name="index" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="pageNum" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="strData" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="book" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Book" inverseName="quotes" inverseEntity="Book" syncable="YES"/>
+        <attribute name="createDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="data" optional="YES" attributeType="Transformable"/>
+        <attribute name="index" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="modifyDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="pageNum" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="strData" optional="YES" attributeType="String"/>
+        <relationship name="book" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Book" inverseName="quotes" inverseEntity="Book"/>
     </entity>
     <elements>
-        <element name="Book" positionX="-63" positionY="-18" width="128" height="240"/>
-        <element name="Quote" positionX="199.72265625" positionY="22.25" width="128" height="135"/>
+        <element name="Book" positionX="-63" positionY="-18" width="128" height="253"/>
+        <element name="Quote" positionX="199.72265625" positionY="22.25" width="128" height="148"/>
     </elements>
 </model>

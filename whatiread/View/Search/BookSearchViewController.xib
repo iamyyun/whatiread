@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -22,7 +20,7 @@
                 <outlet property="scanCloseBtn" destination="Ms1-q2-1mS" id="BGI-W8-aNd"/>
                 <outlet property="scanView" destination="o4k-E4-I8G" id="oFC-4e-vKR"/>
                 <outlet property="searchBar" destination="fOG-ge-Z22" id="vhJ-TJ-HlS"/>
-                <outlet property="switchBtn" destination="lDg-Qd-V4T" id="UNC-J5-Bel"/>
+                <outlet property="topConstraint" destination="WQw-2Z-AbG" id="Ads-HB-hR1"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -35,14 +33,14 @@
                     <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bFU-lr-H5d">
-                            <rect key="frame" x="0.0" y="43" width="375" height="1"/>
+                            <rect key="frame" x="0.0" y="43.5" width="375" height="0.5"/>
                             <color key="backgroundColor" white="0.72393120659722221" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="0.5" id="FNp-IF-r3k"/>
                             </constraints>
                         </view>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="책 검색" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gx2-bF-NnH">
-                            <rect key="frame" x="163" y="11" width="49" height="21"/>
+                            <rect key="frame" x="163" y="11.5" width="49" height="21"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
@@ -105,7 +103,7 @@
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="검색 결과가 없습니다." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OyT-qB-QFs">
                             <rect key="frame" x="114.5" y="263" width="146" height="21"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                            <nil key="textColor"/>
+                            <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                     </subviews>
@@ -116,10 +114,10 @@
                     </constraints>
                 </view>
                 <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="o4k-E4-I8G">
-                    <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8pN-YP-50Z">
-                            <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                             <subviews>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ms1-q2-1mS">
                                     <rect key="frame" x="325" y="15" width="35" height="35"/>
@@ -132,19 +130,8 @@
                                         <action selector="scanCloseBtnAction:" destination="-1" eventType="touchUpInside" id="oM0-AD-k01"/>
                                     </connections>
                                 </button>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lDg-Qd-V4T">
-                                    <rect key="frame" x="15" y="15" width="35" height="35"/>
-                                    <constraints>
-                                        <constraint firstAttribute="width" constant="35" id="FKZ-E1-Mmi"/>
-                                        <constraint firstAttribute="height" constant="35" id="Pdd-4v-qUc"/>
-                                    </constraints>
-                                    <state key="normal" image="btn_switch"/>
-                                    <connections>
-                                        <action selector="swtichBtnAction:" destination="-1" eventType="touchUpInside" id="VTh-vN-hJb"/>
-                                    </connections>
-                                </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pjY-S3-42u">
-                                    <rect key="frame" x="15" y="65" width="35" height="35"/>
+                                    <rect key="frame" x="15" y="15" width="35" height="35"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="35" id="Cl0-wM-tJU"/>
                                         <constraint firstAttribute="width" constant="35" id="cUa-ZA-3k7"/>
@@ -155,7 +142,7 @@
                                     </connections>
                                 </button>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rO7-uB-ERV">
-                                    <rect key="frame" x="0.0" y="173" width="375" height="300"/>
+                                    <rect key="frame" x="0.0" y="183.5" width="375" height="300"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_corner_left" translatesAutoresizingMaskIntoConstraints="NO" id="tzD-I9-hCg">
                                             <rect key="frame" x="10" y="10" width="40" height="40"/>
@@ -186,11 +173,9 @@
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstAttribute="trailing" secondItem="Ms1-q2-1mS" secondAttribute="trailing" constant="15" id="Fdj-3d-AVN"/>
-                                <constraint firstItem="pjY-S3-42u" firstAttribute="top" secondItem="lDg-Qd-V4T" secondAttribute="bottom" constant="15" id="GFP-VI-hK8"/>
-                                <constraint firstItem="lDg-Qd-V4T" firstAttribute="top" secondItem="8pN-YP-50Z" secondAttribute="top" constant="15" id="IiC-n6-cTd"/>
+                                <constraint firstItem="pjY-S3-42u" firstAttribute="top" secondItem="8pN-YP-50Z" secondAttribute="top" constant="15" id="MVo-Kz-Zy3"/>
                                 <constraint firstItem="Ms1-q2-1mS" firstAttribute="top" secondItem="8pN-YP-50Z" secondAttribute="top" constant="15" id="MaX-Jn-eFz"/>
                                 <constraint firstItem="rO7-uB-ERV" firstAttribute="leading" secondItem="8pN-YP-50Z" secondAttribute="leading" id="gWh-XO-b4k"/>
-                                <constraint firstItem="lDg-Qd-V4T" firstAttribute="leading" secondItem="8pN-YP-50Z" secondAttribute="leading" constant="15" id="mHG-HF-s7X"/>
                                 <constraint firstAttribute="trailing" secondItem="rO7-uB-ERV" secondAttribute="trailing" id="p0e-aM-Rvd"/>
                                 <constraint firstItem="rO7-uB-ERV" firstAttribute="centerY" secondItem="8pN-YP-50Z" secondAttribute="centerY" id="vjW-wx-cJu"/>
                                 <constraint firstItem="pjY-S3-42u" firstAttribute="leading" secondItem="8pN-YP-50Z" secondAttribute="leading" constant="15" id="y1M-Cw-dMf"/>
@@ -235,7 +220,6 @@
         <image name="btn_close" width="44" height="44"/>
         <image name="btn_close_white" width="45" height="45"/>
         <image name="btn_flash_off" width="45" height="45"/>
-        <image name="btn_switch" width="45" height="45"/>
         <image name="icon_corner_left" width="40" height="40"/>
         <image name="icon_corner_right" width="40" height="40"/>
     </resources>

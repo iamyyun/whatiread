@@ -17,6 +17,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *backupDescLabel;
 @property (weak, nonatomic) IBOutlet UIButton *backupBtn;
 
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *topConstraint;
+
 - (IBAction)savePicSwitchAction:(id)sender;
 - (IBAction)actionBackupBtn:(id)sender;
 

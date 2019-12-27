@@ -17,6 +17,8 @@
 @property (nonatomic, strong) UIImageView *loadingImageView;
 @property (nonatomic, strong) UIImageView *coImageView;
 
+@property (nonatomic, strong) UILabel *descLabel;
+
 @end
 
 
@@ -63,23 +65,41 @@
 {
     NSLog(@"startProcessIndicator");
     
-	[[IndicatorUtil sharedIndicator] startAlertIndicator];
+    [[IndicatorUtil sharedIndicator] startAlertIndicator:nil];
+}
+
++ (void)startProcessIndicator:(NSString *)title
+{
+    NSLog(@"startProcessIndicator with title");
+    
+    [[IndicatorUtil sharedIndicator] startAlertIndicator:title];
 }
 
 #pragma mark - 프로그레스 시작 인스턴스 함수
-- (void)startAlertIndicator
+//- (void)startAlertIndicator
+//{
+//    [self performSelectorOnMainThread:@selector(loadIndicator) withObject:nil waitUntilDone:NO];
+//}
+
+- (void)startAlertIndicator:(NSString *)title
 {
-    [self performSelectorOnMainThread:@selector(loadIndicator) withObject:nil waitUntilDone:NO];
+    [self performSelectorOnMainThread:@selector(loadIndicator:) withObject:title waitUntilDone:NO];
 }
 
 
-- (void)loadIndicator
+- (void)loadIndicator:(NSString *)title
 {
     //기기 상태바 스피너 활성화
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     
     [self stopAlertIndicator];
-    [self startAlertIndicator:NSLocalizedString(@"Processing.", @"")];
+    
+    if (title) {
+        [self startAlertIndicator:title isShow:YES];
+    } else {
+        [self startAlertIndicator:NSLocalizedString(@"Processing.", @"") isShow:NO];
+    }
+    
     [IndicatorUtil sharedIndicator].bProcessIndicator = YES;
 }
 
@@ -136,7 +156,7 @@
 }
 
 #pragma mark - 프로그레스 시작 구현체
-- (void)startAlertIndicator:(NSString*)title
+- (void)startAlertIndicator:(NSString*)title isShow:(BOOL)isShow
 {
     self.uvWaitView = [[UIView alloc] init];
     self.uvWaitView.isAccessibilityElement = YES;
@@ -147,7 +167,8 @@
     {
         if( deviceSize.width < deviceSize.height )
         {
-            [self.uvWaitView setFrame:CGRectMake(0, 0, deviceSize.height, deviceSize.width)];
+            [self.uvWaitView setFrame:CGRectMake(0, 0, deviceSize.width, deviceSize.height)];
+//            [self.uvWaitView setFrame:CGRectMake(0, 0, deviceSize.height, deviceSize.width)];
         }
         else
         {
@@ -180,6 +201,17 @@
     [self.uvWaitView addSubview:self.loadingImageView];
 
     [self.loadingImageView startAnimating];
+    
+    // label
+    if (isShow) {
+        CGFloat width = [title boundingRectWithSize:CGSizeMake(1000, 15) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14.f]} context:nil].size.width;
+        self.descLabel = [[UILabel alloc] initWithFrame:CGRectMake((deviceSize.width-width)/2, iPosY+iHeight+5, width, 15.f)];
+        [self.descLabel setText:title];
+        [self.descLabel setFont:[UIFont systemFontOfSize:14.f]];
+        [self.descLabel setTextColor:[UIColor colorWithHexString:@"1abc9c"]];
+        
+        [self.uvWaitView addSubview:self.descLabel];
+    }
     
     
     iWidth = 80;

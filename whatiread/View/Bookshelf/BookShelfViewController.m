@@ -47,14 +47,13 @@
     [self.collectionView setAllowsSelection:YES];
     [self.collectionView registerNib:[UINib nibWithNibName:@"BookShelfCollectionViewCell" bundle:nil] forCellWithReuseIdentifier:@"BookShelfCollectionViewCell"];
     
+    // Initialize coredata
     coreData = [CoreDataAccess sharedInstance];
     self.fetchedResultsController = coreData.fetchedResultsController;
     self.fetchedResultsController.delegate = self;
-    self.quoteFetchedResultsController = coreData.quoteFetchedResultsController;
-    self.quoteFetchedResultsController.delegate = self;
     self.managedObjectContext = coreData.managedObjectContext;
-    self.quoteManagedObjectContext = coreData.quoteManagedObjectContext;
     
+    // get Book data
     id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][0];
     NSInteger bookCount = [sectionInfo numberOfObjects];
     NSInteger bmCount = 0;
@@ -70,10 +69,10 @@
         [self.collectionView setHidden:YES];
         [self.emptyView setHidden:NO];
         
+        // check iCloud Data
         [self getiCloudData];
     }
 
-    
     [self.bCountLabel setText:[NSString stringWithFormat:@"%ld", bookCount]];
     [self.bmCountLabel setText:[NSString stringWithFormat:@"%ld", bmCount]];
     
@@ -89,23 +88,35 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillShowNote:) name:UIWindowDidResignKeyNotification object:self.view.window];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillHideNote:) name:UIWindowDidBecomeKeyNotification object:self.view.window];
     bgTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(writeFinished)];
+    
+    // top Constraint
+    if ([self isiPad]) {
+        self.topSearchConstraint.constant = 20.f;
+        self.topConstraint.constant = 80.f;
+    } else {
+        if ([self isAfteriPhoneX]) {
+            self.topSearchConstraint.constant = 44.f;
+            self.topConstraint.constant = 103.f;
+        } else {
+            self.topSearchConstraint.constant = 20.f;
+            self.topConstraint.constant = 80.f;
+        }
+    }
+    [self updateViewConstraints];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
+    [self.sortLabel setText:NSLocalizedString(@"Complete Date", @"")];
+    
     self.managedObjectContext = nil;
-    self.quoteManagedObjectContext = nil;
     self.fetchedResultsController = nil;
-    self.quoteFetchedResultsController = nil;
     
     [coreData coreDataInitialize];
     self.fetchedResultsController = coreData.fetchedResultsController;
     self.fetchedResultsController.delegate = self;
-    self.quoteFetchedResultsController = coreData.quoteFetchedResultsController;
-    self.quoteFetchedResultsController.delegate = self;
     self.managedObjectContext = coreData.managedObjectContext;
-    self.quoteManagedObjectContext = coreData.quoteManagedObjectContext;
     
     id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][0];
     NSInteger bookCount = [sectionInfo numberOfObjects];
@@ -155,11 +166,17 @@
 #pragma mark - actions
 // add bookmark btn action
 - (IBAction)addBtnAction:(id)sender {
+//    AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+//    [appDelegate.alertWindow makeKeyAndVisible];
+    
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
     
     NSString *strFirst = NSLocalizedString(@"Add book by searching", @"");
     NSString *strSecond = NSLocalizedString(@"Add book directly", @"");
+    
     UIAlertAction *firstAction = [UIAlertAction actionWithTitle:strFirst style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+//        [appDelegate.alertWindow setHidden:YES];
+        
         BookSearchViewController *searchVC = [[BookSearchViewController alloc] init];
         searchVC.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
         searchVC.modalPresentationStyle = UIModalPresentationCurrentContext;
@@ -170,24 +187,37 @@
                 }
                 else {
                     UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"This book is already registered.", @"") message:nil preferredStyle:UIAlertControllerStyleAlert];
-                    UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Confirm", @"") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {}];
+                    UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Confirm", @"") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+//                        [appDelegate.alertWindow setHidden:YES];
+                    }];
                     [alert addAction:okAction];
                     [self presentController:alert animated:YES];
+//                    [appDelegate.alertWindow.rootViewController presentViewController:alert animated:YES completion:nil];
                 }
             }
         }];
+        
         [self presentController:searchVC animated:YES];
 
     }];
+    
     UIAlertAction *secondAction = [UIAlertAction actionWithTitle:strSecond style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+//        [appDelegate.alertWindow setHidden:YES];
+        
         [self bookConfigure:nil bookDic:nil indexPath:nil isSearchMode:NO];
     }];
-    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"") style:UIAlertActionStyleCancel handler:^(UIAlertAction *action){}];
+    
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"") style:UIAlertActionStyleCancel handler:^(UIAlertAction *action){
+//        [appDelegate.alertWindow setHidden:YES];
+    }];
     
     [alert addAction:firstAction];
     [alert addAction:secondAction];
     [alert addAction:cancelAction];
+    
     [self presentController:alert animated:YES];
+//    [appDelegate.alertWindow.rootViewController presentViewController:alert animated:YES completion:nil];
+
 }
 
 // sort btn action
@@ -195,6 +225,7 @@
     [sortPickerView presentPickerOnView:self.view];
 }
 
+// mataData -> string
 - (NSString *)makeMetaToString:(NSString *)strMeta {
     NSString *strResult = @"";
     NSString *style = @"<meta charset=\"UTF-8\"><style> body { font-family: 'HelveticaNeue'; font-size: 15px; } b {font-family: 'MarkerFelt-Wide'; }</style>";
@@ -206,18 +237,17 @@
     return strResult;
 }
 
+// checking exist book item
 - (BOOL)isExistItem:(NSDictionary *)dic {
     
     NSFetchRequest *request = [[self fetchedResultsController] fetchRequest];
     NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"title" ascending:YES];
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"title contains[cd] %@ AND author contains[cd] %@ AND isSearchMode == YES", [self makeMetaToString:[dic objectForKey:@"title"]], [self makeMetaToString:[dic objectForKey:@"author"]]];
-//        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"title contains[cd] %@ OR quotes contains[cd] %@", searchBar.text, searchBar.text];
     [request setPredicate:predicate];
     [request setSortDescriptors:@[sortDescriptor]];
     
     NSError *error = nil;
     if (![[self fetchedResultsController] performFetch:&error]) {
-        // Handle error
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
         abort();
     }
@@ -253,7 +283,6 @@
     
     NSError *error = nil;
     if (![self.fetchedResultsController performFetch:&error]) {
-        // Handle error
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
         abort();
     }
@@ -261,6 +290,7 @@
     [self.collectionView reloadData];
 }
 
+// get Data from iCloud
 - (void)getiCloudData
 {
     if ([CloudKitManager isiCloudAccountIsSignedIn]) { // icloud account is signed in
@@ -270,18 +300,27 @@
                 [self showAlertViewController:NSLocalizedString(@"iCloud is not available.", @"") msg:NSLocalizedString(@"iCloud is temporarily unavailable.", @"")];
             } else {
                 if (accountStatus == CKAccountStatusAvailable) {
+                    
+//                    AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+//                    [appDelegate.alertWindow makeKeyAndVisible];
+                    
                     UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Do you want to restore data?", @"") message:nil preferredStyle:UIAlertControllerStyleAlert];
                     UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"") style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+//                        [appDelegate.alertWindow setHidden:YES];
                     }];
                     UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Confirm", @"") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+//                        [appDelegate.alertWindow setHidden:YES];
+                        
                         [self dismissViewControllerAnimated:YES completion:nil];
                         
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            [IndicatorUtil startProcessIndicator];
+                        });
+                        
                         // iCloud data restore
-                        [CloudKitManager fetchAllBooksWithCompletionHandler:^(NSArray *result, NSError *error) {
+                        [CloudKitManager fetchAllBooksWithCompletionHandler:^(NSArray *bResult, NSError *error) {
                             if (!error || error.code == 11) {
-                                if (result && result.count > 0) {
-                                    NSLog(@"YJ << iCloud book data count : %lu", (unsigned long)result.count);
-                                    NSLog(@"YJ << iCloud book data : %@", result);
+                                if (bResult && bResult.count > 0) {
                                     
                                     // refresh data
                                     self.managedObjectContext = nil;
@@ -292,76 +331,92 @@
                                     self.fetchedResultsController.delegate = self;
                                     self.managedObjectContext = coreData.managedObjectContext;
                                     
-                                    for (int i = 0; i < result.count; i++) {
+                                    for (int i = 0; i < bResult.count; i++) {
                                         
-//                                        Book *book = [[CoreDataAccess sharedInstance] mapBook:result[i]];
+                                        __block Book *resultBook = nil;
                                         
-                                        [[CoreDataAccess sharedInstance] mapBook:result[i] completionHandler:^(Book *book) {
+                                        [[CoreDataAccess sharedInstance] mapBook:bResult[i] completionHandler:^(Book *book) {
                                             if (book) {
-                                                NSLog(@"YJ << book object : %@", book);
-                                                
+                                                resultBook = book;
+
                                                 NSError * error = nil;
-                                                
+
                                                 if(![self.managedObjectContext save:&error]) {
                                                     NSLog(@"Unresolved error = %@, %@", error, error.userInfo);
-                                                    NSLog(@"YJ << Fail save iCloud data to CoreData");
+                                                    [self showAlertViewController:NSLocalizedString(@"Failed to save iCloud data", @"") msg:nil];
                                                 } else {
                                                     NSLog(@"YJ << Success save iCloud data to CoreData");
                                                 }
                                             }
                                         }];
                                         
-////                                        // test
-//                                        if (i == result.count-1) {
-//                                            [CloudKitManager fetchAllQuotesWithCompletionHandler:^(NSArray *result, NSError *error) {
-//                                                if (!error || error.code == 11) {
-//                                                    if (result && result.count > 0) {
-//                                                        NSLog(@"YJ << iCloud quote data count : %lu", (unsigned long)result.count);
-//                                                        NSLog(@"YJ << iCloud quote data : %@", result);
-//
-//                                                        self.quoteManagedObjectContext = nil;
-//                                                        self.quoteFetchedResultsController = nil;
-//
-//                                                        [coreData coreDataInitialize];
-//                                                        self.quoteFetchedResultsController = coreData.quoteFetchedResultsController;
-//                                                        self.quoteFetchedResultsController.delegate = self;
-//                                                        self.quoteManagedObjectContext = coreData.quoteManagedObjectContext;
-//
-//                                                        for (int i = 0; i < result.count; i++) {
-//                                                            [[CoreDataAccess sharedInstance] mapQuote:result[i] completionHandler:^(Quote *quote) {
-//                                                                if (quote) {
-//                                                                    NSLog(@"YJ << quote object : %@", quote);
-//
-//                                                                    NSError *error = nil;
-//
-//                                                                    if (![self.quoteManagedObjectContext save:&error]) {
-//                                                                        NSLog(@"Unresolved error = %@, %@", error, error.userInfo);
-//                                                                        NSLog(@"YJ << Fail save iCloud data to CoreData - quote");
-//                                                                    } else {
-//                                                                        NSLog(@"YJ << Success save iCloud data to CoreData - quote");
-//                                                                    }
-//                                                                }
-//                                                            }];
-//                                                        }
-//                                                    }
-//                                                }
-//                                            }];
-////                                            [[CoreDataAccess sharedInstance] mapQuote:<#(CKRecord *)#> completionHandler:<#^(Quote *quote)handler#>]
-//                                        }
+                                        
+                                        CKRecord *bRecord = bResult[i];
+                                        
+                                        [CloudKitManager fetchAllQuotesWithCompletionHandler:^(NSArray *quoteResult, NSError *error) {
+                                            if (!error || error.code == 11) {
+                                                if (quoteResult && quoteResult.count > 0) {
+                                                    
+                                                    for (int j = 0; j < quoteResult.count; j++) {
+                                                        CKRecord *qRecord = quoteResult[j];
+                                                        CKReference *qBookRef = qRecord[@"book"];
+                                                        
+                                                        CKRecordID *bookId = bRecord.recordID;
+                                                        CKRecordID *qBookId = qBookRef.recordID;
+                                                        
+                                                        if ([bookId isEqual:qBookId]) {
+                                                            
+                                                            [[CoreDataAccess sharedInstance] mapQuote:qRecord completionHandler:^(Quote *quote) {
+                                                                if (quote) {
+                                                                    [resultBook addQuotesObject:quote];
+                                                                    
+                                                                    NSError *error = nil;
+                                                                    
+                                                                    if (![self.managedObjectContext save:&error]) {
+                                                                        NSLog(@"Unresolved error = %@, %@", error, error.userInfo);
+                                                                        [self showAlertViewController:NSLocalizedString(@"Failed to save iCloud data", @"") msg:nil];
+                                                                    } else {
+                                                                        if (j == quoteResult.count-1) {
+                                                                            [IndicatorUtil stopProcessIndicator];
+                                                                            [self.view makeToast:NSLocalizedString(@"Data restore succeed!", @"")];
+                                                                        }
+                                                                        NSLog(@"YJ << Success save iCloud data to CoreData - quote");
+                                                                    }
+                                                                }
+                                                            }];
+                                                        }
+                                                    }
+                                                } else {
+                                                    [IndicatorUtil stopProcessIndicator];
+//                                                    [self showAlertViewController:NSLocalizedString(@"No backup data exsits.", @"") msg:nil];
+                                                }
+                                            } else {
+                                                [IndicatorUtil stopProcessIndicator];
+                                                [self.view makeToast:NSLocalizedString(@"Data restore failed!", @"")];
+                                            }
+                                        }];
+                                        
                                     }
+                                    
                                     [self.collectionView reloadData];
                                 } else {
-                                    NSLog(@"YJ << iCloud data not exists");
-                                     [self showAlertViewController:NSLocalizedString(@"No backup data exsits.", @"") msg:nil];
+                                    [IndicatorUtil stopProcessIndicator];
+                                    [self showAlertViewController:NSLocalizedString(@"No backup data exsits.", @"") msg:nil];
                                 }
+                            } else {
+                                [IndicatorUtil stopProcessIndicator];
+                                [self.view makeToast:NSLocalizedString(@"Data restore failed!", @"")];
                             }
                         }];
+                        
                     }];
+                    
                     [alert addAction:cancelAction];
                     [alert addAction:okAction];
+                    
                     [self presentController:alert animated:YES];
+//                    [appDelegate.alertWindow.rootViewController presentViewController:alert animated:YES completion:nil];
                 } else {
-                    NSLog(@"YJ << iCloud account is not available");
                     [self showAlertViewController:NSLocalizedString(@"iCloud is not available.", @"") msg:NSLocalizedString(@"iCloud is temporarily unavailable.", @"")];
                 }
             }
@@ -373,10 +428,17 @@
 }
 
 - (void)showAlertViewController:(NSString *)title msg:(NSString *)msg {
+//    AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+//    [appDelegate.alertWindow makeKeyAndVisible];
+    
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:title message:msg preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Confirm", @"") style:UIAlertActionStyleDefault handler:nil];
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Confirm", @"") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+//        [appDelegate.alertWindow setHidden:YES];
+    }];
     [alert addAction:okAction];
+    
     [self presentController:alert animated:YES];
+//    [appDelegate.alertWindow.rootViewController presentViewController:alert animated:YES completion:nil];
 }
 
 #pragma mark - BookConfigure
@@ -389,12 +451,13 @@
         [addVC setAddBookCompositionHandler:bookDic addBookCreateCompleted:^(NSDictionary *dic){
             [self createBook:dic isSearchMode:YES indexPath:nil completed:^(BOOL isResult) {
                 if (isResult) {
-                    
+                    [self.view makeToast:NSLocalizedString(@"Succeeded to add book", @"")];
                 } else {
-                    
+                    [self.view makeToast:NSLocalizedString(@"Failed to add book", @"")];
                 }
             }];
         } addBookModifyCompleted:nil];
+        
         [self pushController:addVC animated:YES];
     } else {
         WriteBookViewController *writeVC = [[WriteBookViewController alloc] init];
@@ -402,12 +465,13 @@
         [writeVC setWriteBookCompositionHandler:nil writeBookCreateCompleted:^(NSDictionary *dic){
             [self createBook:dic isSearchMode:NO indexPath:nil completed:^(BOOL isResult) {
                 if (isResult) {
-                    
+                    [self.view makeToast:NSLocalizedString(@"Succeeded to modify book", @"")];
                 } else {
-                    
+                    [self.view makeToast:NSLocalizedString(@"Failed to modify book", @"")];
                 }
             }];
         } writeBookModifyCompleted:nil];
+        
         [self pushController:writeVC animated:YES];
     }
     
@@ -422,6 +486,7 @@
         self.fetchedResultsController = coreData.fetchedResultsController;
         self.fetchedResultsController.delegate = self;
         self.managedObjectContext = coreData.managedObjectContext;
+        
         [self.view endEditing:YES];
         [self.searchBar setHidden:YES];
         [self.searchBar setText:@""];
@@ -445,14 +510,25 @@
     
     id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][0];
     NSInteger bookCount = [sectionInfo numberOfObjects];
+    NSInteger bookIndex = 0;
     
-//    NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
+    // get LAST BOOK
+    if (bookCount > 0) {
+        NSArray *bookArr = [coreData getAllBooks];
+        NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"index" ascending:YES];
+        NSArray *afterBookArr = [bookArr sortedArrayUsingDescriptors:[NSArray arrayWithObject:sortDescriptor]];
+        Book *lastBook = afterBookArr[bookCount-1];
+        bookIndex = lastBook.index+1;
+    } else {
+        bookIndex = 1;
+    }
+    
     NSDate *now = [[NSDate alloc] init];
     
     NSData *imageData = UIImagePNGRepresentation([bookDic objectForKey:@"bCoverImg"]);
     
     Book *book = [[Book alloc] initWithContext:self.managedObjectContext];
-    book.index = bookCount;
+    book.index = bookIndex;
     book.title = [bookDic objectForKey:@"bTitle"];
     book.author = [bookDic objectForKey:@"bAuthor"];
     book.publisher = [bookDic objectForKey:@"bPublisher"];
@@ -462,10 +538,9 @@
     book.rate = [[bookDic objectForKey:@"bRate"] floatValue];
     book.review = @"";
     book.coverImg = imageData;
-//    book.quote = bookQuotes;
+    book.createDate = now;
     book.modifyDate = now;
     book.isSearchMode = isSearchMode;
-//    book.quoteImg = imageData;
     
     
     NSError * error = nil;
@@ -499,6 +574,7 @@
     [self.searchBar setHidden:YES];
     [self.searchBar setText:@""];
     [self.navigationController setNavigationBarHidden:NO animated:YES];
+    [self.sortLabel setText:NSLocalizedString(@"Complete Date", @"")];
 
     [self.collectionView reloadData];
 }
@@ -514,16 +590,14 @@
     self.fetchedResultsController = coreData.fetchedResultsController;
     self.fetchedResultsController.delegate = self;
     
-    NSFetchRequest *request = [[self fetchedResultsController] fetchRequest];
+    NSFetchRequest *request = [self.fetchedResultsController fetchRequest];
     NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"title" ascending:YES];
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"title contains[cd] %@", searchBar.text];
-//    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"title contains[cd] %@ OR quotes contains[cd] %@", searchBar.text, searchBar.text];
     [request setPredicate:predicate];
     [request setSortDescriptors:@[sortDescriptor]];
     
     NSError *error = nil;
     if (![[self fetchedResultsController] performFetch:&error]) {
-        // Handle error
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
         abort();
     }
@@ -533,6 +607,7 @@
 
 #pragma mark - UICollectionViewDataSource
 - (nonnull __kindof UICollectionViewCell *)collectionView:(nonnull UICollectionView *)collectionView cellForItemAtIndexPath:(nonnull NSIndexPath *)indexPath {
+    
     NSString *cellIdentifier = @"BookShelfCollectionViewCell";
     BookShelfCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:cellIdentifier forIndexPath:indexPath];
     if (!cell) {
@@ -563,7 +638,10 @@
     [cell.compDateLabel setText:strDate];
     [cell.rateLabel setText:[[NSNumber numberWithFloat:book.rate] stringValue]];
     
-    cell.layer.borderColor = [UIColor darkGrayColor].CGColor;
+    NSLog(@"YJ << title : %@", book.title);
+    NSLog(@"YJ << index : %i", book.index);
+    
+    cell.layer.borderColor = [UIColor colorWithHexString:@"333333"].CGColor;
     cell.layer.borderWidth = 1.0f;
     
     return cell;
@@ -598,8 +676,6 @@
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath;
 {
-    NSLog(@"YJ << select collectionview cell");
-    
     isSearchBarActive = NO;
     [self.searchBar setText:@""];
     
@@ -618,7 +694,6 @@
 - (void) controllerWillChangeContent:(NSFetchedResultsController *)controller {
     
     if (controller == self.fetchedResultsController) {
-        NSLog(@"YJ << NSFetchedResultsController - controllerWillChangeContent - BookShelfViewController");
         
         self.updateBlock = [NSBlockOperation new];
     }
@@ -627,21 +702,18 @@
 - (void) controller:(NSFetchedResultsController *)controller didChangeSection:(nonnull id<NSFetchedResultsSectionInfo>)sectionInfo atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type {
     
     if (controller == self.fetchedResultsController) {
-        NSLog(@"YJ << NSFetchedResultsController - didChangeSection - BookShelfViewController");
         
         __weak UICollectionView *collectionView = self.collectionView;
         
         switch(type) {
             case NSFetchedResultsChangeInsert: {
                 [self.updateBlock addExecutionBlock:^{
-//                    [self.collectionView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex]];
                     [collectionView reloadSections:[NSIndexSet indexSetWithIndex:sectionIndex]];
                 }];
             }
                 break;
             case NSFetchedResultsChangeDelete: {
                 [self.updateBlock addExecutionBlock:^{
-//                    [self.collectionView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex]];
                     [collectionView reloadSections:[NSIndexSet indexSetWithIndex:sectionIndex]];
                 }];
             }
@@ -655,53 +727,18 @@
 - (void) controller:(NSFetchedResultsController *)controller didChangeObject:(nonnull id)anObject atIndexPath:(nullable NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(nullable NSIndexPath *)newIndexPath {
     
     if (controller == self.fetchedResultsController) {
-        NSLog(@"YJ << NSFetchedResultsController - didChangeObject - BookShelfViewController");
-        NSLog(@"YJ << section : %ld", newIndexPath.section);
-        NSLog(@"YJ << item : %ld", newIndexPath.item);
         
         __weak UICollectionView *collectionView = self.collectionView;
         
         [self.updateBlock addExecutionBlock:^{
             [collectionView reloadData];
         }];
-        
-//        switch(type) {
-//            case NSFetchedResultsChangeInsert: {
-//                [self.updateBlock addExecutionBlock:^{
-////                     [collectionView insertItemsAtIndexPaths:@[newIndexPath]];
-//                    [collectionView reloadItemsAtIndexPaths:@[newIndexPath]];
-//                }];
-//                break;
-//            }
-//            case NSFetchedResultsChangeDelete: {
-//                [self.updateBlock addExecutionBlock:^{
-////                    [collectionView deleteItemsAtIndexPaths:@[indexPath]];
-//                    [collectionView reloadData];
-//                }];
-//                break;
-//            }
-//            case NSFetchedResultsChangeUpdate: {
-//                [self.updateBlock addExecutionBlock:^{
-//                    [collectionView reloadItemsAtIndexPaths:@[newIndexPath]];
-//                }];
-//                break;
-//            }
-//            case NSFetchedResultsChangeMove: {
-//                [self.updateBlock addExecutionBlock:^{
-////                    [collectionView moveItemAtIndexPath:indexPath toIndexPath:newIndexPath];
-////                    [collectionView reloadItemsAtIndexPaths:@[indexPath]];
-//                    [collectionView reloadData];
-//                }];
-//                break;
-//            }
-//        }
     }
 }
 
 - (void) controllerDidChangeContent:(NSFetchedResultsController *)controller {
     
     if (controller == self.fetchedResultsController) {
-        NSLog(@"YJ << NSFetchedResultsController - controllerDidChangeContent - BookShelfViewController");
         
         id <NSFetchedResultsSectionInfo> sectionInfo = [controller sections][0];
         NSInteger bookCount = [sectionInfo numberOfObjects];
@@ -735,7 +772,6 @@
 #pragma mark - keyboard actions
 - (void)handleKeyboardWillShowNote:(NSNotification *)notification
 {
-    NSLog(@"YJ << keyboard show");
     [self.view addGestureRecognizer:bgTap];
     
     NSDictionary* userInfo = [notification userInfo];
@@ -745,7 +781,6 @@
 
 - (void)handleKeyboardWillHideNote:(NSNotification *)notification
 {
-    NSLog(@"YJ << keyboard hide");
     [self.view removeGestureRecognizer:bgTap];
     
     NSDictionary* userInfo = [notification userInfo];

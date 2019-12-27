@@ -19,13 +19,20 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     
+    // alertWindow
+//    self.alertWindow = [[UIWindow alloc] init];
+//    self.alertWindow.windowLevel = UIWindowLevelAlert + 1;
+//    UIViewController *alertVC = [[UIViewController alloc] init];
+//    [alertVC.view setBackgroundColor:[UIColor whiteColor]];
+//    self.alertWindow.rootViewController = alertVC;
+    
     // make Main viewcontroller
     self.rootViewController = [[BookShelfViewController alloc] init];
     
     // making navigationcontroller and setting root viewcontroller
     self.navigationController = [[UINavigationController alloc] initWithRootViewController:self.rootViewController];
     self.navigationController.navigationBar.barTintColor = [UIColor whiteColor];
-    self.navigationController.navigationBar.tintColor = [UIColor darkGrayColor];
+    self.navigationController.navigationBar.tintColor = [UIColor colorWithHexString:@"333333"];
     [self.navigationController.navigationBar setValue:@(NO) forKeyPath:@"hidesShadow"];
 //    [self.navigationController setNavigationBarHidden:YES];
     

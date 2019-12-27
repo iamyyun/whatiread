@@ -37,6 +37,8 @@ typedef enum : NSInteger
 - (void)rightBarBtnClick:(id)sender;
 
 - (void)showMenu;
+- (BOOL)isAfteriPhoneX;
+- (BOOL)isiPad;
 
 // controller navigate
 - (void)popController:(BOOL)animated;

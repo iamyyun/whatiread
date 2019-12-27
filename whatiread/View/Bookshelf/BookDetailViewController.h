@@ -29,7 +29,9 @@
 @property (weak, nonatomic) IBOutlet UILabel *rateLangLabel;
 @property (weak, nonatomic) IBOutlet UILabel *bmLangLabel;
 @property (weak, nonatomic) IBOutlet UILabel *noBmLangLabel;
+//
 
+@property (weak, nonatomic) IBOutlet UIView *infoView;
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *authorLabel;
 @property (weak, nonatomic) IBOutlet UILabel *publisherLabel;
@@ -45,7 +47,11 @@
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (weak, nonatomic) IBOutlet UIView *emptyView;
 
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *topConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *titleLabelHeightConst;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *infoViewHeightConst;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *coverImgWidthConst;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *coverImgLeadingConst;
 
 @property (nonatomic, strong) NSBlockOperation *updateBlock;
 

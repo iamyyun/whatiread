@@ -15,11 +15,11 @@ typedef void (^CloudKitCompletionHandler)(NSArray *results, NSError *error);
 +(BOOL)isiCloudAccountIsSignedIn;
 +(BOOL)isiCloudStatusEnabled;
 
-+(void)fetchAllDataWithCompletionHandler:(CloudKitCompletionHandler)handler;
 +(void)fetchAllBooksWithCompletionHandler:(CloudKitCompletionHandler)handler;
 +(void)fetchAllQuotesWithCompletionHandler:(CloudKitCompletionHandler)handler;
-+(void)fetchBookWithRecordIdWithCompletionHandler:(CKReference *)bookRef handler:(CloudKitCompletionHandler)handler;
-+(void)fetchQuoteWithRecordIdWithCompletionHandler:(CKReference *)quoteRef handler:(CloudKitCompletionHandler)handler;
+
++(void)fetchBookWithRecordReferenceWithCompletionHandler:(CKReference *)bookRef handler:(CloudKitCompletionHandler)handler;
++(void)fetchQuoteWithRecordReferenceWithCompletionHandler:(CKReference *)quoteRef handler:(CloudKitCompletionHandler)handler;
 
 +(void)createBookRecord:(NSArray *)bookArray completionHandler:(CloudKitCompletionHandler)handler;
 +(void)createQuoteRecord:(NSArray *)quoteArray completionHandler:(CloudKitCompletionHandler)handler;

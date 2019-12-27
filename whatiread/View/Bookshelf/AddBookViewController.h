@@ -39,6 +39,7 @@ typedef void (^AddBookModifyCompleted)(NSDictionary *bookDic);
 @property (weak, nonatomic) IBOutlet UILabel *rateLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *coverImgView;
 
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *topConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *titleLabelHeightConst;
 
 - (void)setAddBookCompositionHandler:(NSDictionary *)bDic addBookCreateCompleted:(AddBookCreateCompleted)addBookCreateCompleted addBookModifyCompleted:(AddBookModifyCompleted)addBookModifyCompleted;

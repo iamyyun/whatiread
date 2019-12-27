@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -23,6 +21,8 @@
                 <outlet property="searchBar" destination="omG-B3-uzG" id="se8-Ej-ibd"/>
                 <outlet property="sortBtn" destination="Pa0-wK-J3b" id="no6-Db-PG3"/>
                 <outlet property="sortLabel" destination="Mvj-v7-Mbi" id="Vjl-I8-RFD"/>
+                <outlet property="topConstraint" destination="w4t-Se-hRe" id="ai9-8Z-7cV"/>
+                <outlet property="topSearchConstraint" destination="zMR-hK-fIe" id="b1R-J3-lN4"/>
                 <outlet property="view" destination="tbl-hd-6bw" id="VmF-Pj-jSn"/>
             </connections>
         </placeholder>
@@ -77,20 +77,20 @@
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="완독일" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mvj-v7-Mbi">
                             <rect key="frame" x="0.0" y="8" width="42" height="19.5"/>
                             <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                            <nil key="textColor"/>
+                            <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_small_book_color" translatesAutoresizingMaskIntoConstraints="NO" id="w6f-SL-nFn">
-                            <rect key="frame" x="265.5" y="7.5" width="20" height="20"/>
+                            <rect key="frame" x="275" y="7.5" width="20" height="20"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="20" id="uo6-6w-X9d"/>
                                 <constraint firstAttribute="height" constant="20" id="wC8-lc-cUe"/>
                             </constraints>
                         </imageView>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0 /" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7y4-cc-aqW">
-                            <rect key="frame" x="288.5" y="7" width="20" height="21"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7y4-cc-aqW">
+                            <rect key="frame" x="298" y="7" width="10.5" height="21"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                            <nil key="textColor"/>
+                            <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_small_bookmark_color" translatesAutoresizingMaskIntoConstraints="NO" id="pSb-9e-sl1">
@@ -103,7 +103,7 @@
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cea-Ie-vy1">
                             <rect key="frame" x="333.5" y="7" width="10.5" height="21"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                            <nil key="textColor"/>
+                            <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                     </subviews>
@@ -148,7 +148,7 @@
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="등록된 책이 없습니다." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="o2K-ss-RMC">
                             <rect key="frame" x="98.5" y="233" width="146" height="21"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                            <nil key="textColor"/>
+                            <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                     </subviews>
@@ -192,8 +192,8 @@
         </view>
     </objects>
     <resources>
-        <image name="icon_small_book_color" width="180" height="180"/>
-        <image name="icon_small_bookmark_color" width="180" height="180"/>
-        <image name="icon_small_filter_color" width="180" height="180"/>
+        <image name="icon_small_book_color" width="20" height="20"/>
+        <image name="icon_small_bookmark_color" width="20" height="20"/>
+        <image name="icon_small_filter_color" width="20" height="20"/>
     </resources>
 </document>

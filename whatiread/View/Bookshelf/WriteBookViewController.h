@@ -34,6 +34,8 @@ typedef void (^WriteBookModifyCompleted)(NSDictionary *bookDic);
 @property (weak, nonatomic) IBOutlet UILabel *rateLabel;
 @property (weak, nonatomic) IBOutlet RateView *rateView;
 
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *topConstraint;
+
 - (void)setWriteBookCompositionHandler:(Book *)book writeBookCreateCompleted:(WriteBookCreateCompleted)writeBookCreateCompleted writeBookModifyCompleted:(WriteBookModifyCompleted)writeBookModifyCompleted;
 
 @end

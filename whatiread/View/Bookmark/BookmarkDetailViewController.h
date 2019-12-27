@@ -24,10 +24,13 @@ typedef void (^BookmarkDeleteCompleted)(NSIndexPath *indexPath);
 
 @property (nonatomic, strong) Book *book;
 @property (nonatomic, strong) NSIndexPath *indexPath;
+@property (nonatomic) NSInteger quoteIndex;
 
 @property (weak, nonatomic) IBOutlet UITextView *textView;
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *authorLabel;
+
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *topConstraint;
 
 - (void)setBookmarkDetailCompositionHandler:(Book *)book bookmarkDeleteCompleted:(BookmarkDeleteCompleted)bookmarkDeleteCompleted;
 

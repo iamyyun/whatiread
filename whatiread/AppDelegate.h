@@ -15,6 +15,7 @@
 @interface AppDelegate : UIResponder <UIApplicationDelegate, REFrostedViewControllerDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
+//@property (strong, nonatomic) UIWindow *alertWindow;
 @property (strong, nonatomic) UINavigationController *navigationController;
 @property (strong, nonatomic) BookShelfViewController *rootViewController;
 @property (strong, nonatomic) REFrostedViewController *frostedViewController;

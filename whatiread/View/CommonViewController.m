@@ -21,7 +21,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
-//    SHAREDAPPDELEGATE.navigationController.interactivePopGestureRecognizer.delegate = self;
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -42,6 +41,19 @@
 #pragma mark - Navigation Bar
 - (void)setNaviBarType:(NAVI_BAR_TYPE)type title:(NSString *)title image:(UIImage *)image
 {
+    CGFloat topMargin = 0.f;
+    
+    if ([self isiPad]) {
+        topMargin = 20.f;
+    } else {
+        if ([self isAfteriPhoneX]) {
+            topMargin = 44.f;
+        } else {
+            topMargin = 20.f;
+        }
+    }
+    
+    
     [SHAREDAPPDELEGATE.navigationController.navigationBar setHidden:NO];
     if (type == BAR_NONE) {
         [SHAREDAPPDELEGATE.navigationController.navigationBar setHidden:YES];
@@ -50,10 +62,9 @@
         // titleView
         if (title && title.length > 0) {
             UIView *centerView = [[UIView alloc] initWithFrame:CGRectZero];
-            [centerView setBackgroundColor:[UIColor whiteColor]];
+            [centerView setBackgroundColor:[UIColor clearColor]];
             
             UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
-//            [imgView setImage:[UIImage imageNamed:@"icon_bookmark"]];
             [imgView setImage:image];
             [centerView addSubview:imgView];
             
@@ -61,7 +72,7 @@
             CGFloat width = [strTitle boundingRectWithSize:CGSizeMake(1000, 44) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:18.0f]} context:nil].size.width;
             titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(44, 0, width, 44)];
             [titleLabel setText:strTitle];
-            [titleLabel setTextColor:[UIColor darkGrayColor]];
+            [titleLabel setTextColor:[UIColor colorWithHexString:@"333333"]];
             [centerView addSubview:titleLabel];
             
             [centerView setFrame:CGRectMake(0, 0, 44+width, 44)];
@@ -97,7 +108,7 @@
             NSString *strTitle = NSLocalizedString(title, @"");
             titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 44)];
             [titleLabel setText:strTitle];
-            [titleLabel setTextColor:[UIColor darkGrayColor]];
+            [titleLabel setTextColor:[UIColor colorWithHexString:@"333333"]];
             [titleLabel setFont:[UIFont systemFontOfSize:17.f]];
             [titleLabel setAdjustsFontSizeToFitWidth:YES];
             [titleLabel setTextAlignment:NSTextAlignmentCenter];
@@ -114,7 +125,7 @@
             
             titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width - 64, 44)];
             [titleLabel setText:strTitle];
-            [titleLabel setTextColor:[UIColor darkGrayColor]];
+            [titleLabel setTextColor:[UIColor colorWithHexString:@"333333"]];
             [titleLabel setFont:[UIFont systemFontOfSize:17.f]];
             [titleLabel setAdjustsFontSizeToFitWidth:YES];
             [titleLabel setTextAlignment:NSTextAlignmentCenter];
@@ -141,7 +152,7 @@
             NSString *strTitle = NSLocalizedString(title, @"");
             titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 44)];
             [titleLabel setText:strTitle];
-            [titleLabel setTextColor:[UIColor darkGrayColor]];
+            [titleLabel setTextColor:[UIColor colorWithHexString:@"333333"]];
             [titleLabel setFont:[UIFont systemFontOfSize:17.f]];
             [titleLabel setAdjustsFontSizeToFitWidth:YES];
             [titleLabel setTextAlignment:NSTextAlignmentCenter];
@@ -200,15 +211,16 @@
     [self popController:YES];
 }
 
-- (void)setFrame
-{
-    CGRect rect = [UIScreen mainScreen].bounds;
-    
-    rect.origin.y = 20 + 44;
-    rect.size.height -= (20 + 44);
-    
-    self.view.frame = rect;
-}
+#pragma mark - Commons
+//- (void)setFrame
+//{
+//    CGRect rect = [UIScreen mainScreen].bounds;
+//
+//    rect.origin.y = 20 + 44;
+//    rect.size.height -= (20 + 44);
+//
+//    self.view.frame = rect;
+//}
 
 - (void)showMenu
 {
@@ -222,7 +234,31 @@
     [SHAREDAPPDELEGATE.frostedViewController presentMenuViewController];
 }
 
-#pragma - Navigation
+- (BOOL)isAfteriPhoneX
+{
+    int height = [UIScreen mainScreen].fixedCoordinateSpace.bounds.size.height;
+    
+    if (height >= 812) {
+        return YES;
+    } else {
+        return NO;
+    }
+}
+
+- (BOOL)isiPad
+{
+    BOOL isPad = NO;
+    
+    if (UIScreen.mainScreen.traitCollection.userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+        isPad = NO;
+    } else if (UIScreen.mainScreen.traitCollection.userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+        isPad = YES;
+    }
+    
+    return isPad;
+}
+
+#pragma mark - Navigation
 - (void)popController:(BOOL)animated {
     [SHAREDAPPDELEGATE.navigationController popViewControllerAnimated:animated];
 //    SHAREDAPPDELEGATE.navigationController.interactivePopGestureRecognizer.enabled = YES;

@@ -44,7 +44,6 @@ static CoreDataAccess *coreData = nil;
 //@synthesize persistentContainer = _persistentContainer;
 
 - (NSPersistentContainer *)persistentContainer {
-    NSLog(@"YJ << coreDataAccess persistentContainer");
     // The persistent container for the application. This implementation creates and returns a container, having loaded the store for the application to it.
     @synchronized (self) {
         if (SHAREDAPPDELEGATE.persistentContainer == nil) {
@@ -84,11 +83,6 @@ static CoreDataAccess *coreData = nil;
         abort();
     }
 }
-
-//- (NSURL *)applicationDocumentsDirectory
-//{
-//    return [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:@"group.atsolutions.extension"];
-//}
 
 #pragma mark - Fetched results controller
 - (NSFetchedResultsController <Book *> *)fetchedResultsController {
@@ -175,25 +169,6 @@ static CoreDataAccess *coreData = nil;
     return bookArray;
 }
 
-- (Book *)mapBook:(CKRecord *)record
-{
-    Book *book = [[Book alloc] initWithContext:self.managedObjectContext];
-    book.index = [record[@"index"] intValue];
-    book.title = record[@"title"];
-    book.author = record[@"author"];
-    book.publisher = record[@"publisher"];
-    book.publishDate = (NSDate *)record[@"publishDate"];
-    book.startDate = (NSDate *)record[@"startDate"];
-    book.completeDate = (NSDate *)record[@"completeDate"];
-    book.rate = [record[@"rate"] floatValue];
-    book.review = record[@"review"];
-    book.coverImg = (NSData *)record[@"coverImg"];
-    book.modifyDate = (NSDate *)record[@"modifyDate"];
-    book.isSearchMode = (BOOL)record[@"isSearchMode"];
-    
-    return book;
-}
-
 - (void)mapBook:(CKRecord *)record completionHandler:(BookDataCompletionHandler)handler
 {
     Book *book = [[Book alloc] initWithContext:self.managedObjectContext];
@@ -207,82 +182,24 @@ static CoreDataAccess *coreData = nil;
     book.rate = [record[@"rate"] floatValue];
     book.review = record[@"review"];
     book.coverImg = (NSData *)record[@"coverImg"];
+    book.createDate = (NSDate *)record[@"createDate"];
     book.modifyDate = (NSDate *)record[@"modifyDate"];
-    book.isSearchMode = (BOOL)record[@"isSearchMode"];
+    book.isSearchMode = record[@"isSearchMode"];
     
     handler (book);
-    
-//    NSMutableArray *quoteArr = [NSMutableArray array];
-//    NSArray *refArr = [NSArray arrayWithArray:record[@"quotes"]];
-//    for (int i = 0; i < refArr.count; i++) {
-//        CKReference *reference = (CKReference *)refArr[i];
-//        [CloudKitManager fetchQuoteWithRecordIdWithCompletionHandler:reference handler:^(NSArray *result, NSError *error) {
-//            NSLog(@"YJ << quote record : %@", result[0]);
-//
-//            if (result && result.count > 0) {
-//                CKRecord *record = (CKRecord *)result[0];
-//                Quote *quote = [self mapQuote:record];
-//                [quoteArr addObject:quote];
-//
-//                if (i == refArr.count-1) {
-//                    if (quoteArr && quoteArr.count > 0) {
-//                        // todo : nsset을 save 하는 방법!!
-//                        NSSet<Quote *> *quoteSet = [NSSet setWithArray:quoteArr];
-//                        book.quotes = quoteSet;
-//
-////                        if (!handler) return;
-//
-//                        handler (book);
-////                        dispatch_sync(dispatch_get_main_queue(), ^{
-////                            handler (book);
-////                        });
-//                    }
-//                }
-//            }
-//        }];
-////        CKRecord *record = [[CKRecord alloc] initWithRecordType:CKRecordTypeUserRecord recordID:reference.recordID];
-//    }
-//
-////    return book;
 }
 
 - (void)mapQuote:(CKRecord *)record completionHandler:(QuoteDataCompletionHandler)handler
 {
-    Quote *quote = [[Quote alloc] initWithContext:self.quoteManagedObjectContext];
+    Quote *quote = [[Quote alloc] initWithContext:self.managedObjectContext];
     quote.index = [record[@"index"] intValue];
     quote.data = (NSData *)record[@"data"];
-    quote.date = (NSDate *)record[@"date"];
+    quote.createDate = (NSDate *)record[@"createDate"];
+    quote.modifyDate = (NSDate *)record[@"modifyDate"];
     quote.pageNum = [record[@"pageNum"] intValue];
     quote.strData = record[@"strData"];
     
-    //book
-    CKReference *reference = (CKReference *)record[@"book"];
-    [CloudKitManager fetchBookWithRecordIdWithCompletionHandler:reference handler:^(NSArray *result, NSError *error) {
-        NSLog(@"YJ << book record : %@", result[0]);
-        
-        if (result && result.count > 0) {
-            CKRecord *record = (CKRecord *)result[0];
-            Book *book = [self mapBook:record];
-            quote.book = book;
-            
-            handler (quote);
-        }
-    }];
-}
-
-- (Quote *)mapQuote:(CKRecord *)record
-{
-    Quote *quote = [[Quote alloc] initWithContext:self.quoteManagedObjectContext];
-    quote.index = [record[@"index"] intValue];
-    quote.data = (NSData *)record[@"data"];
-    quote.date = (NSDate *)record[@"date"];
-    quote.pageNum = [record[@"pageNum"] intValue];
-    quote.strData = record[@"strData"];
-    
-    // book
-//    CKReference *reference
-    
-    return quote;
+    handler (quote);
 }
 
 @end

@@ -29,8 +29,10 @@ typedef void (^BookmarkModifyCompleted)(NSAttributedString *attrQuote, NSIndexPa
 
 @property (weak, nonatomic) IBOutlet UITextView *textView;
 @property (weak, nonatomic) IBOutlet UIButton *textInputBtn;
+@property (weak, nonatomic) IBOutlet UIView *photoInputView;
 @property (weak, nonatomic) IBOutlet UIButton *photoInputBtn;
 
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *topConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *textViewBottomMarginConst;
 
 - (IBAction)textInputBtnAction:(id)sender;
